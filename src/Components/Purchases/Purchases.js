@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Nav, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Nav, Card, Button, Image } from "react-bootstrap";
 
 export default function Purchases() {
   const [showAllFreeCourses, setShowAllFreeCourses] = useState(false);
@@ -77,7 +77,7 @@ export default function Purchases() {
                   </div>
                   <Card.Img
                     variant="top"
-                    src="../meo.png"
+                    src="../image/puchases/meo.png"
                     style={{
                       width: "100%",
                       height: "150px",
@@ -94,7 +94,7 @@ export default function Purchases() {
                     >
                       <Card.Img
                         variant="top"
-                        src="../meo.png"
+                        src="../image/puchases/meo.png"
                         style={{
                           width: "30px",
                           height: "30px",
@@ -154,7 +154,7 @@ export default function Purchases() {
                   </div>
                   <Card.Img
                     variant="top"
-                    src="../meo.png"
+                    src="../image/puchases/meo.png"
                     style={{
                       width: "100%",
                       height: "150px",
@@ -171,7 +171,7 @@ export default function Purchases() {
                     >
                       <Card.Img
                         variant="top"
-                        src="../meo.png"
+                        src="../image/puchases/meo.png"
                         style={{
                           width: "30px",
                           height: "30px",
@@ -201,6 +201,39 @@ export default function Purchases() {
             >
               {showAllDegreeCourses ? "Show Fewer" : "Show More"}
             </Button>
+          </Col>
+        </Row>
+
+        <Row
+          className="align-items-center p-5 mt-5"
+          style={{ backgroundColor: "rgb(220, 237, 245)" }}
+        >
+          <Col md={8}>
+            <Image
+              src="./image/puchases/edu.png"
+              alt="Coursera Plus"
+              className="mb-3"
+              style={{ width: "240px" }}
+            />
+            <h3>Try out different courses to see which one fits your needs</h3>
+            <p>
+              Get a 7-day free trial that includes courses, Specializations,
+              Projects, and Professional Certificates.
+            </p>
+            <Button variant="primary" className="mt-3">
+              Learn More
+            </Button>
+          </Col>
+          <Col md={4}>
+            <div className="promo-image">
+              <img
+                src={
+                  "https://coursera_assets.s3.amazonaws.com/coursera_plus/landing_page/header-image.png"
+                }
+                alt="Promo"
+                className="rounded-circle img-fluid"
+              />
+            </div>
           </Col>
         </Row>
       </Container>

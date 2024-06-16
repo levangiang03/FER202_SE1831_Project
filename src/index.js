@@ -9,9 +9,6 @@ root.render(
   <React.StrictMode>
     {/* <Homepage/> */}
     {/* <CoursePage/> */}
-<<<<<<< Updated upstream
-=======
     {/* <CourseSingle/> */}
->>>>>>> Stashed changes
   </React.StrictMode>
 )

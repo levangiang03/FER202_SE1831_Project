@@ -11,11 +11,14 @@ import Profile from './Components/Profile/Profile';
 import Purchases from './Components/Purchases/Purchases';
 import CreateCourse from './Components/CreateCourse/createcourse';
 import Systems from './Components/Settings/Systems';
+import Error from './Components/Error/Error';
+import Contact from './Components/Contact/Contact';
+import FAQ from './Components/FAQ/FAQ';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <Homepage/> */}
+    <Homepage/>
     {/* <CoursePage/> */}
     {/* <CourseSingle/> */}
     {/* <Login_Register/> */}
@@ -25,5 +28,8 @@ root.render(
     {/* <Profile/> */}
     {/* <Purchases/> */}
     {/* <Systems/> */}
+    {/* <Error/>
+    <Contact/>
+    <FAQ/> */}
   </React.StrictMode>
 )

@@ -23,11 +23,18 @@ root.render(
 <<<<<<< Updated upstream
 =======
     {/* <Login_Register/> */}
-    {/* <CoursesBody1/> */}
+    {/* <CoursesBody/> */}
     {/* <CoursesBody2/> */}
     {/* <CreateCourse/> */}
     {/* <Profile/> */}
     {/* <Purchases/> */}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+    {/* <Systems/> */}
+    {/* <Error/> */}
+    {/* <Contact/> */}
+    {/* <FAQ/> */}
 >>>>>>> Stashed changes
   </React.StrictMode>
 )

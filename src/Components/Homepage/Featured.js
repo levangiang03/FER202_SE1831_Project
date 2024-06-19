@@ -181,8 +181,8 @@ export default function Featured() {
                                 <Card className="course-card">
                                     <Card.Img
                                         variant="top"
-                                        src="/image/logo192.png"
-                                        style={{ maxWidth: "286px", maxHeight: "180px" }}
+                                        src="/image/Homepage/demo.png"
+                                        style={{ maxHeight: "180px", width:'100%'  }}
                                     />
                                     <Card.Body>
                                         <Badge pill className="badge-category">
@@ -224,8 +224,8 @@ export default function Featured() {
                                 <Card className="course-card">
                                     <Card.Img
                                         variant="top"
-                                        src="/image/logo192.png"
-                                        style={{ maxWidth: "286px", maxHeight: "180px" }}
+                                        src="/image/Homepage/demo.png"
+                                        style={{ maxHeight: "180px", width:'100%'  }}
                                     />
                                     <Card.Body>
                                         <Badge pill className="badge-category">
@@ -267,8 +267,8 @@ export default function Featured() {
                                 <Card className="course-card">
                                     <Card.Img
                                         variant="top"
-                                        src="/image/logo192.png"
-                                        style={{ maxWidth: "286px", maxHeight: "180px" }}
+                                        src="/image/Homepage/demo.png"
+                                        style={{ maxHeight: "180px", width:'100%' }}
                                     />
                                     <Card.Body>
                                         <Badge pill className="badge-category">

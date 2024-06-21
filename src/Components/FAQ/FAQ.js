@@ -4,6 +4,11 @@ import { Accordion, Breadcrumb, Button, Card, Carousel, Col, Container, Form, Im
 export default function FAQ() {
   return (
     <Container fluid >
+                  <Row className="nav-container">
+                <Container style={{ width: "80%" }} className="nav-content">
+                    <Navigation />
+                </Container>
+            </Row>
     <h1>FAQs</h1>
     <Row>
       <Col>
@@ -79,5 +84,14 @@ export default function FAQ() {
 
     </Container>
     
+  );
+}
+
+function Navigation() {
+  return (
+      <Breadcrumb className="nav-menu">
+          <Breadcrumb.Item href="#" className="nav-name">Homepage</Breadcrumb.Item>
+          <Breadcrumb.Item active>FAQs</Breadcrumb.Item>
+      </Breadcrumb>
   );
 }

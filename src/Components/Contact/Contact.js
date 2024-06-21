@@ -1,10 +1,15 @@
 
-import {  Button, Col, Container, Form, Image, Row } from "react-bootstrap";
+import {  Breadcrumb, Button, Col, Container, Form, Image, Row } from "react-bootstrap";
 
 
 export default function Contact() {
   return (
-    <Container>
+    <Container fluid>
+                  <Row className="nav-container">
+                <Container style={{ width: "80%" }} className="nav-content">
+                    <Navigation />
+                </Container>
+            </Row>
       <Row className="justify-content-md-center">
         <Col md={6}>
           <h2>Need A Direct Line?</h2>
@@ -44,5 +49,14 @@ export default function Contact() {
       </Row>
     </Container>
     
+  );
+}
+
+function Navigation() {
+  return (
+      <Breadcrumb className="nav-menu">
+          <Breadcrumb.Item href="#" className="nav-name">Homepage</Breadcrumb.Item>
+          <Breadcrumb.Item active>Contact</Breadcrumb.Item>
+      </Breadcrumb>
   );
 }

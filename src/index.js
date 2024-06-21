@@ -14,15 +14,17 @@ import Systems from './Components/Settings/Systems';
 import Error from './Components/Error/Error';
 import Contact from './Components/Contact/Contact';
 import FAQ from './Components/FAQ/FAQ';
+import CourseDetail from './Components/CourseDetail/CourseDetail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Homepage/>
+    {/* <Homepage/> */}
     {/* <CoursePage/> */}
+    <CourseDetail/>
     {/* <CourseSingle/> */}
     {/* <Login_Register/> */}
-    {/* <CoursesBody1/> */}
+    {/* <CoursesBody/> */}
     {/* <CoursesBody2/> */}
     {/* <CreateCourse/> */}
     {/* <Profile/> */}

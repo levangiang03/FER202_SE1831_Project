@@ -1,5 +1,4 @@
-{
-    "role": [
+{     "role": [
         {
             "id": "1",
             "rName": "admin"
@@ -112,12 +111,31 @@
             "id": "1",
             "userId": "3",
             "courseId": "2",
-            "enRollDate": "05/28/2024",
+            "enRollDate": "04/28/2024",
             "progress": [
                 {
                     "id": "1",
-                    "moduleGrade": "10",
-                    "moduleStatus": true
+                    "moduleName": "Module 1",
+                    "moduleGrade": 0,
+                    "moduleStatus": false
+                },
+                {
+                    "id": "2",
+                    "moduleName": "Module 2",
+                    "moduleGrade": 0,
+                    "moduleStatus": false
+                },
+                {
+                    "id": "3",
+                    "moduleName": "Module 4",
+                    "moduleGrade": 0,
+                    "moduleStatus": false
+                },
+                {
+                    "id": "4",
+                    "moduleName": "Module 4",
+                    "moduleGrade": 0,
+                    "moduleStatus": false
                 }
             ]
         }
@@ -143,17 +161,17 @@
                         {
                             "videoId": "1",
                             "videoTitle": "C tutorial for beginners 🕹️",
-                            "videoUrl": "nrbBmoINqtk&list=PLZPZq0r_RZOOzY_vR4zJM32SqsSInGMwe"
+                            "videoUrl": "https://www.youtube.com/watch?v=8Vt9k0bh_Q8"
                         },
                         {
                             "videoId": "2",
-                            "videoTitle": "Test2",
-                            "videoUrl": "Test1"
+                            "videoTitle": "The History",
+                            "videoUrl": "https://www.youtube.com/watch?v=GQlP6qyH3Kw"
                         },
                         {
                             "videoId": "3",
-                            "videoTitle": "Test3",
-                            "videoUrl": "Test1"
+                            "videoTitle": "Hehe",
+                            "videoUrl": "https://www.youtube.com/watch?v=Zfe0UHx0om0"
                         }
                     ],
                     "cQuiz": [
@@ -412,6 +430,396 @@
                                 {
                                     "choiceId": "3",
                                     "choiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
+                                },
+                                {
+                                    "choiceId": "4",
+                                    "choiceName": "D"
+                                }
+                            ],
+                            "answer": "A"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "cart": [],
+    "wishlist": []
+"wishlist": []
+hoiceName": "C"
                                 },
                                 {
                                     "choiceId": "4",

@@ -21,8 +21,10 @@ import Footer from "../HomepageUser/Footer";
 export default function CoursePage() {
   const [activeItem, setActiveItem] = useState("module1");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
+  const { uId } = useParams(); 
   const { cId } = useParams();
   const [selectedCourse, setSelectedCourse] = useState({});
+  const [selectedIdEnroll, setSelectedIdEnroll] = useState();
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   const [selectedAnswers, setSelectedAnswers] = useState({}); // State để lưu câu trả lời được chọn
 
@@ -31,7 +33,22 @@ export default function CoursePage() {
       .then((res) => res.json())
       .then((result) => setSelectedCourse(result))
       .catch((err) => console.error("Error fetching course: ", err));
-  }, [cId]);
+
+    fetch("http://localhost:9999/enroll")
+      .then((res) => res.json())
+      .then((result) => {
+        const foundEnroll = result.find(
+          (enroll) => enroll.userId === uId && enroll.courseId === cId
+        );
+  
+        if (foundEnroll) {
+          setSelectedIdEnroll(foundEnroll.id);
+        } else {
+          setSelectedIdEnroll(null); // Không tìm thấy enrollment thì set selectedIdEnroll về null
+        }
+      })
+      .catch((err) => console.error("Error fetching course: ", err));
+  }, [cId, selectedCourse, uId]);
 
   // Xử lý khi người dùng chọn một module trong danh sách
   const handleClick = (moduleName) => {
@@ -61,35 +78,73 @@ export default function CoursePage() {
     });
   };
 
-  // Xử lý khi người dùng submit bài quiz
   const handleSubmitQuiz = () => {
     let moduleScore = 0;
-
+  
     // Tìm module hiện tại dựa trên activeItem
     const currentModule = selectedCourse.courseModule.find(
       (module) => module.name === activeItem
     );
-
+  
     // Duyệt qua câu hỏi của module hiện tại để tính điểm
     currentModule.cQuiz.forEach((quiz) => {
       const selectedChoiceId = selectedAnswers[quiz.id];
-
+  
       // Nếu người dùng đã chọn đúng
       if (selectedChoiceId !== undefined) {
         const selectedChoice = quiz.choice.find(
           (choice) => choice.choiceId === selectedChoiceId
         );
-
+  
         // Kiểm tra câu trả lời
         if (selectedChoice && selectedChoice.choiceName === quiz.answer) {
           moduleScore++; // Tăng điểm cho câu hỏi đúng
         }
       }
     });
-
-    // Hiển thị kết quả điểm số của module hiện tại
-    alert(`Your score for ${activeItem} is: ${moduleScore}`);
+  
+    // Fetch để cập nhật progress
+    fetch(`http://localhost:9999/enroll/${selectedIdEnroll}`)
+      .then((res) => res.json())
+      .then((enrollment) => {
+        // Tìm index của module hiện tại trong mảng progress
+        const progressIndex = enrollment.progress.findIndex(
+          (progressItem) => progressItem.id === currentModule.id
+        );
+  
+        if (progressIndex !== -1) {
+          // Tạo một bản sao của enrollment để chỉnh sửa
+          const updatedEnrollment = { ...enrollment };
+  
+          // Cập nhật điểm số và trạng thái cho module hiện tại
+          updatedEnrollment.progress[progressIndex].moduleGrade = moduleScore;
+          updatedEnrollment.progress[progressIndex].moduleStatus = true; // Đánh dấu module đã hoàn thành
+  
+          // Cập nhật progress mới lên server
+          return fetch(`http://localhost:9999/enroll/${selectedIdEnroll}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedEnrollment), // Gửi toàn bộ enrollment đã cập nhật
+          });
+        } else {
+          throw new Error('Module not found in progress array');
+        }
+      })
+      .then((res) => {
+        if (res.ok) {
+          // Cập nhật state nếu thành công
+          // Ví dụ: setSelectedCourse(updatedCourse);
+          // Hoặc thực hiện các thao tác cập nhật UI phù hợp
+          alert(`Your score for ${activeItem} is: ${moduleScore}`); // Hiển thị thông báo điểm số
+        } else {
+          throw new Error('Failed to update progress');
+        }
+      })
+      .catch((err) => console.error('Error updating progress:', err));
   };
+  
 
   return (
     <Container fluid>
@@ -253,7 +308,7 @@ export default function CoursePage() {
                                 {selectedVideoUrl && (
                                   <Row style={{ marginTop: "20px" }}>
                                     <YouTube
-                                      videoId={selectedVideoUrl}
+                                      videoId={selectedVideoUrl.split("v=")[1]}
                                       opts={{ width: "100%", height: "500" }}
                                     />
                                   </Row>

@@ -21,7 +21,8 @@ import {
     Tab
 } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
     const scrollToTop = () => {
@@ -30,6 +31,28 @@ export default function Footer() {
             behavior: 'smooth'
         });
     };
+
+    const [listCate, setListCate] = useState([]);
+    const [listCourse, setListCourse] = useState([]);
+    const [listUser, setListUser] = useState([]);
+
+    useEffect(() => {
+        fetch("http://localhost:9999/category")
+            .then((res) => res.json())
+            .then((listCate) => setListCate(listCate))
+            .catch((err) => console.error("error: ", err))
+
+        fetch("http://localhost:9999/course")
+            .then((res) => res.json())
+            .then((listCoure) => setListCourse(listCoure))
+            .catch((err) => console.error("error: ", err))
+
+        fetch("http://localhost:9999/user")
+            .then((res) => res.json())
+            .then((listUser) => setListUser(listUser))
+            .catch((err) => console.error("error: ", err))
+    }, []);
+
     return (
         <Row>
             <Container
@@ -49,45 +72,29 @@ export default function Footer() {
                         <h4>About Us</h4>
                         <ul className="list-unstyled">
                             <li>
-                                <a href="#" className="footer-link">
+                                <Link to={'/Contact'} className="footer-link">
                                     Contact Us
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className="footer-link">
+                                <Link to={"/FAQ"} className="footer-link">
                                     FAQ
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </Col>
                     <Col sm={12} md={6} lg={3}>
                         <h4 style={{ fontWeight: "Bold" }}>PROGRAMS</h4>
                         <ul className="list-unstyled">
-                            <li>
-                                <a href="#" className="footer-link">
-                                    Art & Design
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="footer-link">
-                                    Business
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="footer-link">
-                                    IT Software
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="footer-link">
-                                    Language
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="footer-link">
-                                    Programming
-                                </a>
-                            </li>
+                            {
+                                listCate?.map(cate => (
+                                    <li>
+                                        <a href="#" className="footer-link">
+                                            {cate.cateName}
+                                        </a>
+                                    </li>
+                                ))
+                            }
                         </ul>
                     </Col>
                     <Col sm={12} md={6} lg={3}>

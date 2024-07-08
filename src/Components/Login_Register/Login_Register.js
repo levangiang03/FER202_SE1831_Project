@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Form, Button, Row, Card } from "react-bootstrap";
 import ReCAPTCHA from "react-google-recaptcha";
+import {Link, useNavigate } from "react-router-dom"; // Import useHistory
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Login_Register() {
   const [loginCaptchaValue, setLoginCaptchaValue] = useState(null);
   const [registerCaptchaValue, setRegisterCaptchaValue] = useState(null);
   const [isLoginForm, setIsLoginForm] = useState(true);
+  const [listAccount, setListAccount] = useState([]);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLoginCaptchaChange = (value) => {
     setLoginCaptchaValue(value);
@@ -19,9 +24,27 @@ export default function Login_Register() {
   const handleLoginSubmit = (event) => {
     event.preventDefault();
     if (loginCaptchaValue) {
-      console.log("Login form submitted");
+      // Kiểm tra tài khoản trong danh sách
+      const account = listAccount.find(
+        (acc) => acc.username === username && acc.password === password
+      );
+
+      if (account) {
+        console.log("Login successful");
+        if(account.rId == 1){
+          navigate(`/admin`);
+        }
+        else if(account.rId == 2){
+          navigate(`/instructor/${account.id}`)
+        }
+        else{
+          navigate(`/homepageUser/${account.id}`);
+        }
+      } else {
+        alert("Invalid username or password");
+      }
     } else {
-      console.log("Please verify CAPTCHA for login");
+      alert("Please verify CAPTCHA for login");
     }
   };
 
@@ -37,6 +60,13 @@ export default function Login_Register() {
   const toggleForm = () => {
     setIsLoginForm(!isLoginForm);
   };
+
+  useEffect(() => {
+    fetch("http://localhost:9999/account")
+      .then((res) => res.json())
+      .then((result) => setListAccount(result))
+      .catch((err) => console.error("error: ", err));
+  }, []);
 
   return (
     <div
@@ -57,45 +87,41 @@ export default function Login_Register() {
                 {isLoginForm ? "Login" : "Register"}
               </h1>
               <Form
-                onSubmit={
-                  isLoginForm ? handleLoginSubmit : handleRegisterSubmit
-                }
+                onSubmit={isLoginForm ? handleLoginSubmit : handleRegisterSubmit}
               >
                 <Form.Group className="mb-3" controlId="formBasicUsername">
                   <Form.Label style={{ fontWeight: "bold" }}>
                     User Name
                   </Form.Label>
-                  <Form.Control type="text" placeholder="Enter Username" />
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter Username"
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
                 </Form.Group>
 
                 {!isLoginForm && (
                   <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label style={{ fontWeight: "bold" }}>
-                      Email
-                    </Form.Label>
+                    <Form.Label style={{ fontWeight: "bold" }}>Email</Form.Label>
                     <Form.Control type="email" placeholder="Enter Email" />
                   </Form.Group>
                 )}
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
-                  <Form.Label style={{ fontWeight: "bold" }}>
-                    Password
-                  </Form.Label>
-                  <Form.Control type="password" placeholder="Password" />
+                  <Form.Label style={{ fontWeight: "bold" }}>Password</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </Form.Group>
 
                 {!isLoginForm && (
-                  <Form.Group
-                    className="mb-3"
-                    controlId="formBasicConfirmPassword"
-                  >
+                  <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
                     <Form.Label style={{ fontWeight: "bold" }}>
                       Confirm Password
                     </Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Confirm Password"
-                    />
+                    <Form.Control type="password" placeholder="Confirm Password" />
                   </Form.Group>
                 )}
 
@@ -108,10 +134,7 @@ export default function Login_Register() {
                   </Form.Group>
                 )}
 
-                <div
-                  className="recaptcha-container"
-                  style={{ padding: "20px" }}
-                >
+                <div className="recaptcha-container" style={{ padding: "20px" }}>
                   <ReCAPTCHA
                     sitekey="6LeZFPgpAAAAAAEHCaVGMaKVPU2t-IX8XGLpzL0h"
                     onChange={

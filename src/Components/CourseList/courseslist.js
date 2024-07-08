@@ -1,18 +1,37 @@
-
-import { Row, Col, Container, Nav, Navbar, Form, Button, Card, NavDropdown, Alert, Carousel, Image, Badge, FormControl, Pagination } from "react-bootstrap";
-import './style.css';
-
+import {
+    Row,
+    Col,
+    Container,
+    Nav,
+    Navbar,
+    Form,
+    Button,
+    Card,
+    NavDropdown,
+    Alert,
+    Carousel,
+    Image,
+    Badge,
+    FormControl,
+    Pagination,
+} from "react-bootstrap";
+import "./style.css";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
 export default function NavPath() {
     return (
-
         <Navbar bg="light" variant="light">
             <Container>
                 <Nav className="">
                     <Nav.Link href="#">Home</Nav.Link>
-                    <span className="mx-3" style={{ fontSize: '1.5em' }}>›</span>
+                    <span className="mx-3" style={{ fontSize: "1.5em" }}>
+                        ›
+                    </span>
                     <Nav.Link href="#">Course</Nav.Link>
-                    <span className="mx-3" style={{ fontSize: '1.5em' }}>›</span>
+                    <span className="mx-3" style={{ fontSize: "1.5em" }}>
+                        ›
+                    </span>
                     <Nav.Link href="#">All Courses</Nav.Link>
                 </Nav>
             </Container>
@@ -20,376 +39,163 @@ export default function NavPath() {
     );
 }
 
-export { CoursesBody, CoursesBody2 }
+export { CoursesBody, CoursesBody2 };
 
 function CoursesBody() {
+    const { cateId } = useParams();
+    const { uId } = useParams();
+
+    const [listCate, setListCate] = useState([]);
+    const [listCourse, setListCourse] = useState([]);
+    const [listUser, setListUser] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedInstructors, setSelectedInstructors] = useState([]);
+    const [selectedPrice, setSelectedPrice] = useState("all");
+
+    useEffect(() => {
+        fetch(`http://localhost:9999/category/${cateId}`)
+            .then((res) => res.json())
+            .then((category) => setSelectedCategory(category))
+            .catch((err) => console.error("error: ", err));
+
+        fetch("http://localhost:9999/category")
+            .then((res) => res.json())
+            .then((listCate) => setListCate(listCate))
+            .catch((err) => console.error("error: ", err));
+
+        fetch("http://localhost:9999/user")
+            .then((res) => res.json())
+            .then((listUser) => setListUser(listUser))
+            .catch((err) => console.error("error: ", err));
+    }, [cateId]);
+
+    useEffect(() => {
+        fetch("http://localhost:9999/course")
+            .then((res) => res.json())
+            .then((listCourse) => {
+                let filteredCourses = listCourse;
+                if (selectedInstructors.length > 0) {
+                    filteredCourses = filteredCourses.filter((course) =>
+                        selectedInstructors.includes(course.instructorId)
+                    );
+                }
+                if (selectedPrice === "free") {
+                    filteredCourses = filteredCourses.filter((course) => course.cPrice === 0);
+                } else if (selectedPrice === "paid") {
+                    filteredCourses = filteredCourses.filter((course) => course.cPrice > 0);
+                }
+                setListCourse(filteredCourses);
+            })
+            .catch((err) => console.error("error: ", err));
+    }, [selectedInstructors, selectedPrice]);
+
+    const handleInstructorChange = (id) => {
+        setSelectedInstructors((prevSelected) =>
+            prevSelected.includes(id)
+                ? prevSelected.filter((instructorId) => instructorId !== id)
+                : [...prevSelected, id]
+        );
+    };
+
+    const handlePriceChange = (price) => {
+        setSelectedPrice(price);
+    };
+    
     return (
         <Container style={{ marginTop: "20px" }}>
             <Row>
-                <Col xs={8}>
+                <Col sm={8}>
                     <Row>
-                        <Col xs={6} md={12}>
+                        <Col>
                             <h5>All Courses</h5>
                         </Col>
-                        <Col xs={6} className="d-flex justify-content-end align-items-center">
+                        <Col
+                            className="d-flex justify-content-end align-items-center"
+                        >
                             <div className="input-group">
-                                <input type="text" className="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2" />
-                                <div className="input-group-append">
-                                    <button className="btn btn-outline-secondary" type="button" id="button-addon2">
-                                        <i class="bi bi-search"></i>
-                                    </button>
-                                </div>
-                                <div className="btn-group mr-2" role="group" style={{ margin: "0px 5px" }}>
-                                    <Button variant="light" className="border" title="List View">
-                                        <i class="bi bi-list-task"></i>
-                                    </Button>
-                                    <Button variant="light" className="border" title="Grid View">
-                                        <i class="bi bi-grid"></i>
-                                    </Button>
-                                </div>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Search"
+                                    aria-label="Search"
+                                    aria-describedby="button-addon2"
+
+                                />
+                                <button
+                                    className="btn btn-outline-secondary"
+                                    type="button"
+                                    id="button-addon2"
+                                >
+                                    <i className="bi bi-search"></i>
+                                </button>
                             </div>
                         </Col>
                     </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList/286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
+                    {listCourse
+                        ?.filter((allCourses) => allCourses.cateId == cateId)
+                        .map((course) => (
+                            <Link to={`/homepageUser/${uId}/course/${course.id}`} className="no-underline">
+                                <Row key={course.id} style={{ marginTop: "10px" }}>
+                                    <Col>
+                                        <Card className="d-flex flex-row">
+                                            <div>
+                                                <Card.Img
+                                                    variant="top"
+                                                    src={course.cImage}
+                                                    style={{ maxWidth: "286px", maxHeight: "180px" }}
+                                                />
+                                            </div>
+                                            <Card.Body className="flex-grow-1">
+                                                <Badge pill className="badge-category">
+                                                    {
+                                                        listCate?.find((l) => l.id == course.cateId)
+                                                            ?.cateName
+                                                    }
+                                                </Badge>
+                                                <Card.Title className="mt-2 mb-3">
+                                                    {course.cName}
+                                                </Card.Title>
+                                                <Card.Text>
+                                                    <p>
+                                                        <span className="text-by">by: </span>
+                                                        <span style={{ fontWeight: "bold" }}>
+                                                            {
+                                                                listUser?.find(
+                                                                    (l) => l.id == course.instructorId
+                                                                )?.uName
+                                                            }
+                                                        </span>
+                                                    </p>
+                                                    <div className="course-info">
+                                                        <span>
+                                                            <i className="bi bi-clock-fill"></i> 4 weeks
+                                                        </span>
+                                                        <span>
+                                                            <i className="bi bi-mortarboard"></i>{" "}
+                                                            {course.cEnrolledStudent} enrolled
+                                                        </span>
                                                     </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
+                                                    <div className="d-flex justify-content-between mt-3">
+                                                        <div className="course-price">
+                                                            <span>{course.cPrice} $</span>
+                                                        </div>
+                                                        <div className="view-more">
+                                                            <Link
+                                                                to={`/home/course/${course.id}`}
+                                                                style={{ fontWeight: "bold" }}
+                                                                className="no-style"
+                                                            >
+                                                                View more
+                                                            </Link>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "10px" }}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Card className="d-flex flex-row">
-                                        <div>
-                                            <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ maxWidth: "286px", maxHeight: "180px" }} />
-                                        </div>
-                                        <Card.Body className="flex-grow-1">
-                                            <Badge pill className="badge-category">Category</Badge>
-                                            <Card.Title className="mt-2 mb-3">Course Name</Card.Title>
-                                            <Card.Text>
-                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                                <div className="course-info">
-                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 enrolled</span>
-                                                    <span><i className="bi bi-bar-chart-line"></i> All level</span>
-                                                    <span><i className="bi bi-mortarboard"></i> 20 lession</span>
-                                                </div>
-                                                <div className="d-flex justify-content-between mt-3">
-                                                    <div className="course-price">
-                                                        <span>$50</span>
-                                                    </div>
-                                                    <div className="view-more">
-                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                                    </div>
-                                                </div>
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </Link>
+                        ))}
                     <Pagination className="justify-content-center">
                         <Pagination.Prev />
                         <Pagination.Item>{1}</Pagination.Item>
@@ -402,44 +208,64 @@ function CoursesBody() {
                     <Form>
                         <Col>
                             <Form.Group>
-                                <Form.Label><strong>Categories</strong></Form.Label>
-                                <Form.Check type="checkbox" label="Commercial" id="commercial" />
-                                <Form.Check type="checkbox" label="Office" id="office" />
-                                <Form.Check type="checkbox" label="Shop" id="shop" />
-                                <Form.Check type="checkbox" label="Educate" id="educate" />
-                                <Form.Check type="checkbox" label="Academy" id="academy" />
-                                <Form.Check type="checkbox" label="Single Family Home" id="single-family-home" />
-                                <Form.Check type="checkbox" label="Studio University" id="studio-university" />
+                                <Form.Label>
+                                    <strong>Categories</strong>
+                                </Form.Label>
+                                {listCate?.map((category) => (
+                                    <Form.Check
+                                        key={category.id}
+                                        type="checkbox"
+                                        label={category.cateName}
+                                        id={category.id}
+                                        checked={selectedCategory?.id === category.id}
+                                    />
+                                ))}
                             </Form.Group>
 
                             <Form.Group>
-                                <Form.Label><strong>Instructor</strong></Form.Label>
-                                <Form.Check type="checkbox" label="Person 1" id="person-1" />
-                                <Form.Check type="checkbox" label="Person 2" id="person-2" />
+                                <Form.Label>
+                                    <strong>Instructor</strong>
+                                </Form.Label>
+                                {listUser
+                                    ?.filter((user) => user.rId == 2)
+                                    ?.map((u) => (
+                                        <Form.Check
+                                            key={u.id}
+                                            type="checkbox"
+                                            label={u.uName}
+                                            id={u.id}
+                                            onChange={() => handleInstructorChange(u.id)}
+                                        />
+                                    ))}
                             </Form.Group>
-
                             <Form.Group>
-                                <Form.Label><strong>Price</strong></Form.Label>
-                                <Form.Check type="checkbox" label="All" id="all" />
-                                <Form.Check type="checkbox" label="Free" id="free" />
-                                <Form.Check type="checkbox" label="Paid" id="paid" />
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Label><strong>Review</strong></Form.Label>
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9733;&#9733;&#9733; (5 Stars)" id="5-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9733;&#9733;&#9734; (4 Stars)" id="4-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9733;&#9734;&#9734; (3 Stars)" id="3-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9734;&#9734;&#9734; (2 Stars)" id="2-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9734;&#9734;&#9734;&#9734; (1 Star)" id="1-star" />
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Label><strong>Level</strong></Form.Label>
-                                <Form.Check type="checkbox" label="All Levels" id="all-levels" />
-                                <Form.Check type="checkbox" label="Beginner" id="beginner" />
-                                <Form.Check type="checkbox" label="Intermediate" id="intermediate" />
-                                <Form.Check type="checkbox" label="Expert" id="expert" />
+                                <Form.Label>
+                                    <strong>Price</strong>
+                                </Form.Label>
+                                <Form.Check
+                                    type="radio"
+                                    label="All"
+                                    id="all"
+                                    name="price"
+                                    checked={selectedPrice === "all"}
+                                    onChange={() => handlePriceChange("all")}
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    label="Free"
+                                    id="free"
+                                    name="price"
+                                    checked={selectedPrice === "free"}
+                                    onChange={() => handlePriceChange("free")}
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    label="Paid"
+                                    id="paid"
+                                    name="price"
+                                    checked={selectedPrice === "paid"}
+                                    onChange={() => handlePriceChange("paid")}
+                                />
                             </Form.Group>
                         </Col>
                     </Form>
@@ -449,8 +275,73 @@ function CoursesBody() {
     );
 }
 
-
 function CoursesBody2() {
+    const [listCate, setListCate] = useState([]);
+    const [listCourse, setListCourse] = useState([]);
+    const [listUser, setListUser] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+    const [selectedInstructors, setSelectedInstructors] = useState([]);
+    const [selectedPrice, setSelectedPrice] = useState("all");
+
+    const { uId } = useParams();
+
+    useEffect(() => {
+        fetch(`http://localhost:9999/category`)
+            .then((res) => res.json())
+            .then((categories) => setListCate(categories))
+            .catch((err) => console.error("error: ", err));
+
+        fetch("http://localhost:9999/user")
+            .then((res) => res.json())
+            .then((users) => setListUser(users))
+            .catch((err) => console.error("error: ", err));
+    }, []);
+
+    useEffect(() => {
+        fetch("http://localhost:9999/course")
+            .then((res) => res.json())
+            .then((courses) => {
+                let filteredCourses = courses;
+                if (selectedCategory.length > 0) {
+                    filteredCourses = filteredCourses.filter((course) =>
+                        selectedCategory.includes(course.cateId)
+                    );
+                }
+                if (selectedInstructors.length > 0) {
+                    filteredCourses = filteredCourses.filter((course) =>
+                        selectedInstructors.includes(course.instructorId)
+                    );
+                }
+                if (selectedPrice === "free") {
+                    filteredCourses = filteredCourses.filter((course) => course.cPrice === 0);
+                } else if (selectedPrice === "paid") {
+                    filteredCourses = filteredCourses.filter((course) => course.cPrice > 0);
+                }
+                setListCourse(filteredCourses);
+            })
+            .catch((err) => console.error("error: ", err));
+    }, [selectedInstructors, selectedCategory, selectedPrice]);
+
+    const handleCategoryChange = (id) => {
+        setSelectedCategory((prevSelected) =>
+            prevSelected.includes(id)
+                ? prevSelected.filter((categoryId) => categoryId !== id)
+                : [...prevSelected, id]
+        );
+    };
+
+    const handleInstructorChange = (id) => {
+        setSelectedInstructors((prevSelected) =>
+            prevSelected.includes(id)
+                ? prevSelected.filter((instructorId) => instructorId !== id)
+                : [...prevSelected, id]
+        );
+    };
+
+    const handlePriceChange = (price) => {
+        setSelectedPrice(price);
+    };
+
     return (
         <Container style={{ marginTop: "20px" }}>
             <Row>
@@ -464,253 +355,60 @@ function CoursesBody2() {
                                 <input type="text" className="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2" />
                                 <div className="input-group-append">
                                     <button className="btn btn-outline-secondary" type="button" id="button-addon2">
-                                        <i class="bi bi-search"></i>
+                                        <i className="bi bi-search"></i>
                                     </button>
                                 </div>
                                 <div className="btn-group mr-2" role="group" style={{ margin: "0px 5px" }}>
                                     <Button variant="light" className="border" title="List View">
-                                        <i class="bi bi-list-task"></i>
+                                        <i className="bi bi-list-task"></i>
                                     </Button>
                                     <Button variant="light" className="border" title="Grid View">
-                                        <i class="bi bi-grid"></i>
+                                        <i className="bi bi-grid"></i>
                                     </Button>
                                 </div>
                             </div>
                         </Col>
                     </Row>
                     <Row style={{ marginTop: "20px" }}>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
+                        {
+                            listCourse?.map(l => (
+                                <Col sm={6} key={l.id}>
+                                    <Link to={`/homepageUser/${uId}/course/${l.id}`} className="no-underline">
+                                        <Card className="course-card">
+                                            <Card.Img variant="top" src={l.cImage} style={{ width: "100%", maxHeight: "220px" }} />
+                                            <Card.Body>
+                                                <Badge pill className="badge-category">
+                                                    {
+                                                        listCate?.find((cate) => cate.id === l.cateId)?.cateName
+                                                    }
+                                                </Badge>
+                                                <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>
+                                                    {
+                                                        listUser?.find(
+                                                            (user) => user.id === l.instructorId
+                                                        )?.uName
+                                                    }
+                                                </span></p>
+                                                <h5 className="course-name">{l.cName}</h5>
+                                                <div className="course-info">
+                                                    <span><i className="bi bi-clock-fill"></i> 4 weeks</span>
+                                                    <span><i className="bi bi-mortarboard"></i> {l.cEnrolledStudent} enrolled</span>
+                                                </div>
+                                                <div className="d-flex justify-content-between">
+                                                    <div className="course-price">
+                                                        <span>{l.cPrice}$</span>
+                                                    </div>
+                                                    <div className="view-more">
+                                                        <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
+                                                    </div>
+                                                </div>
+                                            </Card.Body>
+                                        </Card>
+                                    </Link>
+                                </Col>
+                            ))
+                        }
                     </Row>
-                    <Row style={{ marginTop: "20px" }}>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "20px" }}>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "20px" }}>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginTop: "20px" }}>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card className="course-card">
-                                <Card.Img variant="top" src="/image/CourseList//286x180.png" style={{ width: "100%", maxHeight: "220px" }} />
-                                <Card.Body>
-                                    <Badge pill className="badge-category">Category</Badge>
-                                    <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>Maker</span></p>
-                                    <h5 className="course-name">Course Name</h5>
-                                    <div className="course-info">
-                                        <span><i className="bi bi-clock-fill"></i> # weeks</span>
-                                        <span><i className="bi bi-mortarboard"></i> ### enrolled</span>
-                                    </div>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="course-price">
-                                            <span>$50</span>
-                                        </div>
-                                        <div className="view-more">
-                                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">View more</a>
-                                        </div>
-                                    </div>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-
-
-
                     <Pagination className="justify-content-center">
                         <Pagination.Prev />
                         <Pagination.Item>{1}</Pagination.Item>
@@ -723,44 +421,63 @@ function CoursesBody2() {
                     <Form>
                         <Col>
                             <Form.Group>
-                                <Form.Label><strong>Categories</strong></Form.Label>
-                                <Form.Check type="checkbox" label="Commercial" id="commercial" />
-                                <Form.Check type="checkbox" label="Office" id="office" />
-                                <Form.Check type="checkbox" label="Shop" id="shop" />
-                                <Form.Check type="checkbox" label="Educate" id="educate" />
-                                <Form.Check type="checkbox" label="Academy" id="academy" />
-                                <Form.Check type="checkbox" label="Single Family Home" id="single-family-home" />
-                                <Form.Check type="checkbox" label="Studio University" id="studio-university" />
+                                <Form.Label>
+                                    <strong>Categories</strong>
+                                </Form.Label>
+                                {listCate?.map((category) => (
+                                    <Form.Check
+                                        key={category.id}
+                                        type="checkbox"
+                                        label={category.cateName}
+                                        id={category.id}
+                                        onChange={() => handleCategoryChange(category.id)}
+                                    />
+                                ))}
                             </Form.Group>
-
                             <Form.Group>
-                                <Form.Label><strong>Instructor</strong></Form.Label>
-                                <Form.Check type="checkbox" label="Person 1" id="person-1" />
-                                <Form.Check type="checkbox" label="Person 2" id="person-2" />
+                                <Form.Label>
+                                    <strong>Instructor</strong>
+                                </Form.Label>
+                                {listUser
+                                    ?.filter((user) => user.rId == 2)
+                                    ?.map((u) => (
+                                        <Form.Check
+                                            key={u.id}
+                                            type="checkbox"
+                                            label={u.uName}
+                                            id={u.id}
+                                            onChange={() => handleInstructorChange(u.id)}
+                                        />
+                                    ))}
                             </Form.Group>
-
                             <Form.Group>
-                                <Form.Label><strong>Price</strong></Form.Label>
-                                <Form.Check type="checkbox" label="All" id="all" />
-                                <Form.Check type="checkbox" label="Free" id="free" />
-                                <Form.Check type="checkbox" label="Paid" id="paid" />
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Label><strong>Review</strong></Form.Label>
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9733;&#9733;&#9733; (5 Stars)" id="5-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9733;&#9733;&#9734; (4 Stars)" id="4-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9733;&#9734;&#9734; (3 Stars)" id="3-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9733;&#9734;&#9734;&#9734; (2 Stars)" id="2-stars" />
-                                <Form.Check type="checkbox" label="&#9733;&#9734;&#9734;&#9734;&#9734; (1 Star)" id="1-star" />
-                            </Form.Group>
-
-                            <Form.Group>
-                                <Form.Label><strong>Level</strong></Form.Label>
-                                <Form.Check type="checkbox" label="All Levels" id="all-levels" />
-                                <Form.Check type="checkbox" label="Beginner" id="beginner" />
-                                <Form.Check type="checkbox" label="Intermediate" id="intermediate" />
-                                <Form.Check type="checkbox" label="Expert" id="expert" />
+                                <Form.Label>
+                                    <strong>Price</strong>
+                                </Form.Label>
+                                <Form.Check
+                                    type="radio"
+                                    label="All"
+                                    id="all"
+                                    name="price"
+                                    checked={selectedPrice === "all"}
+                                    onChange={() => handlePriceChange("all")}
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    label="Free"
+                                    id="free"
+                                    name="price"
+                                    checked={selectedPrice === "free"}
+                                    onChange={() => handlePriceChange("free")}
+                                />
+                                <Form.Check
+                                    type="radio"
+                                    label="Paid"
+                                    id="paid"
+                                    name="price"
+                                    checked={selectedPrice === "paid"}
+                                    onChange={() => handlePriceChange("paid")}
+                                />
                             </Form.Group>
                         </Col>
                     </Form>
@@ -768,50 +485,4 @@ function CoursesBody2() {
             </Row>
         </Container>
     );
-}
-
-
-
-
-
-
-
-
-
-
-function checkbox() {
-    return (
-        <Form.Group>
-            <Form.Label><strong>Categories</strong></Form.Label>
-            <div className="d-flex justify-content-between align-items-center">
-                <Form.Check type="checkbox" label="Commercial" id="commercial" />
-                <span>15</span>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-                <Form.Check type="checkbox" label="Office" id="office" />
-                <span>10</span>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-                <Form.Check type="checkbox" label="Shop" id="shop" />
-                <span>20</span>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-                <Form.Check type="checkbox" label="Educate" id="educate" />
-                <span>12</span>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-                <Form.Check type="checkbox" label="Academy" id="academy" />
-                <span>8</span>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-                <Form.Check type="checkbox" label="Single Family Home" id="single-family-home" />
-                <span>5</span>
-            </div>
-            <div className="d-flex justify-content-between align-items-center">
-                <Form.Check type="checkbox" label="Studio University" id="studio-university" />
-                <span>7</span>
-            </div>
-        </Form.Group>
-    );
-
 }

@@ -21,9 +21,39 @@ import {
     Tab
 } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-export default function Header() {
+export default function HeaderUser() {
+
+    const [listCate, setListCate] = useState([]);
+    const [listCourse, setListCourse] = useState([]);
+    const [listUser, setListUser] = useState([]);
+    const [selectedUser, setSelectedUser] = useState([]);
+
+    const { uId } = useParams();
+
+    useEffect(() => {
+        fetch(`http://localhost:9999/user/${uId}`)
+            .then((res) => res.json())
+            .then((user) => setSelectedUser(user))
+            .catch((err) => console.error("error: ", err))
+        fetch("http://localhost:9999/category")
+            .then((res) => res.json())
+            .then((listCate) => setListCate(listCate))
+            .catch((err) => console.error("error: ", err))
+
+        fetch("http://localhost:9999/course")
+            .then((res) => res.json())
+            .then((listCoure) => setListCourse(listCoure))
+            .catch((err) => console.error("error: ", err))
+
+        fetch("http://localhost:9999/user")
+            .then((res) => res.json())
+            .then((listUser) => setListUser(listUser))
+            .catch((err) => console.error("error: ", err))
+    }, []);
+
     return (
         // Header
         <Row style={{ padding: "0px 50px", backgroundColor: "#f8f9fa"}}>
@@ -64,15 +94,11 @@ export default function Header() {
                                     id="basic-nav-dropdown"
                                     style={{ display: "flex" }}
                                 >
-                                    <NavDropdown.Header>Categories</NavDropdown.Header>
-                                    <NavDropdown.Item href="#">Art & Design</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">Development</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">Communication</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">Finance</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">Science</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">Network</NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#more">More</NavDropdown.Item>
+                                    {
+                                        listCate?.map(cate => (
+                                            <NavDropdown.Item href="#">{cate.cateName}</NavDropdown.Item>
+                                        ))
+                                    }
                                 </NavDropdown>
                             </Nav>
                             <Form className="d-flex">

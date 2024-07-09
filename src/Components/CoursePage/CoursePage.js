@@ -23,8 +23,9 @@ export default function CoursePage() {
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const { uId } = useParams(); 
   const { cId } = useParams();
+  const [listEnroll, setListEnroll] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState({});
-  const [selectedIdEnroll, setSelectedIdEnroll] = useState();
+  const [selectedEnroll, setSelectedEnroll] = useState();
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
   const [selectedAnswers, setSelectedAnswers] = useState({}); // State để lưu câu trả lời được chọn
 
@@ -37,18 +38,19 @@ export default function CoursePage() {
     fetch("http://localhost:9999/enroll")
       .then((res) => res.json())
       .then((result) => {
+        setListEnroll(result);
         const foundEnroll = result.find(
           (enroll) => enroll.userId === uId && enroll.courseId === cId
         );
   
         if (foundEnroll) {
-          setSelectedIdEnroll(foundEnroll.id);
+          setSelectedEnroll(foundEnroll);
         } else {
-          setSelectedIdEnroll(null); // Không tìm thấy enrollment thì set selectedIdEnroll về null
+          setSelectedEnroll(null); 
         }
       })
       .catch((err) => console.error("Error fetching course: ", err));
-  }, [cId, selectedCourse, uId]);
+  }, [cId, selectedCourse, uId, listEnroll, selectedEnroll]);
 
   // Xử lý khi người dùng chọn một module trong danh sách
   const handleClick = (moduleName) => {
@@ -104,7 +106,7 @@ export default function CoursePage() {
     });
   
     // Fetch để cập nhật progress
-    fetch(`http://localhost:9999/enroll/${selectedIdEnroll}`)
+    fetch(`http://localhost:9999/enroll/${selectedEnroll.id}`)
       .then((res) => res.json())
       .then((enrollment) => {
         // Tìm index của module hiện tại trong mảng progress
@@ -121,7 +123,7 @@ export default function CoursePage() {
           updatedEnrollment.progress[progressIndex].moduleStatus = true; // Đánh dấu module đã hoàn thành
   
           // Cập nhật progress mới lên server
-          return fetch(`http://localhost:9999/enroll/${selectedIdEnroll}`, {
+          return fetch(`http://localhost:9999/enroll/${selectedEnroll.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -364,25 +366,38 @@ export default function CoursePage() {
                       <Card.Text>
                         {/* Placeholder for grades information */}
                         <Row style={{ border: "1px solid lightgrey", padding: "20px 10px", marginBottom: "20px" }}>
-                          <i className="bi bi-check-lg" style={{ fontStyle: "normal" }}> You have completed all of the assessments that are currently due.</i>
+                          <Col style={{ fontStyle: "normal" }}> 
+                            {
+                              selectedEnroll?.passed ? <b style={{color:'green'}}>You passed this course</b> : <b style={{color:'red'}}>You failed this course</b>
+                            }
+                          </Col>
+                        </Row>
+                        <Row style={{ border: "1px solid lightgrey", padding: "20px 10px", marginBottom: "20px" }}>
+                          <b>Your score: {selectedEnroll?.score}</b>
                         </Row>
                         <Row style={{ border: "1px solid lightgrey", padding: "20px 10px" }}>
                           <Table>
                             <thead>
                               <tr>
-                                <th>Module</th>
-                                <th>Progress</th>
+                                <th>ID</th>
+                                <th>Module Name</th>
                                 <th>Score</th>
                                 <th>Status</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td>Course Complete</td>
-                                <td>Microsoft is...</td>
-                                <td><i className="bi bi-clipboard-check" style={{ fontStyle: "normal" }}></i></td>
-                                <td>2022/04/06</td>
-                              </tr>
+                              {
+                                selectedEnroll?.progress.map(p => (
+                                  <tr>
+                                    <td>{p.id}</td>
+                                    <td>{p.moduleName}</td>
+                                    <td>{p.moduleGrade}</td>
+                                    <td>
+                                      {p.moduleStatus ? <a style={{color:'green'}}>Completed</a> : <a style={{color:'red'}}>Not yet</a>}
+                                    </td>
+                                  </tr>
+                                ))
+                              }
                             </tbody>
                           </Table>
                         </Row>

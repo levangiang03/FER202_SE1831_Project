@@ -84,10 +84,10 @@ export default function Home(){
                     <Offcanvas.Body>
                       <Nav className="justify-content flex-grow-1 pe-3">
                         <Nav.Link href="#home" style={{ display: "flex" }}>
-                          <Link to={"/homeViewer"}>Home</Link>
+                          <Link to={"/homeViewer"} style={{ textDecoration: "none", color: "#000" }}>Home</Link>
                         </Nav.Link>
                         <Nav.Link href="#course" style={{ display: "flex" }}>
-                          Course
+                          <Link to={"/allCourseViewer"} style={{ textDecoration: "none", color: "#000" }}>Course</Link>
                         </Nav.Link>
                         <NavDropdown
                           title="Discovery"

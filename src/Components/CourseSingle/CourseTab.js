@@ -59,7 +59,7 @@ export default function CourseTab() {
                         <Tab.Content eventKey="overview" title="Overview" className="course-tab-content">
                             <Tab.Content style={{ paddingTop: "15px" }} >
                                 <Row style={{ width: "95%", margin: "auto" }}>
-                                    {selectedCourse.cOverview}
+                                    {selectedCourse.cDescription}
                                 </Row>
                             </Tab.Content>
                         </Tab.Content>

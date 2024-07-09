@@ -117,6 +117,74 @@
         {
           "id": "1",
           "moduleName": "Module 1",
+          "moduleGrade": 10,
+          "moduleStatus": true
+        },
+        {
+          "id": "2",
+          "moduleName": "Module 2",
+          "moduleGrade": 10,
+          "moduleStatus": true
+        },
+        {
+          "id": "3",
+          "moduleName": "Module 4",
+          "moduleGrade": 10,
+          "moduleStatus": true
+        },
+        {
+          "id": "4",
+          "moduleName": "Module 4",
+          "moduleGrade": 10,
+          "moduleStatus": true
+        }
+      ],
+      "score": 0,
+      "status": false
+    },
+    {
+      "id": "2",
+      "userId": "3",
+      "courseId": "2",
+      "enRollDate": "04/28/2024",
+      "progress": [
+        {
+          "id": "1",
+          "moduleName": "Module 1",
+          "moduleGrade": 0,
+          "moduleStatus": false
+        },
+        {
+          "id": "2",
+          "moduleName": "Module 2",
+          "moduleGrade": 0,
+          "moduleStatus": false
+        },
+        {
+          "id": "3",
+          "moduleName": "Module 4",
+          "moduleGrade": 0,
+          "moduleStatus": false
+        },
+        {
+          "id": "4",
+          "moduleName": "Module 4",
+          "moduleGrade": 0,
+          "moduleStatus": false
+        }
+      ],
+      "score": 0,
+      "status": false
+    },
+    {
+      "id": "3",
+      "userId": "3",
+      "courseId": "3",
+      "enRollDate": "04/28/2024",
+      "progress": [
+        {
+          "id": "1",
+          "moduleName": "Module 1",
           "moduleGrade": 0,
           "moduleStatus": false
         },
@@ -1182,7 +1250,7 @@
       "cateId": "2",
       "cEnrolledStudent": 24,
       "cOverview": "C#",
-      "cImage": "/public/image/CoursePage/2.png",
+      "cImage": "/image/CoursePage/2.png",
       "courseModule": [
         {
           "id": "1",
@@ -2209,7 +2277,7 @@
       "cateId": "3",
       "cEnrolledStudent": 27,
       "cOverview": "Java",
-      "cImage": "/public/image/CoursePage/3.png",
+      "cImage": "/image/CoursePage/3.png",
       "courseModule": [
         {
           "id": "1",
@@ -2738,236 +2806,237 @@
             }
           ],
           "cQuiz": [
-          {
-            "id": "21",
-            "question": "What is the size of an int variable in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "8 bits"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "16 bits"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "32 bits"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "64 bits"
-              }
-            ],
-            "answer": "32 bits"
-          },
-          {
-            "id": "22",
-            "question": "Which of the following is a valid declaration of a char variable in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "char c = 'A';"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "char c = 'AB';"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "char c = \"A\";"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "char c = 65;"
-              }
-            ],
-            "answer": "char c = 'A';"
-          },
-          {
-            "id": "23",
-            "question": "Which of the following is the correct way to declare a constant in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "final int x = 10;"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "constant int x = 10;"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "static int x = 10;"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "const int x = 10;"
-              }
-            ],
-            "answer": "final int x = 10;"
-          },
-          {
-            "id": "24",
-            "question": "Which method is used to find the character at a specific index in a string?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "charAt()"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "getChar()"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "indexOf()"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "substring()"
-              }
-            ],
-            "answer": "charAt()"
-          },
-          {
-            "id": "25",
-            "question": "Which of the following is used to handle exceptions in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "try-catch"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "if-else"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "for-loop"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "while-loop"
-              }
-            ],
-            "answer": "try-catch"
-          },
-          {
-            "id": "26",
-            "question": "Which of the following is not a valid Java identifier?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "myVar"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "MyVar"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "_myVar"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "2myVar"
-              }
-            ],
-            "answer": "2myVar"
-          },
-          {
-            "id": "27",
-            "question": "Which of the following is used to create an object in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "new"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "create"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "initialize"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "start"
-              }
-            ],
-            "answer": "new"
-          },
-          {
-            "id": "28",
-            "question": "Which method is used to compare two strings in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "equals()"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "compare()"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "compareTo()"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "equalsIgnoreCase()"
-              }
-            ],
-            "answer": "equals()"
-          },
-          {
-            "id": "29",
-            "question": "Which keyword is used to create a subclass in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "extends"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "implements"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "inherits"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "instanceof"
-              }
-            ],
-            "answer": "extends"
-          },
-          {
-            "id": "30",
-            "question": "Which of the following is the correct way to declare a float variable in Java?",
-            "choice": [
-              {
-                "choiceId": "1",
-                "choiceName": "float f = 1.0f;"
-              },
-              {
-                "choiceId": "2",
-                "choiceName": "float f = 1.0;"
-              },
-              {
-                "choiceId": "3",
-                "choiceName": "float f = \"1.0f\";"
-              },
-              {
-                "choiceId": "4",
-                "choiceName": "float f = '1.0';"
-              }
-            ],
-            "answer": "float f = 1.0f;"
-          }]
+            {
+              "id": "21",
+              "question": "What is the size of an int variable in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "8 bits"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "16 bits"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "32 bits"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "64 bits"
+                }
+              ],
+              "answer": "32 bits"
+            },
+            {
+              "id": "22",
+              "question": "Which of the following is a valid declaration of a char variable in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "char c = 'A';"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "char c = 'AB';"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "char c = \"A\";"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "char c = 65;"
+                }
+              ],
+              "answer": "char c = 'A';"
+            },
+            {
+              "id": "23",
+              "question": "Which of the following is the correct way to declare a constant in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "final int x = 10;"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "constant int x = 10;"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "static int x = 10;"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "const int x = 10;"
+                }
+              ],
+              "answer": "final int x = 10;"
+            },
+            {
+              "id": "24",
+              "question": "Which method is used to find the character at a specific index in a string?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "charAt()"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "getChar()"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "indexOf()"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "substring()"
+                }
+              ],
+              "answer": "charAt()"
+            },
+            {
+              "id": "25",
+              "question": "Which of the following is used to handle exceptions in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "try-catch"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "if-else"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "for-loop"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "while-loop"
+                }
+              ],
+              "answer": "try-catch"
+            },
+            {
+              "id": "26",
+              "question": "Which of the following is not a valid Java identifier?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "myVar"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "MyVar"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "_myVar"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "2myVar"
+                }
+              ],
+              "answer": "2myVar"
+            },
+            {
+              "id": "27",
+              "question": "Which of the following is used to create an object in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "new"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "create"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "initialize"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "start"
+                }
+              ],
+              "answer": "new"
+            },
+            {
+              "id": "28",
+              "question": "Which method is used to compare two strings in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "equals()"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "compare()"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "compareTo()"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "equalsIgnoreCase()"
+                }
+              ],
+              "answer": "equals()"
+            },
+            {
+              "id": "29",
+              "question": "Which keyword is used to create a subclass in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "extends"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "implements"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "inherits"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "instanceof"
+                }
+              ],
+              "answer": "extends"
+            },
+            {
+              "id": "30",
+              "question": "Which of the following is the correct way to declare a float variable in Java?",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "float f = 1.0f;"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "float f = 1.0;"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "float f = \"1.0f\";"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "float f = '1.0';"
+                }
+              ],
+              "answer": "float f = 1.0f;"
+            }
+          ]
         },
         {
           "id": "4",
@@ -2990,7 +3059,6 @@
             }
           ],
           "cQuiz": [
-            
             {
               "id": "31",
               "question": "Which of the following is used to define an interface in Java?",
@@ -3236,7 +3304,7 @@
       "cateId": "4",
       "cEnrolledStudent": 32,
       "cOverview": "React",
-      "cImage": "/public/image/CoursePage/4.png",
+      "cImage": "/image/CoursePage/4.png",
       "courseModule": [
         {
           "id": "1",
@@ -3744,7 +3812,7 @@
             }
           ]
         },
-    {
+        {
           "id": "3",
           "name": "Module 3: React Router and State Management",
           "cVideo": [
@@ -4263,7 +4331,7 @@
       "cateId": "5",
       "cEnrolledStudent": 24,
       "cOverview": "PHP",
-      "cImage": "/public/image/CoursePage/5.png",
+      "cImage": "/image/CoursePage/5.png",
       "courseModule": [
         {
           "id": "1",
@@ -4771,7 +4839,7 @@
             }
           ]
         },
-    {
+        {
           "id": "3",
           "name": "Module 3: PHP Functions and OOP",
           "cVideo": [
@@ -5279,15 +5347,33 @@
         }
       ]
     }
-    
   ],
   "addToCart": [
     {
       "id": "1",
       "userId": "3",
-      "courseId": "2"
+      "courseId": "4"
     }
   ],
   "wishlist": [],
-  "paymentHistory": []
+  "paymentHistory": [
+    {
+      "id": "1",
+      "userId": "3",
+      "courseId": "1",
+      "date": "2024/07/07"
+    },
+    {
+      "id": "2",
+      "userId": "3",
+      "courseId": "2",
+      "date": "2024/06/06"
+    },
+    {
+      "id": "1",
+      "userId": "3",
+      "courseId": "2",
+      "date": "2024/01/02"
+    }
+  ]
 }

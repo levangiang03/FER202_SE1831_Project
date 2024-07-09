@@ -175,7 +175,7 @@ export default function HomepageUser() {
                         <Card.Img
                           variant="top"
                           src={course.cImage}
-                          style={{ maxWidth: "286px", maxHeight: "180px" }}
+                          style={{ maxWidth: "100%", maxHeight: "180px" }}
                         />
                         <Card.Body>
                           <Badge pill className="badge-category">

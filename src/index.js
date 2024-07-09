@@ -22,6 +22,7 @@ import Home from './Components/Viewer/Home';
 import AllCourseViewer from './Components/Viewer/AllCourseViewer';
 import ViewCourseByCate from './Components/Viewer/ViewCourseByCate';
 import ViewCourseSingle from './Components/Viewer/ViewCourseSingle/ViewCourseSingle';
+import Admin from './Components/Admin/Admin';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -36,8 +37,8 @@ root.render(
         <Route path='/login' element={<Login_Register />} />
         <Route path='/Contact' element={<Contact />} />
         <Route path='/FAQ' element={<FAQ />} />
-        {/* <Route path='/admin' element={<Admin />} /> */}
-        {/* <Route path='/instructor/:uId' element={<Instructor />} /> */}
+        <Route path='/admin' element={<Admin />} />
+        <Route path='/instructor/:uId' element={<InstructorAccount />} />
         {/* <Route path='homepageUser/addToCart/:uId' element={<AddToCart />} /> */}
         <Route path='/homepageUser/:uId' element={<HomepageUser />} />
         <Route path='/homepageUser/:uId/allCourse' element={<CoursesBody2 />} />

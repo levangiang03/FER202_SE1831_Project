@@ -1,10 +1,63 @@
 import { Row, Col, Container, InputGroup, Button, Form, DropdownButton, Card, Dropdown, ProgressBar, Carousel, Image, Badge, FormControl, Pagination } from "react-bootstrap";
+import React, { useState, useEffect } from 'react';
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from 'chart.js'
 Chart.register(ArcElement);
 
 
 export default function StudentAccountList() {
+    const [enrollments, setEnrollments] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        fetch("http://localhost:9999/enroll")
+            .then(res => res.json())
+            .then(result => {
+                const filteredEnrollments = result.filter(enroll => enroll.userId === "3");
+                setEnrollments(filteredEnrollments);
+            })
+            .catch(error => console.log(error));
+
+        fetch("http://localhost:9999/course")
+            .then(res => res.json())
+            .then(result => {
+                setCourses(result);
+            })
+            .catch(error => console.log(error));
+
+        fetch("http://localhost:9999/user")
+            .then(res => res.json())
+            .then(result => {
+                const filteredStudents = result.filter(user => user.rId === "3");
+                setStudents(filteredStudents);
+            })
+            .catch(error => console.log(error));
+    }, []);
+
+    const getCurrentCourseName = (courseId) => {
+        const course = courses.find(course => course.id === courseId);
+        return course ? course.cName : 'None';
+    };
+
+    const calculateProgress = (progress) => {
+        const totalModules = progress.length;
+        const completedModules = progress.filter(module => module.moduleStatus).length;
+        return `${completedModules}/${totalModules}`;
+    };
+
+    const countPassedCourses = () => {
+        let passedCount = 0;
+        enrollments.forEach(enrollment => {
+            const allModulesCompleted = enrollment.progress.every(module => module.moduleStatus);
+            if (allModulesCompleted) {
+                passedCount++;
+            }
+        });
+        return passedCount;
+    };
+
     return (
         <Container>
             <Row className="my-4">
@@ -17,15 +70,20 @@ export default function StudentAccountList() {
                         This dashboard provides insights into student activity and account management.
                     </p>
                     <p>
-                        Total Student Accounts: <strong>500</strong><br />
-                        New Students This Week: <strong>25</strong>
+                        Total Student Accounts: <strong>{students.length}</strong><br />
+                        New Students This Week: <strong>25</strong> {/* Assuming this is a placeholder */}
                     </p>
                 </Col>
             </Row>
             <Row className="mb-3">
                 <Col md={8}>
                     <InputGroup>
-                        <Form.Control type="text" placeholder="Search..." />
+                        <Form.Control 
+                            type="text" 
+                            placeholder="Search..." 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                     </InputGroup>
                 </Col>
                 <Col md={4}>
@@ -36,118 +94,33 @@ export default function StudentAccountList() {
                     </DropdownButton>
                 </Col>
             </Row>
-            <Row className="mb-4 col-10">
-                <Col md={12} style={{ margin: "10px 0px" }}>
-                    <Card className="flex-row">
-                        <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
-                            <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
-                        <Card.Body className="d-flex flex-column">
-                            <Card.Title><strong>Student Name: David</strong></Card.Title>
-                            <Card.Text>
-                                <strong>Course Information:</strong><br />
-                                Course done: 8<br />
-                                Current Course: <strong>The Ultimate Guide To The Best WordPress LMS Plugin</strong> (12/06/2024 - 22/06/2024)<br />
-                                Passed courses: 4<br />
-                                Failed courses: None<br />
-                                <strong>Contact Information:</strong><br />
-                                <i className="bi bi-envelope"></i> example@gmail.com
-                            </Card.Text>
-                            <div className="mt-auto d-flex justify-content-end">
-                                <Button variant="primary">Detail</Button>
+            {enrollments.map(enrollment => (
+                <Row key={enrollment.id} className="mb-4">
+                    <Col md={11} style={{ margin: "10px 0px" }}>
+                        <Card className="flex-row">
+                            <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
+                                <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                             </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={12} style={{ margin: "10px 0px" }}>
-                    <Card className="flex-row">
-                        <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
-                            <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
-                        <Card.Body className="d-flex flex-column">
-                            <Card.Title><strong>Student Name: David</strong></Card.Title>
-                            <Card.Text>
-                                <strong>Course Information:</strong><br />
-                                Course done: 8<br />
-                                Current Course: <strong>The Ultimate Guide To The Best WordPress LMS Plugin</strong> (12/06/2024 - 22/06/2024)<br />
-                                Passed courses: 4<br />
-                                Failed courses: None<br />
-                                <strong>Contact Information:</strong><br />
-                                <i className="bi bi-envelope"></i> example@gmail.com
-                            </Card.Text>
-                            <div className="mt-auto d-flex justify-content-end">
-                                <Button variant="primary">Detail</Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={12} style={{ margin: "10px 0px" }}>
-                    <Card className="flex-row">
-                        <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
-                            <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
-                        <Card.Body className="d-flex flex-column">
-                            <Card.Title><strong>Student Name: David</strong></Card.Title>
-                            <Card.Text>
-                                <strong>Course Information:</strong><br />
-                                Course done: 8<br />
-                                Current Course: <strong>The Ultimate Guide To The Best WordPress LMS Plugin</strong> (12/06/2024 - 22/06/2024)<br />
-                                Passed courses: 4<br />
-                                Failed courses: None<br />
-                                <strong>Contact Information:</strong><br />
-                                <i className="bi bi-envelope"></i> example@gmail.com
-                            </Card.Text>
-                            <div className="mt-auto d-flex justify-content-end">
-                                <Button variant="primary">Detail</Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={12} style={{ margin: "10px 0px" }}>
-                    <Card className="flex-row">
-                        <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
-                            <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
-                        <Card.Body className="d-flex flex-column">
-                            <Card.Title><strong>Student Name: David</strong></Card.Title>
-                            <Card.Text>
-                                <strong>Course Information:</strong><br />
-                                Course done: 8<br />
-                                Current Course: <strong>The Ultimate Guide To The Best WordPress LMS Plugin</strong> (12/06/2024 - 22/06/2024)<br />
-                                Passed courses: 4<br />
-                                Failed courses: None<br />
-                                <strong>Contact Information:</strong><br />
-                                <i className="bi bi-envelope"></i> example@gmail.com
-                            </Card.Text>
-                            <div className="mt-auto d-flex justify-content-end">
-                                <Button variant="primary">Detail</Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={12} style={{ margin: "10px 0px" }}>
-                    <Card className="flex-row">
-                        <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
-                            <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        </div>
-                        <Card.Body className="d-flex flex-column">
-                            <Card.Title><strong>Student Name: David</strong></Card.Title>
-                            <Card.Text>
-                                <strong>Course Information:</strong><br />
-                                Course done: 8<br />
-                                Current Course: <strong>The Ultimate Guide To The Best WordPress LMS Plugin</strong> (12/06/2024 - 22/06/2024)<br />
-                                Passed courses: 4<br />
-                                Failed courses: None<br />
-                                <strong>Contact Information:</strong><br />
-                                <i className="bi bi-envelope"></i> example@gmail.com
-                            </Card.Text>
-                            <div className="mt-auto d-flex justify-content-end">
-                                <Button variant="primary">Detail</Button>
-                            </div>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
+                            <Card.Body className="d-flex flex-column">
+                                <Card.Title><strong>Student Name: {students.map(student => student.uFullName)}</strong></Card.Title>
+                                <Card.Text>
+                                    <strong>Course Information:</strong><br />
+                                    Course done: {enrollments.length}<br />
+                                    Current Course: <strong>{getCurrentCourseName(enrollment.courseId)}</strong> <br />
+                                    Progress: {calculateProgress(enrollment.progress)}<br />
+                                    Passed courses: {countPassedCourses()}<br />
+                                    Failed courses: None<br />
+                                    <strong>Contact Information:</strong><br />
+                                    <i className="bi bi-envelope"></i> {students.map(student => student.uMail)}
+                                </Card.Text>
+                                <div className="mt-auto d-flex justify-content-end">
+                                    <Button variant="primary">Detail</Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            ))}
         </Container>
     );
 }

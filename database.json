@@ -538,7 +538,13 @@
       ]
     }
   ],
-  "addToCart": [],
+  "addToCart": [
+    {
+      "id": "1",
+      "userId": "3",
+      "courseId": "2"
+    }
+  ],
   "wishlist": [],
   "paymentHistory": []
 }

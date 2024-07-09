@@ -41,7 +41,7 @@ function Comment() {
                         <Form.Group controlId="formGridCity" className="col-sx-12 col-md-6" style={{ marginBottom: "10px" }}>
                             <Form.Control placeholder='Name*' />
                         </Form.Group>
-
+                        
                         <Form.Group controlId="formGridState" className="col-sx-12 col-md-6" style={{ marginBottom: "10px" }}>
                             <Form.Control placeholder='Email*' />
                         </Form.Group>

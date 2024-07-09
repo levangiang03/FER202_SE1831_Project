@@ -59,7 +59,7 @@ export default function ViewCourseTab() {
                         <Tab.Content eventKey="overview" title="Overview" className="course-tab-content">
                             <Tab.Content style={{ paddingTop: "15px" }} >
                                 <Row style={{ width: "95%", margin: "auto" }}>
-                                    {selectedCourse.cOverview}
+                                    {selectedCourse.cDescription}
                                 </Row>
                             </Tab.Content>
                         </Tab.Content>
@@ -69,7 +69,7 @@ export default function ViewCourseTab() {
                             <Tab.Content style={{ paddingTop: "15px" }} >
                                 <Row style={{ width: "95%", margin: "auto" }}>
                                     {
-                                        selectedCourse.courseModule?.map(moduleCourse => {
+                                        selectedCourse.courseModule?.map(moduleCourse => (
                                             <Accordion style={{ marginBottom: "10px" }}>
                                                 <Accordion.Item eventKey="0" style={{ marginBottom: "10px" }}>
                                                     <Accordion.Header >
@@ -102,7 +102,7 @@ export default function ViewCourseTab() {
                                                     </Accordion.Body>
                                                 </Accordion.Item>
                                             </Accordion>
-                                        })
+                                        ))
                                     }
                                 </Row >
                             </Tab.Content>

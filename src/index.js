@@ -30,7 +30,7 @@ root.render(
         <Route path='/FAQ' element={<FAQ />} />
         {/* <Route path='/admin' element={<Admin />} /> */}
         {/* <Route path='/instructor/:uId' element={<Instructor />} /> */}
-        {/* <Route path='/addToCart/:cId' element={<AddToCart />} /> */}
+        {/* <Route path='homepageUser/addToCart/:uId' element={<AddToCart />} /> */}
         <Route path='/homepageUser/:uId' element={<HomepageUser />} />
         <Route path='/homepageUser/:uId/allCourse' element={<CoursesBody2 />} />
         <Route path='/homepageUser/:uId/category/:cateId' element={<CoursesBody />} />

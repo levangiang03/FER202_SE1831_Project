@@ -71,11 +71,13 @@ export default function HeadlineCourseSingle() {
                     <Col className="headline-content-left" sm={12} lg={8} sx={12} md={12}>
                         <Row>
                             <Col className="headline-button-container">
-                                <Button variant="secondary" className="headline-button">
-                                    {
-                                        listCate?.find(l => l.id === selectedCourse.cateId)?.cateName
-                                    }
-                                </Button>
+                                <Link to={`/homepageUser/${uId}/category/${selectedCourse.cateId}`} className="no-underline">
+                                    <Button variant="secondary" className="headline-button">
+                                        {
+                                            listCate?.find(l => l.id === selectedCourse.cateId)?.cateName
+                                        }
+                                    </Button>
+                                </Link>
                                 <span style={{ color: "gray" }}>by<span style={{ color: "white", marginLeft: "5px" }}>
                                     {
                                         listUser?.find(l => l.id === selectedCourse.instructorId)?.uName

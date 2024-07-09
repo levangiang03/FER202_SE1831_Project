@@ -140,7 +140,7 @@
         }
       ],
       "score": 0,
-      "passed": false
+      "status": false
     }
   ],
   "course": [

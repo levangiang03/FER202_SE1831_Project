@@ -537,6 +537,7 @@
       ]
     }
   ],
-  "cart": [],
-  "wishlist": []
+  "addToCart": [],
+  "wishlist": [],
+  "paymentHistory": []
 }

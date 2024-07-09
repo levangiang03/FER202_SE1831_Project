@@ -52,7 +52,7 @@ export default function HeaderUser() {
             .then((res) => res.json())
             .then((listUser) => setListUser(listUser))
             .catch((err) => console.error("error: ", err))
-    }, []);
+    }, [uId, listCate, selectedUser, listCourse, listUser]);
 
     return (
         // Header

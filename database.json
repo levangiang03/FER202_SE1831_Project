@@ -1,448 +1,542 @@
-{     "role": [
+{
+  "role": [
+    {
+      "id": "1",
+      "rName": "admin"
+    },
+    {
+      "id": "2",
+      "rName": "instructor"
+    },
+    {
+      "id": "3",
+      "rName": "student"
+    }
+  ],
+  "account": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "123456",
+      "rId": "1"
+    },
+    {
+      "id": "2",
+      "username": "instructor1",
+      "password": "123456",
+      "rId": "2"
+    },
+    {
+      "id": "3",
+      "username": "student",
+      "password": "123456",
+      "rId": "3"
+    },
+    {
+      "id": "4",
+      "username": "instructor2",
+      "password": "123456",
+      "rId": "2"
+    }
+  ],
+  "user": [
+    {
+      "id": "2",
+      "uMail": "giangasd@gmail.com",
+      "uDate": "28/05/2003",
+      "uGender": "male",
+      "uName": "Giang",
+      "uFullName": "Le Van Giang",
+      "uPhone": "0966470396",
+      "aId": "2",
+      "rId": "2",
+      "uMajor": "Scientist",
+      "uImage": "Test1"
+    },
+    {
+      "id": "3",
+      "uMail": "giangqwe@gmail.com",
+      "uDate": "28/05/2003",
+      "uGender": "male",
+      "uName": "Giang3",
+      "uFullName": "Le  Giang",
+      "uPhone": "0966470396",
+      "aId": "3",
+      "rId": "3",
+      "uMajor": "Hehe",
+      "uImage": "Test1"
+    },
+    {
+      "id": "4",
+      "uMail": "giangqwe@gmail.com",
+      "uDate": "28/05/2003",
+      "uGender": "male",
+      "uName": "Giang4",
+      "uFullName": "Le Van ",
+      "uPhone": "0966470396",
+      "aId": "4",
+      "rId": "2",
+      "uMajor": "zxc",
+      "uImage": "Test1"
+    }
+  ],
+  "category": [
+    {
+      "id": "1",
+      "icon": "bi bi-1-square",
+      "cateName": "C"
+    },
+    {
+      "id": "2",
+      "icon": "bi bi-2-square",
+      "cateName": "C#"
+    },
+    {
+      "id": "3",
+      "icon": "bi bi-3-square",
+      "cateName": "Java"
+    },
+    {
+      "id": "4",
+      "icon": "bi bi-4-square",
+      "cateName": "React JS"
+    },
+    {
+      "id": "5",
+      "icon": "bi bi-5-square",
+      "cateName": "PHP"
+    }
+  ],
+  "enroll": [
+    {
+      "id": "1",
+      "userId": "3",
+      "courseId": "1",
+      "enRollDate": "04/28/2024",
+      "progress": [
         {
-            "id": "1",
-            "rName": "admin"
+          "id": "1",
+          "moduleName": "Module 1",
+          "moduleGrade": 0,
+          "moduleStatus": false
         },
         {
-            "id": "2",
-            "rName": "instructor"
+          "id": "2",
+          "moduleName": "Module 2",
+          "moduleGrade": 0,
+          "moduleStatus": false
         },
         {
-            "id": "3",
-            "rName": "student"
+          "id": "3",
+          "moduleName": "Module 4",
+          "moduleGrade": 0,
+          "moduleStatus": false
+        },
+        {
+          "id": "4",
+          "moduleName": "Module 4",
+          "moduleGrade": 0,
+          "moduleStatus": false
         }
-    ],
-    "account": [
+      ],
+      "passed": false
+    }
+  ],
+  "course": [
+    {
+      "id": "1",
+      "cName": "Test1",
+      "cDescription": "Test1",
+      "cPrice": 20,
+      "instructorId": "2",
+      "uCreateDate": "3/7/2024",
+      "cRate": "5",
+      "cateId": "1",
+      "cEnrolledStudent": 19,
+      "cOverview": "Test1",
+      "cImage": "/public/image/CoursePage/logo192.png",
+      "courseModule": [
         {
-            "id": "1",
-            "username": "admin",
-            "password": "123456",
-            "rId": "1"
-        },
-        {
-            "id": "2",
-            "username": "instructor1",
-            "password": "123456",
-            "rId": "2"
-        },
-        {
-            "id": "3",
-            "username": "student",
-            "password": "123456",
-            "rId": "3"
-        },
-        {
-            "id": "4",
-            "username": "instructor2",
-            "password": "123456",
-            "rId": "2"
-        }
-    ],
-    "user": [
-        {
-            "id": "2",
-            "uMail": "giangasd@gmail.com",
-            "uDate": "28/05/2003",
-            "uGender": "male",
-            "uName": "Giang",
-            "uFullName": "Le Van Giang",
-            "uPhone": "0966470396",
-            "aId": "2",
-            "rId": "2",
-            "uMajor": "Scientist",
-            "uImage": "Test1"
-        },
-        {
-            "id": "3",
-            "uMail": "giangqwe@gmail.com",
-            "uDate": "28/05/2003",
-            "uGender": "male",
-            "uName": "Giang3",
-            "uFullName": "Le  Giang",
-            "uPhone": "0966470396",
-            "aId": "3",
-            "rId": "3",
-            "uMajor": "Hehe",
-            "uImage": "Test1"
-        },
-        {
-            "id": "4",
-            "uMail": "giangqwe@gmail.com",
-            "uDate": "28/05/2003",
-            "uGender": "male",
-            "uName": "Giang4",
-            "uFullName": "Le Van ",
-            "uPhone": "0966470396",
-            "aId": "4",
-            "rId": "2",
-            "uMajor": "zxc",
-            "uImage": "Test1"
-        }
-    ],
-    "category": [
-        {
-            "id": "1",
-            "icon": "bi bi-code-square",
-            "cateName": "C"
-        },
-        {
-            "id": "2",
-            "icon": "bi bi-bar-chart-line",
-            "cateName": "C#"
-        },
-        {
-            "id": "3",
-            "icon": "bi bi-3-square",
-            "cateName": "Java"
-        },
-        {
-            "id": "4",
-            "icon": "bi bi-4-square",
-            "cateName": "React JS"
-        },
-        {
-            "id": "5",
-            "icon": "bi bi-bar-chart-line",
-            "cateName": "PHP"
-        }
-    ],
-    "enroll": [
-        {
-            "id": "1",
-            "userId": "3",
-            "courseId": "2",
-            "enRollDate": "04/28/2024",
-            "progress": [
+          "id": "1",
+          "name": "Module 1",
+          "cVideo": [
+            {
+              "videoId": "1",
+              "videoTitle": "C tutorial for beginners 🕹️",
+              "videoUrl": "https://www.youtube.com/watch?v=8Vt9k0bh_Q8"
+            },
+            {
+              "videoId": "2",
+              "videoTitle": "The History",
+              "videoUrl": "https://www.youtube.com/watch?v=GQlP6qyH3Kw"
+            },
+            {
+              "videoId": "3",
+              "videoTitle": "Hehe",
+              "videoUrl": "https://www.youtube.com/watch?v=Zfe0UHx0om0"
+            }
+          ],
+          "cQuiz": [
+            {
+              "id": "1",
+              "question": "Hello what is your name",
+              "choice": [
                 {
-                    "id": "1",
-                    "moduleName": "Module 1",
-                    "moduleGrade": 0,
-                    "moduleStatus": false
+                  "choiceId": "1",
+                  "choiceName": "A"
                 },
                 {
-                    "id": "2",
-                    "moduleName": "Module 2",
-                    "moduleGrade": 0,
-                    "moduleStatus": false
+                  "choiceId": "2",
+                  "choiceName": "B"
                 },
                 {
-                    "id": "3",
-                    "moduleName": "Module 4",
-                    "moduleGrade": 0,
-                    "moduleStatus": false
+                  "choiceId": "3",
+                  "choiceName": "C"
                 },
                 {
-                    "id": "4",
-                    "moduleName": "Module 4",
-                    "moduleGrade": 0,
-                    "moduleStatus": false
+                  "choiceId": "4",
+                  "choiceName": "D"
                 }
-            ]
-        }
-    ],
-    "course": [
-        {
-            "id": "1",
-            "cName": "Test1",
-            "cDescription": "Test1",
-            "cPrice": 20,
-            "instructorId": "2",
-            "uCreateDate": "3/7/2024",
-            "cRate": "5",
-            "cateId": "1",
-            "cEnrolledStudent": 19,
-            "cOverview": "Test1",
-            "cImage": "/public/image/CoursePage/logo192.png",
-            "courseModule": [
+              ],
+              "answer": "A"
+            },
+            {
+              "id": "2",
+              "question": "Hello what is your hehe",
+              "choice": [
                 {
-                    "id": "1",
-                    "name": "Module 1",
-                    "cVideo": [
-                        {
-                            "videoId": "1",
-                            "videoTitle": "C tutorial for beginners 🕹️",
-                            "videoUrl": "https://www.youtube.com/watch?v=8Vt9k0bh_Q8"
-                        },
-                        {
-                            "videoId": "2",
-                            "videoTitle": "The History",
-                            "videoUrl": "https://www.youtube.com/watch?v=GQlP6qyH3Kw"
-                        },
-                        {
-                            "videoId": "3",
-                            "videoTitle": "Hehe",
-                            "videoUrl": "https://www.youtube.com/watch?v=Zfe0UHx0om0"
-                        }
-                    ],
-                    "cQuiz": [
-                        {
-                            "qId": "1",
-                            "qQuestion": "Hello what is your name",
-                            "qChoice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "qAnswer": "A"
-                        },
-                        {
-                            "qId": "2",
-                            "qQuestion": "Hello what is your hehe",
-                            "qChoice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "qAnswer": "A"
-                        },
-                        {
-                            "qId": "3",
-                            "qQuestion": "Hello what is your bee",
-                            "qChoice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "qAnswer": "A"
-                        }
-                    ]
+                  "choiceId": "1",
+                  "choiceName": "A"
                 },
                 {
-                    "id": "2",
-                    "name": "Module 2",
-                    "cVideo": [
-                        {
-                            "videoId": "1",
-                            "videoTitle": "Test1",
-                            "videoUrl": "Test1"
-                        },
-                        {
-                            "videoId": "2",
-                            "videoTitle": "Test2",
-                            "videoUrl": "Test1"
-                        },
-                        {
-                            "videoId": "3",
-                            "videoTitle": "Test3",
-                            "videoUrl": "Test1"
-                        }
-                    ],
-                    "cQuiz": [
-                        {
-                            "qId": "1",
-                            "qQuestion": "Hello what is your name",
-                            "qChoice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "qAnswer": "A"
-                        }
-                    ]
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
                 }
-            ]
+              ],
+              "answer": "B"
+            },
+            {
+              "id": "3",
+              "question": "Hello what is your bee",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "A"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
+                }
+              ],
+              "answer": "C"
+            }
+          ]
         },
         {
-            "id": "2",
-            "cName": "Test2",
-            "cDescription": "Test2",
-            "cPrice": 30,
-            "instructorId": "4",
-            "uCreateDate": "3/7/2024",
-            "cRate": "5",
-            "cateId": "2",
-            "cEnrolledStudent": 1,
-            "cOverview": "Test2",
-            "cImage": "/public/image/CoursePage/logo192.png",
-            "courseModule": [
+          "id": "2",
+          "name": "Module 2",
+          "cVideo": [
+            {
+              "videoId": "1",
+              "videoTitle": "Test1",
+              "videoUrl": "Test1"
+            },
+            {
+              "videoId": "2",
+              "videoTitle": "Test2",
+              "videoUrl": "Test1"
+            },
+            {
+              "videoId": "3",
+              "videoTitle": "Test3",
+              "videoUrl": "Test1"
+            }
+          ],
+          "cQuiz": [
+            {
+              "id": "1",
+              "question": "Hello what is your name",
+              "choice": [
                 {
-                    "id": "1",
-                    "name": "Module 1",
-                    "cVideo": [
-                        {
-                            "videoId": "1",
-                            "videoTitle": "Module 1 Video 1",
-                            "videoUrl": "DbxGfLn7UTc"
-                        },
-                        {
-                            "videoId": "2",
-                            "videoTitle": "Module 1 Video 2",
-                            "videoUrl": "kzNnRi1h-dg"
-                        },
-                        {
-                            "videoId": "3",
-                            "videoTitle": "Module 1 Video 3",
-                            "videoUrl": "uDWPfcJOF_g"
-                        }
-                    ],
-                    "cQuiz": [
-                        {
-                            "id": "1",
-                            "question": "Hello what is your name",
-                            "choice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "answer": "A"
-                        },
-                        {
-                            "id": "2",
-                            "question": "Hello what is your hehe",
-                            "choice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "answer": "B"
-                        },
-                        {
-                            "id": "3",
-                            "question": "Hello what is your bee",
-                            "choice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "answer": "D"
-                        }
-                    ]
+                  "choiceId": "1",
+                  "choiceName": "A"
                 },
                 {
-                    "id": "2",
-                    "name": "Module 2",
-                    "cVideo": [
-                        {
-                            "videoId": "1",
-                            "videoTitle": "Module 2 Video 1",
-                            "videoUrl": "Nq4Mh_jTubA"
-                        },
-                        {
-                            "videoId": "2",
-                            "videoTitle": "Module 2 Video 2",
-                            "videoUrl": "6t-MjBazs3o"
-                        }
-                    ],
-                    "cQuiz": [
-                        {
-                            "id": "1",
-                            "question": "Hello what is your name",
-                            "choice": [
-                                {
-                                    "choiceId": "1",
-                                    "choiceName": "A"
-                                },
-                                {
-                                    "choiceId": "2",
-                                    "choiceName": "B"
-                                },
-                                {
-                                    "choiceId": "3",
-                                    "choiceName": "C"
-                                },
-                                {
-                                    "choiceId": "4",
-                                    "choiceName": "D"
-                                }
-                            ],
-                            "answer": "A"
-                        }
-                    ]
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
                 }
-            ]
+              ],
+              "answer": "A"
+            }
+          ]
+        },
+        {
+          "id": "3",
+          "name": "Module 3",
+          "cVideo": [
+            {
+              "videoId": "1",
+              "videoTitle": "Test1",
+              "videoUrl": "Test1"
+            },
+            {
+              "videoId": "2",
+              "videoTitle": "Test2",
+              "videoUrl": "Test1"
+            },
+            {
+              "videoId": "3",
+              "videoTitle": "Test3",
+              "videoUrl": "Test1"
+            }
+          ],
+          "cQuiz": [
+            {
+              "id": "1",
+              "question": "Hello what is your name",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "A"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
+                }
+              ],
+              "answer": "A"
+            }
+          ]
+        },
+        {
+          "id": "4",
+          "name": "Module 4",
+          "cVideo": [
+            {
+              "videoId": "1",
+              "videoTitle": "Test1",
+              "videoUrl": "Test1"
+            },
+            {
+              "videoId": "2",
+              "videoTitle": "Test2",
+              "videoUrl": "Test1"
+            },
+            {
+              "videoId": "3",
+              "videoTitle": "Test3",
+              "videoUrl": "Test1"
+            }
+          ],
+          "cQuiz": [
+            {
+              "id": "1",
+              "question": "Hello what is your name",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "A"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
+                }
+              ],
+              "answer": "A"
+            }
+          ]
         }
-    ],
-    "cart": [],
-    "wishlist": []
+      ]
+    },
+    {
+      "id": "2",
+      "cName": "Test2",
+      "cDescription": "Test2",
+      "cPrice": 30,
+      "instructorId": "4",
+      "uCreateDate": "3/7/2024",
+      "cRate": "5",
+      "cateId": "2",
+      "cEnrolledStudent": 1,
+      "cOverview": "Test2",
+      "cImage": "/public/image/CoursePage/logo192.png",
+      "courseModule": [
+        {
+          "id": "1",
+          "name": "Module 1",
+          "cVideo": [
+            {
+              "videoId": "1",
+              "videoTitle": "Module 1 Video 1",
+              "videoUrl": "DbxGfLn7UTc"
+            },
+            {
+              "videoId": "2",
+              "videoTitle": "Module 1 Video 2",
+              "videoUrl": "kzNnRi1h-dg"
+            },
+            {
+              "videoId": "3",
+              "videoTitle": "Module 1 Video 3",
+              "videoUrl": "uDWPfcJOF_g"
+            }
+          ],
+          "cQuiz": [
+            {
+              "id": "1",
+              "question": "Hello what is your name",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "A"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
+                }
+              ],
+              "answer": "A"
+            },
+            {
+              "id": "2",
+              "question": "Hello what is your hehe",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "A"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
+                }
+              ],
+              "answer": "B"
+            },
+            {
+              "id": "3",
+              "question": "Hello what is your bee",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "A"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
+                }
+              ],
+              "answer": "D"
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "name": "Module 2",
+          "cVideo": [
+            {
+              "videoId": "1",
+              "videoTitle": "Module 2 Video 1",
+              "videoUrl": "Nq4Mh_jTubA"
+            },
+            {
+              "videoId": "2",
+              "videoTitle": "Module 2 Video 2",
+              "videoUrl": "6t-MjBazs3o"
+            }
+          ],
+          "cQuiz": [
+            {
+              "id": "1",
+              "question": "Hello what is your name",
+              "choice": [
+                {
+                  "choiceId": "1",
+                  "choiceName": "A"
+                },
+                {
+                  "choiceId": "2",
+                  "choiceName": "B"
+                },
+                {
+                  "choiceId": "3",
+                  "choiceName": "C"
+                },
+                {
+                  "choiceId": "4",
+                  "choiceName": "D"
+                }
+              ],
+              "answer": "A"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cart": [],
+  "wishlist": []
 }

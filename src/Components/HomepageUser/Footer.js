@@ -51,7 +51,7 @@ export default function Footer() {
             .then((res) => res.json())
             .then((listUser) => setListUser(listUser))
             .catch((err) => console.error("error: ", err))
-    }, []);
+    }, [listCate, listCourse, listUser]);
 
     return (
         <Row>

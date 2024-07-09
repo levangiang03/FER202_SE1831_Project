@@ -25,9 +25,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Homepage.css";
 import { useParams } from "react-router-dom";
-import CarouselPage from "./CarouselPage";
-import Featured from "./Featured";
-import Footer from "./Footer";
 import HeaderUser from "./HeaderUser";
 
 export default function HomepageUser() {
@@ -69,81 +66,7 @@ export default function HomepageUser() {
   return (
       <Container fluid>
         {/* Header */}
-        <Row style={{ padding: "0px 50px", backgroundColor: "#f8f9fa" }}>
-          <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
-            <Container fluid>
-              <Navbar.Brand
-                href="#home"
-                style={{ fontWeight: "bold", color: "#87CEFA" }}
-              >
-                <i className="bi bi-book"></i> Edu-Learn
-              </Navbar.Brand>
-              <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
-              <Navbar.Offcanvas
-                id={`offcanvasNavbar-expand-lg`}
-                aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
-                placement="start"
-              >
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
-                    <a
-                      href="#home"
-                      style={{ fontWeight: "bold", color: "#87CEFA" }}
-                    >
-                      <i className="bi bi-book"></i> Edu-Learn
-                    </a>
-                  </Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <Nav className="justify-content flex-grow-1 pe-3">
-                    <Nav.Link href="#home" style={{ display: "flex" }}>
-                      Home
-                    </Nav.Link>
-                    <Nav.Link href="#course" style={{ display: "flex" }}>
-                      Course
-                    </Nav.Link>
-                    <NavDropdown
-                      title="Discovery"
-                      id="basic-nav-dropdown"
-                      style={{ display: "flex" }}
-                    >
-                      {listCate?.map((cate) => (
-                        <NavDropdown.Item href="#">
-                          {cate.cateName}
-                        </NavDropdown.Item>
-                      ))}
-                    </NavDropdown>
-                  </Nav>
-                  <Form className="d-flex">
-                    <FormControl
-                      type="search"
-                      placeholder="Search"
-                      className="me-2"
-                      aria-label="Search"
-                      style={{ borderRadius: "20px" }}
-                    />
-                  </Form>
-                  <Nav>
-                    <Nav.Link>
-                      <Link to={'/login'} style={{color:'black'}}>
-                        <i
-                          className="bi bi-bell"
-                        ></i>
-                      </Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                      <Link to={'/login'} style={{color:'black'}}>
-                        <i
-                            className="bi bi-person-circle"
-                          ></i>
-                      </Link>
-                    </Nav.Link>
-                  </Nav>
-                </Offcanvas.Body>
-              </Navbar.Offcanvas>
-            </Container>
-          </Navbar>
-        </Row>
+        <HeaderUser/>
 
         {/* Carousel */}
         <Row>

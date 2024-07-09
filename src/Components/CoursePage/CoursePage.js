@@ -11,6 +11,9 @@ import {
   Form,
   Card,
   Table,
+  Image,
+  CardBody,
+  CardText
 } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import './CoursePage.css';
@@ -19,15 +22,16 @@ import Header from "../HomepageUser/HeaderUser";
 import Footer from "../HomepageUser/Footer";
 
 export default function CoursePage() {
-  const [activeItem, setActiveItem] = useState("module1");
+  const [activeItem, setActiveItem] = useState("Module 1");
   const [showOffcanvas, setShowOffcanvas] = useState(false);
   const { uId } = useParams(); 
   const { cId } = useParams();
   const [listEnroll, setListEnroll] = useState([]);
+  const [listUser, setListUser] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState({});
   const [selectedEnroll, setSelectedEnroll] = useState();
   const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
-  const [selectedAnswers, setSelectedAnswers] = useState({}); // State để lưu câu trả lời được chọn
+  const [selectedAnswers, setSelectedAnswers] = useState({}); 
 
   useEffect(() => {
     fetch(`http://localhost:9999/course/${cId}`)
@@ -35,11 +39,18 @@ export default function CoursePage() {
       .then((result) => setSelectedCourse(result))
       .catch((err) => console.error("Error fetching course: ", err));
 
+    fetch("http://localhost:9999/user")
+      .then((res) => res.json())
+      .then((result) => {
+        setListUser(result);
+      })
+      .catch((err) => console.error("Error fetching course: ", err));
+
     fetch("http://localhost:9999/enroll")
       .then((res) => res.json())
       .then((result) => {
         setListEnroll(result);
-        const foundEnroll = result.find(
+        const foundEnroll = result?.find(
           (enroll) => enroll.userId === uId && enroll.courseId === cId
         );
   
@@ -188,7 +199,7 @@ export default function CoursePage() {
             >
               <Card.Img
                 variant="top"
-                src="/image/CoursePage/logo192.png"
+                src={selectedCourse.cImage}
                 style={{ borderRadius: "20px" }}
               />
               <Card.Body>
@@ -273,7 +284,7 @@ export default function CoursePage() {
                 <Tab.Pane eventKey={`#${module.name}`} key={module.id}>
                   <Row style={{ padding: "50px 50px" }}>
                     {/* Accordion for module details */}
-                    <Accordion defaultActiveKey="0">
+                    <Accordion defaultActiveKey="0" >
                       <Accordion.Item eventKey="0" style={{ border: "1px solid black" }}>
                         <Accordion.Header>
                           <b>{module.name}</b>
@@ -409,40 +420,63 @@ export default function CoursePage() {
 
               {/* Course information tab */}
               <Tab.Pane eventKey="#courseInfo">
-                <Row style={{ padding: "50px 50px" }}>
-                  <Card style={{ width: "100%", border: "1px solid black" }}>
-                    <Card.Body>
-                      <Card.Title style={{ marginBottom: "20px", fontWeight: "bold" }}>Course Information</Card.Title>
-                      <Card.Text>
-                        <Row style={{ border: "1px solid lightgrey", padding: "20px 10px", marginBottom: "20px" }}>
-                          <i className="bi bi-clipboard-check" style={{ fontStyle: "normal" }}> To get an overall, look at the course’s pages to get a... here.</i>
-                        </Row>
-                        <Row style={{ border: "1px solid lightgrey", padding: "20px 10px", marginBottom: "20px" }}>
-                          <i className="bi bi-clipboard-check" style={{ fontStyle: "normal" }}> it might not be how to find the info the course has.</i>
-                        </Row>
-                        <Row style={{ border: "1px solid lightgrey", padding: "20px 10px" }}>
-                          <Table>
-                            <thead>
-                              <tr>
-                                <th>Module</th>
-                                <th>Progress</th>
-                                <th>Score</th>
-                                <th>Status</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>Course Complete</td>
-                                <td>Microsoft is...</td>
-                                <td><i className="bi bi-clipboard-check" style={{ fontStyle: "normal" }}></i></td>
-                                <td>2022/04/06</td>
-                              </tr>
-                            </tbody>
-                          </Table>
-                        </Row>
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
+              <Row style={{ padding: "10px 50px" }}>
+                  <Row
+                    style={{
+                      borderBottom: "1px solid lightgrey",
+                      paddingBottom: "10px",
+                    }}
+                  >
+                    <Card style={{ width: "100%", border: "none" }}>
+                      <Card.Body>
+                        <Card.Title
+                          style={{ paddingBottom: "20px", textAlign: "center" }}
+                        >
+                          <p style={{ fontWeight: "bold", fontSize: "1cm" }}>
+                            {selectedCourse.cName}
+                          </p>
+                          <a>by {listUser?.find(user => user.id === selectedCourse.instructorId)?.uFullName}</a>
+                        </Card.Title>
+                        <Card.Text>
+                          <Row>
+                            <Card.Body>
+                              <Card.Title>About this Course</Card.Title>
+                              <Card.Text>
+                                {selectedCourse.cDescription}
+                              </Card.Text>
+                            </Card.Body>
+                          </Row>
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>
+                  </Row>
+                  <Row
+                    style={{
+                      padding: "20px 30px",
+                      alignContent: "center",
+                      borderBottom: "1px solid lightgrey",
+                    }}
+                    className="d-flex"
+                  >
+                    <Col xs={2}>
+                      <Image
+                        src={listUser?.find(user => user.id === selectedCourse.instructorId)?.uImage}
+                        roundedCircle
+                        style={{
+                          border: "1px solid black",
+                          backgroundColor: "black",
+                          width: "100%",
+                        }}
+                      />
+                    </Col>
+                    <Col>
+                      <Card style={{ border: "none" }}>
+                        <CardBody>
+                          <Card.Title>Taught by: <a href="#">{listUser?.find(user => user.id === selectedCourse.instructorId)?.uFullName}</a></Card.Title>
+                        </CardBody>
+                      </Card>
+                    </Col>
+                  </Row>
                 </Row>
               </Tab.Pane>
             </Tab.Content>

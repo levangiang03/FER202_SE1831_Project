@@ -12,17 +12,11 @@ import {
     ButtonGroup,
     Col,
     Offcanvas,
-    Carousel,
-    Image,
-    Card,
     FormControl,
-    Badge,
-    ListGroup,
-    Tab
 } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function HeaderUser() {
 
@@ -38,6 +32,7 @@ export default function HeaderUser() {
             .then((res) => res.json())
             .then((user) => setSelectedUser(user))
             .catch((err) => console.error("error: ", err))
+
         fetch("http://localhost:9999/category")
             .then((res) => res.json())
             .then((listCate) => setListCate(listCate))
@@ -63,7 +58,7 @@ export default function HeaderUser() {
                         href="#home"
                         style={{ fontWeight: "bold", color: "#87CEFA" }}
                     >
-                        <i className="bi bi-book"></i> Edu-Learn
+                        <Link to={`/homepageUser/${uId}`} style={{ textDecoration: "none"}}><i className="bi bi-book"></i> Edu-Learn</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
                     <Navbar.Offcanvas
@@ -83,11 +78,17 @@ export default function HeaderUser() {
                         </Offcanvas.Header>
                         <Offcanvas.Body>
                             <Nav className="justify-content flex-grow-1 pe-3">
-                                <Nav.Link href="#home" style={{ display: "flex" }}>
-                                    Home
+                                <Nav.Link
+                                    href="#"
+                                    style={{ display: "flex", textDecoration: "none" }}
+                                >
+                                    <Link to={`/homepageUser/${uId}`} style={{ textDecoration: "none", color: "#000" }}>Home</Link>
                                 </Nav.Link>
-                                <Nav.Link href="#course" style={{ display: "flex" }}>
-                                    Course
+                                <Nav.Link
+                                    href="#course"
+                                    style={{ display: "flex", textDecoration: "none" }}
+                                >
+                                    <Link to={`/homepageUser/${uId}/allCourse`} style={{ textDecoration: "none", color: "#000" }}>Course</Link>
                                 </Nav.Link>
                                 <NavDropdown
                                     title="Discovery"
@@ -96,7 +97,7 @@ export default function HeaderUser() {
                                 >
                                     {
                                         listCate?.map(cate => (
-                                            <NavDropdown.Item href="#">{cate.cateName}</NavDropdown.Item>
+                                            <NavDropdown.Item key={cate.id} href="#">{cate.cateName}</NavDropdown.Item>
                                         ))
                                     }
                                 </NavDropdown>
@@ -114,14 +115,12 @@ export default function HeaderUser() {
                                 <Nav.Link href="#">
                                     <i
                                         className="bi bi-bell"
-                                    //   style={{ fontSize: "1.5rem" }}
                                     ></i>
                                 </Nav.Link>
                                 <NavDropdown
                                     title={
                                         <i
                                             className="bi bi-person-circle"
-                                        // style={{ fontSize: "1.5rem" }}
                                         ></i>
                                     }
                                     id="basic-nav-dropdown"
@@ -130,7 +129,7 @@ export default function HeaderUser() {
                                     <NavDropdown.Item href="#">My Purchases</NavDropdown.Item>
                                     <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#">Logout</NavDropdown.Item>
+                                    <NavDropdown.Item><Link to={"/home"} className="no-underline">Logout</Link></NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Offcanvas.Body>

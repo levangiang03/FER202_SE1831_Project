@@ -18,13 +18,21 @@ import StudentAccountList, { StudentAccount } from './Components/Admin/StudentAc
 import Revenue from './Components/Admin/Revenue';
 import { InstructorAccount } from './Components/Admin/InstructorAccount';
 import CourseManagementList from './Components/Admin/CourseManagement';
+import Home from './Components/Viewer/Home';
+import AllCourseViewer from './Components/Viewer/AllCourseViewer';
+import ViewCourseByCate from './Components/Viewer/ViewCourseByCate';
+import ViewCourseSingle from './Components/Viewer/ViewCourseSingle/ViewCourseSingle';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login_Register />} />
+        <Route path='/' element={<Home/>}/>
+        <Route path='/homeViewer' element={<Home/>}/>
+        <Route path='/allCourseViewer' element={<AllCourseViewer/>}/>
+        <Route path='/viewCourseByCate/:cateId' element={<ViewCourseByCate/>}/>
+        <Route path='viewCourseSingle/:cId' element={<ViewCourseSingle/>}/>
         <Route path='/login' element={<Login_Register />} />
         <Route path='/Contact' element={<Contact />} />
         <Route path='/FAQ' element={<FAQ />} />

@@ -1,24 +1,21 @@
 import { Container, Row, Breadcrumb, Button, Col, Card, Tab, Tabs, Form, FloatingLabel, Accordion, Image, ProgressBar, ListGroup, Pagination } from "react-bootstrap";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "./CourseSingle.css";
-import HeadlineCourseSingle from "./HeadlineCourseSingle";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import CourseTab from "./CourseTab";
-import HeaderUser from "../HomepageUser/HeaderUser";
-import Footer from "../HomepageUser/Footer";
+import ViewHeadlineCourseSingle from "./ViewHeadlineCourseSingle";
+import ViewCourseTab from "./ViewCourseTab";
 
-export default function CourseSingle() {
+export default function ViewCourseSingle() {
     return (
         <Container fluid>
-            <HeaderUser/>
             <Row>
-                <HeadlineCourseSingle/>
+                <ViewHeadlineCourseSingle/>
             </Row>
             <Container className="course-detail-container">
                 <Row >
                     <Col md={8} style={{ padding: "0px" }}>
-                        <CourseTab/>
+                        <ViewCourseTab/>
                     </Col>
                 </Row>
             </Container>
@@ -29,7 +26,6 @@ export default function CourseSingle() {
                     </Col>
                 </Row>
             </Container>
-            <Footer/>
         </Container>
     );
 }

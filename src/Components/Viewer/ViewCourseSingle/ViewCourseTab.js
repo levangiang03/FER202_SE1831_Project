@@ -4,7 +4,7 @@ import "./CourseSingle.css";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function CourseTab() {
+export default function ViewCourseTab() {
     const { cId } = useParams();
     const [listCate, setListCate] = useState([]);
     const [listCourse, setListCourse] = useState([]);
@@ -69,7 +69,7 @@ export default function CourseTab() {
                             <Tab.Content style={{ paddingTop: "15px" }} >
                                 <Row style={{ width: "95%", margin: "auto" }}>
                                     {
-                                        selectedCourse.courseModule?.map(moduleCourse => (
+                                        selectedCourse.courseModule?.map(moduleCourse => {
                                             <Accordion style={{ marginBottom: "10px" }}>
                                                 <Accordion.Item eventKey="0" style={{ marginBottom: "10px" }}>
                                                     <Accordion.Header >
@@ -102,7 +102,7 @@ export default function CourseTab() {
                                                     </Accordion.Body>
                                                 </Accordion.Item>
                                             </Accordion>
-                                        ))
+                                        })
                                     }
                                 </Row >
                             </Tab.Content>

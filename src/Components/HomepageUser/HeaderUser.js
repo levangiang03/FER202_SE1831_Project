@@ -129,7 +129,7 @@ export default function HeaderUser() {
                                     <NavDropdown.Item href="#">My Purchases</NavDropdown.Item>
                                     <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item><Link to={"/home"} className="no-underline">Logout</Link></NavDropdown.Item>
+                                    <NavDropdown.Item><Link to={"/homeViewer"} className="no-underline">Logout</Link></NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Offcanvas.Body>

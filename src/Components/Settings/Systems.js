@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   CardBody,
+  ProgressBar,
 } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -90,142 +91,6 @@ export default function Systems() {
                   <Row className="mb-4">
                     <Col>
                       <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        Name verification
-                      </h2>
-                      <p>
-                        Verify your real name to make sure you’re able to
-                        receive a certificate when you complete a course or
-                        Specialization.
-                      </p>
-                      <Button
-                        variant="outline-primary"
-                        style={{ padding: "12px 32px" }}
-                      >
-                        Verify My Name
-                      </Button>
-                    </Col>
-                  </Row>
-                  <hr />
-                  <Row className="mb-4">
-                    <Col>
-                      <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        Two Factor Authentication (BETA)
-                      </h2>
-                      <p>
-                        Two-Factor Authentication adds an additional layer of
-                        security to your Coursera account. Each time you log in
-                        to Coursera, you will be asked to enter a unique code
-                        that is only available on your mobile phone. This extra
-                        protection ensures that you are the only one who will
-                        have access to your Coursera account and courses.
-                      </p>
-                      <Button
-                        variant="outline-primary"
-                        style={{ padding: "12px 32px" }}
-                      >
-                        Enable Two-Factor Authentication?
-                      </Button>
-                    </Col>
-                  </Row>
-                  <hr />
-                  <Row className="mb-4">
-                    <Col>
-                      <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        Connected devices
-                      </h2>
-                      <p>
-                        If your account has been logged into on multiple
-                        devices, you can log out from here.
-                      </p>
-                      <Button
-                        variant="outline-primary"
-                        style={{ padding: "12px 32px" }}
-                      >
-                        Log out from all devices
-                      </Button>
-                    </Col>
-                  </Row>
-                  <hr />
-                  <Row className="mb-4">
-                    <Col>
-                      <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        Linked Accounts
-                      </h2>
-                      <h3 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        <a style={{ color: "blue" }}>
-                          <i className="bi bi-facebook"></i> Facebook
-                        </a>
-                      </h3>
-                      <p>
-                        Enable one-click login and receive more personalized
-                        course recommendations.
-                      </p>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <Button
-                          variant="outline-primary"
-                          style={{
-                            backgroundColor: "lightgray",
-                            color: "gray",
-                            border: "none",
-                          }}
-                        >
-                          Link My Facebook Account
-                        </Button>
-                        <p style={{ marginLeft: "10px", marginBottom: "0" }}>
-                          Unlink your Google account to log in with Facebook.
-                        </p>
-                      </div>
-                    </Col>
-                  </Row>
-                  <hr />
-                  <Row className="mb-4">
-                    <Col>
-                      <h3 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        <i className="bi bi-apple"></i> Apple
-                      </h3>
-                      <p>
-                        Enable one-click login and receive more personalized
-                        course recommendations.
-                      </p>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <Button
-                          variant="outline-primary"
-                          style={{
-                            backgroundColor: "lightgray",
-                            color: "gray",
-                            border: "none",
-                          }}
-                        >
-                          Link My Apple Account
-                        </Button>
-                        <p style={{ marginLeft: "10px", marginBottom: "0" }}>
-                          Unlink your Google account to log in with Apple.
-                        </p>
-                      </div>
-                    </Col>
-                  </Row>
-                  <hr />
-                  <Row className="mb-4">
-                    <Col>
-                      <h3 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        <i className="bi bi-google"></i> Google
-                      </h3>
-                      <p>
-                        Enable one-click login and receive more personalized
-                        course recommendations.
-                      </p>
-                      <Button
-                        variant="outline-primary"
-                        style={{ padding: "12px 32px" }}
-                      >
-                        Unlink My Google Account
-                      </Button>
-                    </Col>
-                  </Row>
-                  <hr />
-                  <Row className="mb-4">
-                    <Col>
-                      <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
                         Delete Account
                       </h2>
                       <p>
@@ -242,41 +107,6 @@ export default function Systems() {
                       >
                         Delete Account
                       </Button>
-                    </Col>
-                  </Row>
-                  <hr />
-                  <Row className="mb-4">
-                    <Col>
-                      <h2 style={{ fontSize: "16px", fontWeight: "bold" }}>
-                        Learner Data Report
-                      </h2>
-                      <p>
-                        Request a report of all learner data stored by Coursera
-                        about your account. This report will be sent to the
-                        e-mail address below.
-                      </p>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <p
-                          style={{
-                            backgroundColor: "lightgrey",
-                            padding: "10px",
-                            marginBottom: "0",
-                            marginRight: "10px",
-                          }}
-                        >
-                          example@gmail.com
-                        </p>
-                        <Button
-                          variant="outline-primary"
-                          style={{ padding: "12px 32px" }}
-                        >
-                          Send Report
-                        </Button>
-                      </div>
-                      <p>
-                        To change email, please adjust the email settings at the
-                        top of this page.
-                      </p>
                     </Col>
                   </Row>
                 </Form>
@@ -476,12 +306,6 @@ export default function Systems() {
                 <h2 style={{ fontSize: "16px" }}>Add to my calendar</h2>
                 <Button variant="outline-primary" style={{ margin: "10px" }}>
                   Google Calendar
-                </Button>
-                <Button variant="outline-primary" style={{ margin: "10px" }}>
-                  Apple Calendar
-                </Button>
-                <Button variant="outline-primary" style={{ margin: "10px" }}>
-                  Other Calendar
                 </Button>
               </div>
             </CardBody>

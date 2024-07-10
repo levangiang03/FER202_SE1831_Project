@@ -254,7 +254,7 @@ export default function Home(){
                                   {
                                     listUser?.find(
                                       (l) => l.id == course.instructorId
-                                    )?.uName
+                                    )?.uFullName
                                   }
                                 </span>
                               </p>

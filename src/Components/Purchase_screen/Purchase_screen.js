@@ -1,231 +1,122 @@
-import React, { useState, useEffect } from "react";
 import {
   Container,
   Row,
-  Col,
-  Table,
-  Card,
-  Form,
-  Image,
+  Navbar,
+  Nav,
   Button,
+  NavDropdown,
+  Form,
+  Dropdown,
+  SplitButton,
+  DropdownButton,
+  ButtonGroup,
+  Col,
+  Offcanvas,
+  FormControl,
+  Table,
 } from "react-bootstrap";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import Footer from "../HomepageUser/Footer";
+import HeaderUser from "../HomepageUser/HeaderUser";
 
-export default function PurchaseScreen() {
-  const [courses, setCourses] = useState([
-    {
-      id: 1,
-      name: "HTML",
-      description: "This course introduces HTML...",
-      price: 99.9,
-    },
-    {
-      id: 2,
-      name: "Java",
-      description: "This course helps you understand Java...",
-      price: 200.0,
-    },
-    {
-      id: 3,
-      name: "C#",
-      description: "This course introduces C#...",
-      price: 88.9,
-    },
-    {
-      id: 4,
-      name: "Python",
-      description: "This course helps you learn Python...",
-      price: 85.9,
-    },
-    {
-      id: 5,
-      name: "C",
-      description: "This course introduces C...",
-      price: 50.9,
-    },
-  ]);
-
-  const [billItems, setBillItems] = useState([]);
-  const [nextBillId, setNextBillId] = useState(1);
+export default function Purchase_screen(){
+  const { uId } = useParams();
+  const [listCart, setListCart] = useState([]);
+  const [listCourse, setListCourse] = useState([]);
+  const [selectedUser, setSelectedUser] = useState();
 
   useEffect(() => {
-    // Reset nextBillId when billItems changes
-    setNextBillId(billItems.length + 1);
-  }, [billItems]);
+    fetch(`http://localhost:9999/user/${uId}`)
+      .then((res) => res.json())
+      .then((result) => 
+        setSelectedUser(result))
+      .catch((err) => console.error("error: ", err));
 
-  const handleCheckboxChange = (event, courseId, courseName, coursePrice) => {
-    if (event.target.checked) {
-      const newBillItem = {
-        id: nextBillId,
-        name: courseName,
-        price: coursePrice,
-      };
-      setBillItems([...billItems, newBillItem]);
-      setNextBillId(nextBillId + 1);
-    } else {
-      removeFromBill(courseId);
-    }
-  };
+    // Fetch cart data
+    fetch("http://localhost:9999/addToCart")
+      .then((res) => res.json())
+      .then((result) => setListCart(result))
+      .catch((err) => console.error("error: ", err));
+  
+    // Fetch course data
+    fetch("http://localhost:9999/course")
+      .then((res) => res.json())
+      .then((listCourse) => setListCourse(listCourse))
+      .catch((err) => console.error("error: ", err));
+  }, [uId, listCart, listCourse]); // Ensure useEffect runs when uId changes
 
-  const removeFromBill = (courseId) => {
-    setBillItems(billItems.filter((item) => item.id !== courseId));
-  };
-
-  const handleRemoveFromBill = (billItemId) => {
-    setBillItems(billItems.filter((item) => item.id !== billItemId));
-  };
-
-  const handleRemoveCourse = (courseId) => {
-    setCourses(courses.filter((course) => course.id !== courseId));
-  };
-
-  return (
+  return(
     <Container>
+      <HeaderUser/>
       <Row>
         <Col md={8}>
-          <h1>List of Courses</h1>
-          <hr />
-          <Card>
-            <Table striped bordered hover>
+          <Row>
+            <h1>List of Courses</h1>
+          </Row>
+          <Row>
+            <Table>
               <thead>
                 <tr>
-                  <th></th>
                   <th>ID</th>
                   <th>Course</th>
                   <th>Description</th>
                   <th>Price</th>
-                  <th>Option</th>
+                  <th>Selected</th>
                 </tr>
               </thead>
               <tbody>
-                {courses.map((course) => (
-                  <tr key={course.id}>
-                    <td>
-                      <Form.Check
-                        type="checkbox"
-                        id={`checkbox-${course.id}`}
-                        onChange={(e) =>
-                          handleCheckboxChange(
-                            e,
-                            course.id,
-                            course.name,
-                            course.price
-                          )
+                {
+                  listCart?.map(c => (
+                    <tr key={c.id}>
+                      <td>{c.id}</td>
+                      <td>
+                        {
+                          listCourse?.find(lc => lc.id == c.courseId)?.cName
                         }
-                      />
-                    </td>
-                    <td>{course.id}</td>
-                    <td>{course.name}</td>
-                    <td>{course.description}</td>
-                    <td>${course.price.toFixed(2)}</td>
-                    <td>
-                      <i
-                        className="bi bi-trash"
-                        style={{
-                          color: "red",
-                          cursor: "pointer",
-                          marginLeft: "10px",
-                        }}
-                        onClick={() => handleRemoveCourse(course.id)}
-                      ></i>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td>
+                        {
+                          listCourse?.find(lc => lc.id == c.courseId)?.cDescription
+                        }
+                      </td>
+                      <td>
+                        {
+                          listCourse?.find(lc => lc.id == c.courseId)?.cPrice 
+                        }$
+                      </td>
+                      <td>
+                        <Form.Check
+                          type="checkbox"
+                          id={c.id}
+                          style={{display:'flex', justifyContent:'center'}}
+                        />
+                      </td>
+                    </tr>
+                  ))
+                }
               </tbody>
             </Table>
-            <div className="d-flex justify-content-center mb-3">
-              <Button variant="outline-primary" className="me-2">
-                <i className="bi bi-caret-left"></i>
-              </Button>
-              <Button variant="outline-primary">
-                <i className="bi bi-caret-right"></i>
-              </Button>
-            </div>
-          </Card>
-          <Row
-            className="align-items-center p-5 mt-5"
-            style={{ backgroundColor: "rgb(220, 237, 245)" }}
-          >
-            <Col md={8}>
-              <Image
-                src="./image/purchases/edu.png"
-                alt="Coursera Plus"
-                className="mb-3"
-                style={{ width: "240px" }}
-              />
-              <h3>
-                Try out different courses to see which one fits your needs
-              </h3>
-              <p>
-                Get a 7-day free trial that includes courses, Specializations,
-                Projects, and Professional Certificates.
-              </p>
-            </Col>
-            <Col md={4}>
-              <div className="promo-image">
-                <img
-                  src="https://coursera_assets.s3.amazonaws.com/coursera_plus/landing_page/header-image.png"
-                  alt="Promo"
-                  className="rounded-circle img-fluid"
-                />
-              </div>
+          </Row>
+        </Col>
+        <Col>
+          <Row>
+            <Col style={{display:'flex', justifyContent:'center'}}><h1>Bill</h1></Col>
+          </Row>
+          <Row>
+            <Col>
+                <Row>
+                  Your Name: {selectedUser?.uFullName}
+                </Row>
+                <Row>
+                  Your Email: {selectedUser?.uMail}
+                </Row>
             </Col>
           </Row>
         </Col>
-
-        <Col md={4}>
-          <h1>Bill</h1>
-          <hr />
-          <Card>
-            <Image src="./image/Purchases_screen/edu.png" rounded />
-            <hr />
-            <p style={{ fontWeight: "bold" }}>Billing Information</p>
-            <p>Provider: Edu Learn</p>
-            <p>Name: Your name</p>
-            <p>Email: Your Email</p>
-            <p>List of bill: </p>
-            <Table striped>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Course</th>
-                  <th>Price</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {billItems.map((item, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.name}</td>
-                    <td>${item.price.toFixed(2)}</td>
-                    <td>
-                      <i
-                        className="bi bi-trash"
-                        style={{
-                          color: "red",
-                          cursor: "pointer",
-                          marginLeft: "10px",
-                        }}
-                        onClick={() => handleRemoveFromBill(item.id)}
-                      ></i>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-            <hr />
-            <p style={{ fontWeight: "bold" }}>
-              Total: $
-              {billItems.reduce((acc, item) => acc + item.price, 0).toFixed(2)}
-            </p>
-            <div className="d-flex justify-content-center">
-              <Button variant="primary" style={{ padding: "5px 10px" }}>
-                Payment orders
-              </Button>
-            </div>
-          </Card>
-        </Col>
       </Row>
+      <Footer/>
     </Container>
-  );
+  )
 }

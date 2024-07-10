@@ -23,6 +23,7 @@ import AllCourseViewer from './Components/Viewer/AllCourseViewer';
 import ViewCourseByCate from './Components/Viewer/ViewCourseByCate';
 import ViewCourseSingle from './Components/Viewer/ViewCourseSingle/ViewCourseSingle';
 import Admin from './Components/Admin/Admin';
+import PurchaseScreen from './Components/Purchase_screen/Purchase_screen';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -39,7 +40,7 @@ root.render(
         <Route path='/FAQ' element={<FAQ />} />
         <Route path='/admin' element={<Admin />} />
         <Route path='/instructor/:uId' element={<InstructorAccount />} />
-        {/* <Route path='homepageUser/addToCart/:uId' element={<AddToCart />} /> */}
+        <Route path='homepageUser/purchaseScreen/:uId' element={<PurchaseScreen />} />
         <Route path='/homepageUser/:uId' element={<HomepageUser />} />
         <Route path='/homepageUser/:uId/allCourse' element={<CoursesBody2 />} />
         <Route path='/homepageUser/:uId/category/:cateId' element={<CoursesBody />} />

@@ -117,7 +117,7 @@ export default function ViewCourseTab() {
                                             <Image src={listUser?.find(u => selectedCourse.instructorId == u.id)?.uImage} width={"100%"} style={{ border: "1px solid", borderRadius: "5px" }}></Image>
                                         </Col>
                                         <Col md={10} style={{ padding: "0px" }}>
-                                            <h5>{listUser?.find(u => selectedCourse.instructorId == u.id)?.uName}</h5>
+                                            <h5>{listUser?.find(u => selectedCourse.instructorId == u.id)?.uFullName}</h5>
                                             <p style={{ marginBottom: "4px" }}>Major: {listUser?.find(u => selectedCourse.instructorId == u.id)?.uMajor}</p>
                                             <p><i class="bi bi-file-earmark-text"></i>{totalCourses} Lessons</p>
                                         </Col>

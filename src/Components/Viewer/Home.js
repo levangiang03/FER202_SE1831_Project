@@ -60,11 +60,11 @@ export default function Home(){
               <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
                 <Container fluid>
                   <Navbar.Brand
-                    href="#home"
-                    style={{ fontWeight: "bold", color: "#87CEFA" }}
-                  >
-                    <i className="bi bi-book"></i> Edu-Learn
-                  </Navbar.Brand>
+                        href="/"
+                        style={{ fontWeight: "bold", color: "#87CEFA" }}
+                    >
+                        <Link to={"/homeViewer"} style={{ textDecoration: "none" }}><i className="bi bi-book"></i> Edu-Learn</Link>
+                    </Navbar.Brand>
                   <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
                   <Navbar.Offcanvas
                     id={`offcanvasNavbar-expand-lg`}
@@ -142,7 +142,7 @@ export default function Home(){
                       className="customSizeImage"
                     />
                     <Carousel.Caption>
-                      <h3>Name Course 1</h3>
+                      <h3>Edu-Learn</h3>
                       <p>Describe Course</p>
                     </Carousel.Caption>
                   </Carousel.Item>
@@ -152,27 +152,7 @@ export default function Home(){
                       className="customSizeImage"
                     />
                     <Carousel.Caption>
-                      <h3>Name Course 2</h3>
-                      <p>Describe Course</p>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item className="custom-carousel-item">
-                    <Image
-                      src="/image/Homepage/banner.jpg"
-                      className="customSizeImage"
-                    />
-                    <Carousel.Caption>
-                      <h3>Name Course 3</h3>
-                      <p>Describe Course</p>
-                    </Carousel.Caption>
-                  </Carousel.Item>
-                  <Carousel.Item className="custom-carousel-item">
-                    <Image
-                      src="/image/Homepage/banner.jpg"
-                      className="customSizeImage"
-                    />
-                    <Carousel.Caption>
-                      <h3>Name Course 4</h3>
+                      <h3>Course </h3>
                       <p>Describe Course</p>
                     </Carousel.Caption>
                   </Carousel.Item>
@@ -232,7 +212,7 @@ export default function Home(){
                     {listCourse?.map((course) => (
                       <Col sm={12} md={6} lg={4}>
                         <Link
-                          to={`viewCourseSingle/${course.id}`}
+                          to={`/viewCourseSingle/${course.id}`}
                           className="no-underline"
                         >
                           <Card className="course-card">

@@ -24,6 +24,7 @@ export default function AllCourseViewer() {
   const [selectedCategory, setSelectedCategory] = useState([]);
   const [selectedInstructors, setSelectedInstructors] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -64,10 +65,15 @@ export default function AllCourseViewer() {
         } else if (selectedPrice === "paid") {
           filteredCourses = filteredCourses.filter((course) => course.cPrice > 0);
         }
+        if (searchTerm.trim() !== "") {
+          filteredCourses = filteredCourses.filter((course) =>
+            course.cName.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
         setListCourse(filteredCourses);
       })
       .catch((err) => console.error("error: ", err));
-  }, [selectedInstructors, selectedCategory, selectedPrice]);
+  }, [selectedInstructors, selectedCategory, selectedPrice, searchTerm]);
 
   const handleCategoryChange = (id) => {
     setSelectedCategory((prevSelected) =>
@@ -89,16 +95,20 @@ export default function AllCourseViewer() {
     setSelectedPrice(price);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
   return (
     <Container fluid>
       <Row style={{ padding: "0px 50px", backgroundColor: "#f8f9fa" }}>
         <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
           <Container fluid>
             <Navbar.Brand
-              href="#home"
+              href="/"
               style={{ fontWeight: "bold", color: "#87CEFA" }}
             >
-              <i className="bi bi-book"></i> Edu-Learn
+              <Link to={"/homeViewer"} style={{ textDecoration: "none" }}><i className="bi bi-book"></i> Edu-Learn</Link>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
             <Navbar.Offcanvas
@@ -143,6 +153,8 @@ export default function AllCourseViewer() {
                     className="me-2"
                     aria-label="Search"
                     style={{ borderRadius: "20px" }}
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
                 </Form>
                 <Nav>
@@ -167,7 +179,6 @@ export default function AllCourseViewer() {
         </Navbar>
       </Row>
       <Container style={{ marginTop: "20px" }}>
-
         <Row>
           <Col xs={8}>
             <Row style={{ marginTop: "20px" }}>
@@ -176,7 +187,15 @@ export default function AllCourseViewer() {
               </Col>
               <Col xs={6} className="d-flex justify-content-end align-items-center">
                 <div className="input-group">
-                  <input type="text" className="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="button-addon2"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                  />
                   <div className="input-group-append">
                     <button className="btn btn-outline-secondary" type="button" id="button-addon2">
                       <i className="bi bi-search"></i>
@@ -256,6 +275,7 @@ export default function AllCourseViewer() {
                       label={category.cateName}
                       id={category.id}
                       onChange={() => handleCategoryChange(category.id)}
+                      checked={selectedCategory.includes(category.id)}
                     />
                   ))}
                 </Form.Group>
@@ -272,6 +292,7 @@ export default function AllCourseViewer() {
                         label={u.uName}
                         id={u.id}
                         onChange={() => handleInstructorChange(u.id)}
+                        checked={selectedInstructors.includes(u.id)}
                       />
                     ))}
                 </Form.Group>
@@ -308,7 +329,6 @@ export default function AllCourseViewer() {
             </Form>
           </Col>
         </Row>
-
       </Container>
       {/* Footer */}
       <Row>

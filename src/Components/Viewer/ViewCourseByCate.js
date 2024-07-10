@@ -26,6 +26,7 @@ export default function ViewCourseByCate() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedInstructors, setSelectedInstructors] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -66,10 +67,15 @@ export default function ViewCourseByCate() {
         } else if (selectedPrice === "paid") {
           filteredCourses = filteredCourses.filter((course) => course.cPrice > 0);
         }
+        if (searchTerm.length > 0) {
+          filteredCourses = filteredCourses.filter((course) =>
+            course.cName.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
         setListCourse(filteredCourses);
       })
       .catch((err) => console.error("error: ", err));
-  }, [selectedInstructors, selectedPrice]);
+  }, [selectedInstructors, selectedPrice, searchTerm]);
 
   const handleInstructorChange = (id) => {
     setSelectedInstructors((prevSelected) =>
@@ -83,16 +89,24 @@ export default function ViewCourseByCate() {
     setSelectedPrice(price);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleCategoryChange = (id) => {
+    setSelectedCategory(id === selectedCategory ? null : id);
+  };
+
   return (
     <Container fluid>
       <Row style={{ padding: "0px 50px", backgroundColor: "#f8f9fa" }}>
         <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
           <Container fluid>
             <Navbar.Brand
-              href="#home"
+              href="/"
               style={{ fontWeight: "bold", color: "#87CEFA" }}
             >
-              <i className="bi bi-book"></i> Edu-Learn
+              <Link to={"/homeViewer"} style={{ textDecoration: "none" }}><i className="bi bi-book"></i> Edu-Learn</Link>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
             <Navbar.Offcanvas
@@ -124,20 +138,25 @@ export default function ViewCourseByCate() {
                     style={{ display: "flex" }}
                   >
                     {listCate?.map((cate) => (
-                      <NavDropdown.Item href="#">
+                      <NavDropdown.Item key={cate.id} onClick={() => handleCategoryChange(cate.id)}>
                         {cate.cateName}
                       </NavDropdown.Item>
                     ))}
                   </NavDropdown>
                 </Nav>
-                <Form className="d-flex">
+                <Form className="d-flex" onSubmit={(e) => e.preventDefault()}>
                   <FormControl
                     type="search"
                     placeholder="Search"
                     className="me-2"
                     aria-label="Search"
                     style={{ borderRadius: "20px" }}
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
+                  <Button variant="outline-secondary" type="submit">
+                    <i className="bi bi-search"></i>
+                  </Button>
                 </Form>
                 <Nav>
                   <Nav.Link>
@@ -175,6 +194,8 @@ export default function ViewCourseByCate() {
                     placeholder="Search"
                     aria-label="Search"
                     aria-describedby="button-addon2"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
                   <button
                     className="btn btn-outline-secondary"
@@ -187,7 +208,7 @@ export default function ViewCourseByCate() {
               </Col>
             </Row>
             {listCourse
-              ?.filter((course) => course.cateId == cateId)
+              ?.filter((course) => selectedCategory ? course.cateId === selectedCategory : true)
               .map((course) => (
                 <Link key={course.id} to={`/viewCourseSingle/${course.id}`} className="no-underline">
                   <Row style={{ marginTop: "10px" }}>
@@ -264,7 +285,8 @@ export default function ViewCourseByCate() {
                       type="checkbox"
                       label={category.cateName}
                       id={category.id}
-                      checked={selectedCategory?.id == category.id}
+                      checked={selectedCategory === category.id}
+                      onChange={() => handleCategoryChange(category.id)}
                     />
                   ))}
                 </Form.Group>
@@ -274,13 +296,14 @@ export default function ViewCourseByCate() {
                     <strong>Instructor</strong>
                   </Form.Label>
                   {listUser
-                    ?.filter((user) => user.rId == 2)
+                    ?.filter((user) => user.rId === 2)
                     ?.map((user) => (
                       <Form.Check
                         key={user.id}
                         type="checkbox"
                         label={user.uFullName}
                         id={user.id}
+                        checked={selectedInstructors.includes(user.id)}
                         onChange={() => handleInstructorChange(user.id)}
                       />
                     ))}
@@ -354,7 +377,7 @@ export default function ViewCourseByCate() {
               <h4 style={{ fontWeight: "Bold" }}>PROGRAMS</h4>
               <ul className="list-unstyled">
                 {listCate?.map((cate) => (
-                  <li>
+                  <li key={cate.id}>
                     <a href="#" className="footer-link">
                       {cate.cateName}
                     </a>
@@ -388,7 +411,7 @@ export default function ViewCourseByCate() {
               </ul>
             </Col>
             <Button onClick={scrollToTop} className="scroll-button">
-              <i class="bi bi-arrow-up"></i>
+              <i className="bi bi-arrow-up"></i>
             </Button>
           </Row>
         </Container>

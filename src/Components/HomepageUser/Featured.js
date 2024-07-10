@@ -109,7 +109,7 @@ export default function Featured() {
                                                     <span className="text-by">by: </span>
                                                     <span style={{ fontWeight: "bold" }}>
                                                         {
-                                                            listUser?.find(l => l.id == course.instructorId)?.uName
+                                                            listUser?.find(l => l.id == course.instructorId)?.uFullName
                                                         }
                                                     </span>
                                                 </p>

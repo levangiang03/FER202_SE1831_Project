@@ -18,6 +18,8 @@ import {
 import "./style.css";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import HeaderUser from "../HomepageUser/HeaderUser";
+import Footer from "../HomepageUser/Footer";
 
 export default function NavPath() {
     return (
@@ -103,6 +105,7 @@ function CoursesBody() {
     
     return (
         <Container style={{ marginTop: "20px" }}>
+            <HeaderUser/>
             <Row>
                 <Col sm={8}>
                     <Row>
@@ -162,7 +165,7 @@ function CoursesBody() {
                                                             {
                                                                 listUser?.find(
                                                                     (l) => l.id == course.instructorId
-                                                                )?.uName
+                                                                )?.uFullName
                                                             }
                                                         </span>
                                                     </p>
@@ -232,7 +235,7 @@ function CoursesBody() {
                                         <Form.Check
                                             key={u.id}
                                             type="checkbox"
-                                            label={u.uName}
+                                            label={u.uFullName}
                                             id={u.id}
                                             onChange={() => handleInstructorChange(u.id)}
                                         />
@@ -271,6 +274,7 @@ function CoursesBody() {
                     </Form>
                 </Col>
             </Row>
+            <Footer/>
         </Container>
     );
 }
@@ -344,6 +348,7 @@ function CoursesBody2() {
 
     return (
         <Container style={{ marginTop: "20px" }}>
+            <HeaderUser/>
             <Row>
                 <Col xs={8}>
                     <Row style={{ marginTop: "20px" }}>
@@ -386,7 +391,7 @@ function CoursesBody2() {
                                                     {
                                                         listUser?.find(
                                                             (user) => user.id === l.instructorId
-                                                        )?.uName
+                                                        )?.uFullName
                                                     }
                                                 </span></p>
                                                 <h5 className="course-name">{l.cName}</h5>
@@ -444,7 +449,7 @@ function CoursesBody2() {
                                         <Form.Check
                                             key={u.id}
                                             type="checkbox"
-                                            label={u.uName}
+                                            label={u.uFullName}
                                             id={u.id}
                                             onChange={() => handleInstructorChange(u.id)}
                                         />
@@ -483,6 +488,7 @@ function CoursesBody2() {
                     </Form>
                 </Col>
             </Row>
+            <Footer/>
         </Container>
     );
 }

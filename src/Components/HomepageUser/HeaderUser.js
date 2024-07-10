@@ -51,14 +51,14 @@ export default function HeaderUser() {
 
     return (
         // Header
-        <Row style={{ padding: "0px 50px", backgroundColor: "#f8f9fa"}}>
+        <Row style={{ padding: "0px 50px", backgroundColor: "#f8f9fa" }}>
             <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
                 <Container fluid>
                     <Navbar.Brand
                         href="#home"
                         style={{ fontWeight: "bold", color: "#87CEFA" }}
                     >
-                        <Link to={`/homepageUser/${uId}`} style={{ textDecoration: "none"}}><i className="bi bi-book"></i> Edu-Learn</Link>
+                        <Link to={`/homepageUser/${uId}`} style={{ textDecoration: "none" }}><i className="bi bi-book"></i> Edu-Learn</Link>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
                     <Navbar.Offcanvas
@@ -112,24 +112,22 @@ export default function HeaderUser() {
                                 />
                             </Form>
                             <Nav>
-                                <Nav.Link href="#">
-                                    <i
-                                        className="bi bi-bell"
-                                    ></i>
+                                <Nav.Link>
+                                    <Link to={`/homepageUser/purchaseScreen/${uId}`} style={{ textDecoration: "none", color: "#000" }}>
+                                        <i className="bi bi-bag"></i>
+                                    </Link>
                                 </Nav.Link>
                                 <NavDropdown
-                                    title={
-                                        <i
-                                            className="bi bi-person-circle"
-                                        ></i>
-                                    }
+                                    title={<i className="bi bi-person-circle"></i>}
                                     id="basic-nav-dropdown"
                                 >
                                     <NavDropdown.Item href="#">My Account</NavDropdown.Item>
                                     <NavDropdown.Item href="#">My Purchases</NavDropdown.Item>
                                     <NavDropdown.Item href="#">Settings</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item><Link to={"/homeViewer"} className="no-underline">Logout</Link></NavDropdown.Item>
+                                    <NavDropdown.Item>
+                                        <Link to="/homeViewer" className="no-underline">Logout</Link>
+                                    </NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Offcanvas.Body>

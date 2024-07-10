@@ -80,7 +80,7 @@ export default function HeadlineCourseSingle() {
                                 </Link>
                                 <span style={{ color: "gray" }}>by<span style={{ color: "white", marginLeft: "5px" }}>
                                     {
-                                        listUser?.find(l => l.id === selectedCourse.instructorId)?.uName
+                                        listUser?.find(l => l.id === selectedCourse.instructorId)?.uFullName
                                     }
                                 </span></span>
                             </Col>

@@ -78,7 +78,7 @@ export default function HomepageUser() {
                   className="customSizeImage"
                 />
                 <Carousel.Caption>
-                  <h3>Name Course 1</h3>
+                  <h3>Edu-Learn</h3>
                   <p>Describe Course</p>
                 </Carousel.Caption>
               </Carousel.Item>
@@ -88,27 +88,7 @@ export default function HomepageUser() {
                   className="customSizeImage"
                 />
                 <Carousel.Caption>
-                  <h3>Name Course 2</h3>
-                  <p>Describe Course</p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item className="custom-carousel-item">
-                <Image
-                  src="/image/Homepage/banner.jpg"
-                  className="customSizeImage"
-                />
-                <Carousel.Caption>
-                  <h3>Name Course 3</h3>
-                  <p>Describe Course</p>
-                </Carousel.Caption>
-              </Carousel.Item>
-              <Carousel.Item className="custom-carousel-item">
-                <Image
-                  src="/image/Homepage/banner.jpg"
-                  className="customSizeImage"
-                />
-                <Carousel.Caption>
-                  <h3>Name Course 4</h3>
+                  <h3>C</h3>
                   <p>Describe Course</p>
                 </Carousel.Caption>
               </Carousel.Item>
@@ -190,7 +170,7 @@ export default function HomepageUser() {
                               {
                                 listUser?.find(
                                   (l) => l.id == course.instructorId
-                                )?.uName
+                                )?.uFullName
                               }
                             </span>
                           </p>

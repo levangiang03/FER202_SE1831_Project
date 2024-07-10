@@ -50,7 +50,7 @@
       "aId": "2",
       "rId": "2",
       "uMajor": "Scientist",
-      "uImage": "Test1"
+      "uImage": "/image/CourseList/Account.png"
     },
     {
       "id": "3",
@@ -62,7 +62,7 @@
       "aId": "3",
       "rId": "3",
       "uMajor": "Student",
-      "uImage": "Test1"
+      "uImage": "/image/CourseList/Account.png"
     },
     {
       "id": "4",
@@ -74,7 +74,7 @@
       "aId": "4",
       "rId": "2",
       "uMajor": "Senior Development",
-      "uImage": "Test1"
+      "uImage": "/image/CourseList/Account.png"
     }
   ],
   "category": [
@@ -136,8 +136,8 @@
           "moduleStatus": true
         }
       ],
-      "score": 0,
-      "status": false
+      "score": 10,
+      "status": true
     },
     {
       "id": "2",
@@ -149,29 +149,29 @@
           "id": "1",
           "moduleName": "Module 1",
           "moduleGrade": 0,
-          "moduleStatus": false
+          "moduleStatus": true
         },
         {
           "id": "2",
           "moduleName": "Module 2",
           "moduleGrade": 0,
-          "moduleStatus": false
+          "moduleStatus": true
         },
         {
           "id": "3",
           "moduleName": "Module 4",
           "moduleGrade": 0,
-          "moduleStatus": false
+          "moduleStatus": true
         },
         {
           "id": "4",
           "moduleName": "Module 4",
           "moduleGrade": 0,
-          "moduleStatus": false
+          "moduleStatus": true
         }
       ],
       "score": 0,
-      "status": false
+      "status": true
     },
     {
       "id": "3",

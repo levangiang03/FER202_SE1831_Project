@@ -12,7 +12,7 @@ export default function InstructorAccountList() {
         fetch("http://localhost:9999/user")
             .then(res => res.json())
             .then(result => {
-                const filteredInstructors = result.filter(user => user.rId === "2");
+                const filteredInstructors = result.filter(user => user.rId == 2);
                 setInstructors(filteredInstructors);
             })
             .catch(error => console.log(error));
@@ -72,7 +72,7 @@ export default function InstructorAccountList() {
                     <Col md={9} style={{ margin: "10px 0px" }}>
                         <Card className="flex-row">
                             <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
-                                <Image src={`/image/CourseList/Account.png`} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                <Image src={instructor.uImage} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                             </div>
                             <Card.Body className="d-flex flex-column">
                                 <Card.Title><strong>Instructor Name: {instructor.uFullName}</strong></Card.Title>
@@ -90,7 +90,7 @@ export default function InstructorAccountList() {
                                             <Accordion.Body>
                                                 {courses?.filter(course => course.instructorId === instructor.id).length > 0 ? (
                                                     <ul>
-                                                        {courses.filter(course => course.instructorId === instructor.id).map(course => (
+                                                        {courses.filter(course => course.instructorId === instructor.aId).map(course => (
                                                             <li key={course.id}>{course.cName}</li>
                                                         ))}
                                                     </ul>
@@ -113,14 +113,17 @@ export default function InstructorAccountList() {
         </Container>
     );
 }
-
+ 
+export {InstructorAccount};
 function InstructorAccount() {
-    const { uId } = useParams(); // Get the uId parameter from the URL path
+    const { uId } = useParams(); 
     const [instructor, setInstructor] = useState(null);
     const [courses, setCourses] = useState([]);
+    const [totalRevenue, setTotalRevenue] = useState(0);
+    const [monthlyRevenueAfterInstructor, setMonthlyRevenueAfterInstructor] = useState(0);
 
     useEffect(() => {
-        // Fetch instructor details based on uId
+     
         fetch(`http://localhost:9999/user/${uId}`)
             .then(res => res.json())
             .then(instructorData => {
@@ -128,19 +131,43 @@ function InstructorAccount() {
             })
             .catch(error => console.log(error));
 
-        // Fetch courses taught by the instructor based on uId
+    
         fetch(`http://localhost:9999/course?instructorId=${uId}`)
             .then(res => res.json())
             .then(courseData => {
                 setCourses(courseData);
+                calculateTotalRevenue(courseData);
+                calculateMonthlyRevenueAfterInstructor(courseData);
             })
             .catch(error => console.log(error));
     }, [uId]);
+
+  
+    const calculateTotalRevenue = (courses) => {
+        const total = courses.reduce((acc, course) => acc + (course.cEnrolledStudent * course.cPrice), 0);
+        setTotalRevenue(total);
+    };
+
+    const calculateMonthlyRevenueAfterInstructor = (courses) => {
+        const currentMonth = new Date().getMonth();
+        const monthlyRevenue = courses.reduce((acc, course) => {
+            const courseRevenue = course.cEnrolledStudent * course.cPrice;
+            acc += courseRevenue;
+            return acc;
+        }, 0);
+
+        const instructorRevenueShare = monthlyRevenue * 0.05;
+        const revenueAfterInstructor = monthlyRevenue - instructorRevenueShare;
+        setMonthlyRevenueAfterInstructor(revenueAfterInstructor);
+    };
 
     return (
         <Container>
             <Row className="my-4">
                 <Col md={4} style={{ border: "1px solid gray", padding: "20px" }}>
+                    <Link to="/admin" className="btn btn-secondary mt-3">
+                        Back to Admin
+                    </Link>
                     {instructor && (
                         <div className="mb-4">
                             <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center mb-3" style={{ width: "150px", height: "150px" }}>
@@ -157,6 +184,12 @@ function InstructorAccount() {
                         <strong>Course Created:</strong> {courses.length}<br />
                         <strong>Students Enrolled:</strong> {courses.reduce((total, course) => total + course.cEnrolledStudent, 0)}
                     </div>
+                    <div>
+                        <strong>Total Revenue generated from courses:</strong> ${totalRevenue}
+                    </div>
+                    <div>
+                        <strong>Revenue this month after instructor pay:</strong> ${monthlyRevenueAfterInstructor}
+                    </div>
                 </Col>
 
                 <Col md={8}>
@@ -164,7 +197,6 @@ function InstructorAccount() {
                         <Col className="border-end pe-3" style={{ border: "1px solid gray", boxShadow: "0 0 5px rgba(0,0,0,0.1)" }}>
                             Total course created {courses.length}
                         </Col>
-                
                     </Row>
 
                     <Row className="mb-4">
@@ -173,7 +205,7 @@ function InstructorAccount() {
                                 <Card className="border rounded border-lightgray p-3 mb-3">
                                     <Row>
                                         <Col md={2}>
-                                            <Image src={`/public/image/CoursePage/${course.cImage}`} alt="Course" style={{ width: "100px", height: "100px", objectFit: "cover" }} />
+                                            <Image src={course.cImage} alt="Course" style={{ width: "100px", height: "100px", objectFit: "cover" }} />
                                         </Col>
                                         <Col md={10} className="d-flex flex-column">
                                             <Row className="mb-4">
@@ -219,4 +251,5 @@ function InstructorAccount() {
         </Container>
     );
 }
-export {InstructorAccount};
+
+

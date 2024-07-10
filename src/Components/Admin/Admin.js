@@ -5,6 +5,7 @@ import './admin.css';
 import CourseManagementList from './CourseManagement';
 import InstructorAccountList from './InstructorAccount';
 import StudentAccountList from './StudentAccount';
+import { useParams, Link } from 'react-router-dom'; 
 import Revenue from './Revenue';
 
 export default function Admin() {
@@ -47,3 +48,25 @@ export default function Admin() {
     </Tab.Container>
   );
 }
+
+export {SidebarNavigation}
+function SidebarNavigation() {
+  return (
+    <Col sm={3} className="sidebar">
+      <Nav variant="pills" className="flex-column">
+        <Nav.Item>
+          <Nav.Link as={Link} to="/courses">Course List</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={Link} to="/instructors">Instructor List</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={Link} to="/students">Student List</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as={Link} to="/revenue">Revenue</Nav.Link>
+        </Nav.Item>
+      </Nav>
+    </Col>
+  );
+};

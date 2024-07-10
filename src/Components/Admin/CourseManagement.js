@@ -34,7 +34,7 @@ export default function CourseManagementList() {
         fetch("http://localhost:9999/user")
             .then(res => res.json())
             .then(result => {
-                const filteredInstructors = result.filter(user => user.id === 1);
+                const filteredInstructors = result.filter(user => user.rId === "2");
                 setInstructors(filteredInstructors);
             })
             .catch(error => console.log(error));
@@ -89,10 +89,9 @@ export default function CourseManagementList() {
         let filtered = courses.filter(course => {
             const matchesSearchTerm = course.cName.toLowerCase().includes(searchTerm.toLowerCase());
             const matchesCategory = selectedCategories.length ? selectedCategories.includes(course.id.toString()) : true;
-            const matchesInstructor = selectedInstructors.length ? selectedInstructors.includes(course.id.toString()) : true;
             const matchesReview = selectedReview ? course.cRate >= parseInt(selectedReview) : true;
-
             let matchesPrice = true;
+            
             if (selectedPrice) {
                 if (selectedPrice === 'free') {
                     matchesPrice = course.cPrice === 0;
@@ -100,7 +99,10 @@ export default function CourseManagementList() {
                     matchesPrice = course.cPrice > 0;
                 }
             }
-
+    
+         
+            const matchesInstructor = selectedInstructors.length === 0 || selectedInstructors.includes(course.instructorId.toString());
+    
             return matchesSearchTerm && matchesCategory && matchesInstructor && matchesPrice && matchesReview;
         });
         setFilteredCourses(filtered);
@@ -152,7 +154,7 @@ export default function CourseManagementList() {
                                         <Badge pill className="badge-category">{getCategoryName(course.id)}</Badge>
                                         <Card.Title className="mt-2 mb-3">{course.cName}</Card.Title>
                                         <Card.Text>
-                                            <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>{getInstructorName(course.uId)}</span></p>
+                                            <p><span className="text-by">by: </span><span style={{ fontWeight: "bold" }}>{getInstructorName(course.instructorId)}</span></p>
                                             <div className="course-info">
                                                 <span><i className="bi bi-clock-fill"></i> {course.cDuration} weeks </span>
                                                 <span><i className="bi bi-mortarboard"></i> {course.cEnrolledStudent} enrolled</span>
@@ -164,7 +166,7 @@ export default function CourseManagementList() {
                                                     <span>{course.cPrice}</span>
                                                 </div>
                                                 <div className="view-more">
-                                                    <a href={`/home/course/${course.id}`}  style={{ fontWeight: "bold" }} className="no-style">View more</a>
+                                                    <a href={`/homepageUser/${course.instructorId}/course/${course.id}`}  style={{ fontWeight: "bold" }} className="no-style">View more</a>
                                                 </div>
                                             </div>
                                         </Card.Text>

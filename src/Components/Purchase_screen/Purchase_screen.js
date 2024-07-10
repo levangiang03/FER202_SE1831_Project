@@ -48,7 +48,7 @@ export default function Purchase_screen(){
   }, [uId, listCart, listCourse]); // Ensure useEffect runs when uId changes
 
   return(
-    <Container>
+    <Container fluid>
       <HeaderUser/>
       <Row>
         <Col md={8}>

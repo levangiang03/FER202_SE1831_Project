@@ -1,9 +1,10 @@
-import { Row, Col, Container, InputGroup, Button, Form, DropdownButton, Card, Dropdown, ProgressBar, Carousel, Image, Badge, FormControl, Pagination } from "react-bootstrap";
+import { Row, Col, Container, InputGroup, Button, Form, DropdownButton, Card, Dropdown, Image, Pagination, ProgressBar } from "react-bootstrap";
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from 'chart.js'
+import { useParams, Link } from 'react-router-dom';
+import { SidebarNavigation } from "./Admin";
 Chart.register(ArcElement);
-
 
 export default function StudentAccountList() {
     const [enrollments, setEnrollments] = useState([]);
@@ -15,8 +16,7 @@ export default function StudentAccountList() {
         fetch("http://localhost:9999/enroll")
             .then(res => res.json())
             .then(result => {
-                const filteredEnrollments = result.filter(enroll => enroll.userId === "3");
-                setEnrollments(filteredEnrollments);
+                setEnrollments(result);
             })
             .catch(error => console.log(error));
 
@@ -36,9 +36,13 @@ export default function StudentAccountList() {
             .catch(error => console.log(error));
     }, []);
 
-    const getCurrentCourseName = (courseId) => {
-        const course = courses.find(course => course.id === courseId);
-        return course ? course.cName : 'None';
+    const getCurrentCourseName = (userId) => {
+        const currentEnrollment = enrollments.find(enroll => enroll.userId === userId && !enroll.status);
+        if (currentEnrollment) {
+            const currentCourse = courses.find(course => course.id === currentEnrollment.courseId);
+            return currentCourse ? currentCourse.cName : 'None';
+        }
+        return 'None';
     };
 
     const calculateProgress = (progress) => {
@@ -50,12 +54,21 @@ export default function StudentAccountList() {
     const countPassedCourses = () => {
         let passedCount = 0;
         enrollments.forEach(enrollment => {
-            const allModulesCompleted = enrollment.progress.every(module => module.moduleStatus);
-            if (allModulesCompleted) {
+            if (enrollment.status && enrollment.score >= 4) {
                 passedCount++;
             }
         });
         return passedCount;
+    };
+
+    const countFailedCourses = () => {
+        let failedCount = 0;
+        enrollments.forEach(enrollment => {
+            if (enrollment.status && enrollment.score < 4) {
+                failedCount++;
+            }
+        });
+        return failedCount;
     };
 
     return (
@@ -71,16 +84,16 @@ export default function StudentAccountList() {
                     </p>
                     <p>
                         Total Student Accounts: <strong>{students.length}</strong><br />
-                        New Students This Week: <strong>25</strong> {/* Assuming this is a placeholder */}
+                        New Students This Week: <strong>25</strong> {/* Placeholder */}
                     </p>
                 </Col>
             </Row>
             <Row className="mb-3">
                 <Col md={8}>
                     <InputGroup>
-                        <Form.Control 
-                            type="text" 
-                            placeholder="Search..." 
+                        <Form.Control
+                            type="text"
+                            placeholder="Search..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -94,253 +107,177 @@ export default function StudentAccountList() {
                     </DropdownButton>
                 </Col>
             </Row>
-            {enrollments.map(enrollment => (
-                <Row key={enrollment.id} className="mb-4">
-                    <Col md={11} style={{ margin: "10px 0px" }}>
-                        <Card className="flex-row">
-                            <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
-                                <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                            </div>
-                            <Card.Body className="d-flex flex-column">
-                                <Card.Title><strong>Student Name: {students.map(student => student.uFullName)}</strong></Card.Title>
-                                <Card.Text>
-                                    <strong>Course Information:</strong><br />
-                                    Course done: {enrollments.length}<br />
-                                    Current Course: <strong>{getCurrentCourseName(enrollment.courseId)}</strong> <br />
-                                    Progress: {calculateProgress(enrollment.progress)}<br />
-                                    Passed courses: {countPassedCourses()}<br />
-                                    Failed courses: None<br />
-                                    <strong>Contact Information:</strong><br />
-                                    <i className="bi bi-envelope"></i> {students.map(student => student.uMail)}
-                                </Card.Text>
-                                <div className="mt-auto d-flex justify-content-end">
-                                    <Button variant="primary">Detail</Button>
-                                </div>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            ))}
+            {students.map(student => {
+                const currentEnrollment = enrollments.find(enroll => enroll.userId === student.id && !enroll.status);
+                if (currentEnrollment) {
+                    return (
+                        <Row key={student.id} className="mb-4">
+                            <Col md={11} style={{ margin: "10px 0px" }}>
+                                <Card className="flex-row">
+                                    <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center" style={{ width: "190px", height: "190px" }}>
+                                        <Card.Img src="/image/CourseList/Account.png" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                    </div>
+                                    <Card.Body className="d-flex flex-column">
+                                        <Card.Title><strong>Student Name: {student.uFullName}</strong></Card.Title>
+                                        <Card.Text>
+                                            <strong>Course Information:</strong><br />
+                                            Course Done: <strong>{enrollments.length}</strong> <br />
+                                            Current Course: <strong>{getCurrentCourseName(student.id)}</strong> <br />
+                                            Progress: {calculateProgress(currentEnrollment.progress)}<br />
+                                            Passed courses: {countPassedCourses()}<br />
+                                            Failed courses: {countFailedCourses()}<br />
+                                            <strong>Contact Information:</strong><br />
+                                            <i className="bi bi-envelope"></i> {student.uMail}
+                                        </Card.Text>
+                                        <div className="mt-auto d-flex justify-content-end">
+                                            <Link to={`/student/${student.id}`} className="btn btn-primary">Student Detail</Link>
+                                        </div>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        </Row>
+                    );
+                }
+                return null;
+            })}
         </Container>
     );
 }
-
 export { StudentAccount };
 
+
 function StudentAccount() {
+    const { uId } = useParams();
+    const [student, setStudent] = useState(null);
+    const [enrollments, setEnrollments] = useState([]);
+    const [courses, setCourses] = useState([]);
 
-    const data = {
-        labels: ['Finished', 'Passed', 'Failed', 'In Progress'],
-        datasets: [
-            {
-                data: [8, 6, 1, 1],
-                backgroundColor: ['#28a745', '#007bff', '#dc3545', '#ffc107'],
-                hoverBackgroundColor: ['#218838', '#0069d9', '#c82333', '#ff9800'],
-            },
-        ],
+    useEffect(() => {
+        fetch(`http://localhost:9999/user/${uId}`)
+            .then(res => res.json())
+            .then(result => {
+                setStudent(result);
+            })
+            .catch(error => console.error('Error fetching user:', error));
+
+        fetch(`http://localhost:9999/enroll`)
+            .then(res => res.json())
+            .then(result => {
+                const filteredEnrollments = result.filter(enroll => enroll.userId === uId);
+                setEnrollments(filteredEnrollments);
+            })
+            .catch(error => console.error('Error fetching enrollments:', error));
+
+        fetch(`http://localhost:9999/course`)
+            .then(res => res.json())
+            .then(result => {
+                setCourses(result);
+            })
+            .catch(error => console.error('Error fetching courses:', error));
+    }, [uId]);
+
+    const getCurrentCourseName = (courseId) => {
+        const course = courses.find(course => course.id === courseId);
+        return course ? course.cName : 'None';
     };
 
-    const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false,
-            },
-        },
+    const calculateProgress = (progress) => {
+        const totalModules = progress.length;
+        const completedModules = progress.filter(module => module.moduleStatus).length;
+        return `${completedModules}/${totalModules}`;
     };
 
+    const countPassedCourses = () => {
+        return enrollments.filter(enrollment => enrollment.status && enrollment.score >= 4).length;
+    };
 
-
+    if (!student || !enrollments || !courses) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <Container>
             <Row>
-                <Col md={4} style={{ border: "1px solid gray" }}>
-                    <div className="mb-4">
-                        <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center mb-3" style={{ width: "150px", height: "150px" }}>
-                            <Image src="/image/CourseList/Account.png" alt="Student" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <Row>
+                    <Col md={4}>
+                        <Link to="/admin" className="btn btn-secondary mt-3">
+                            Back to Admin
+                        </Link>
+                        <div className="mb-4">
+                            <div className="rounded-circle overflow-hidden d-flex justify-content-center align-items-center mb-3" style={{ width: "150px", height: "150px" }}>
+                                <Image src={student.uImage} alt="Student" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                            </div>
+                            <strong>Name:</strong> {student.uFullName}<br />
+                            <small className="text-muted">{student.uMajor} Major</small>
                         </div>
-                        <strong>Name:</strong> William David<br />
-                        <small className="text-muted">Engineering Major at Michigan University</small>
-                    </div>
 
-                    <div className="mb-4">
-                        <strong>Full Name:</strong> John Doe<br /> <br />
-                        <strong>Gender:</strong> Male<br /> <br />
-                        <strong>Date of Birth:</strong> 01/01/1990<br /> <br />
-                        <strong>Occupation:</strong> Student<br /> <br />
-                        <strong>Account Created Date:</strong> 22/06/2024<br /> <br />
-                        <strong>Phone Number:</strong> +123456789<br /> <br />
-                        <strong>Email:</strong> example@gmail.com<br /> <br />
-                        <strong>Major:</strong> Engineering
-                    </div>
-                </Col>
-                <Col md={8}>
-                    <Row>
-                        <Col md={12}>
-                            <Container>
-                                <Row className="mb-3" style={{ margin: "10px 10px" }}>
-                                    <Col className="border-end pe-3" style={{ border: "1px solid gray", boxShadow: "0 0 5px rgba(0,0,0,0.1)" }}>
-                                        Total Course Finished: 8
-                                    </Col>
-                                    <Col className="border-end pe-3" style={{ border: "1px solid gray", boxShadow: "0 0 5px rgba(0,0,0,0.1)" }}>
-                                        Course Pass: 6
-                                    </Col>
-                                    <Col style={{ border: "1px solid gray", boxShadow: "0 0 5px rgba(0,0,0,0.1)" }}>
-                                        Course Failed: 1
-                                    </Col>
-                                </Row>
-                                <Row className="border rounded border-lightgray p-3 mb-4">
-                                    <Col>
-                                        <Form.Control type="text" placeholder="Search by Course" />
-                                    </Col>
-                                    <Col>
-                                        <div className="mb-3">
-                                            <input type="date" className="form-control" />
-                                        </div>
-                                    </Col>
-                                </Row>
+                        <div className="mb-4">
+                            <strong>Full Name:</strong> {student.uFullName}<br /> <br />
+                            <strong>Gender:</strong> {student.uGender}<br /> <br />
+                            <strong>Date of Birth:</strong> {student.uDate}<br /> <br />
+                            <strong>Occupation:</strong> Student<br /> <br />
+                            <strong>Phone Number:</strong> {student.uPhone}<br /> <br />
+                            <strong>Email:</strong> {student.uMail}<br /> <br />
+                            <strong>Major:</strong> {student.uMajor}
+                        </div>
+                    </Col>
+                    <Col md={8}>
+                        <Row>
+                            <Col md={12}>
+                                <Container>
+                                    <Row className="mb-3" style={{ margin: "10px 10px" }}>
+                                        <Col className="border-end pe-3" style={{ border: "1px solid gray", boxShadow: "0 0 5px rgba(0,0,0,0.1)" }}>
+                                            Total Course Finished: {enrollments.length}
+                                        </Col>
+                                        <Col className="border-end pe-3" style={{ border: "1px solid gray", boxShadow: "0 0 5px rgba(0,0,0,0.1)" }}>
+                                            Course Pass: {countPassedCourses()}
+                                        </Col>
+                                        <Col style={{ border: "1px solid gray", boxShadow: "0 0 5px rgba(0,0,0,0.1)" }}>
+                                            Course Failed: {enrollments.filter(enrollment => enrollment.status && enrollment.score < 4).length}
+                                        </Col>
+                                    </Row>
+                                    <Row className="border rounded border-lightgray p-3 mb-4">
+                                        <Col>
+                                            <Form.Control type="text" placeholder="Search by Course" />
+                                        </Col>
+                                        <Col>
+                                            <div className="mb-3">
+                                                <input type="date" className="form-control" />
+                                            </div>
+                                        </Col>
+                                    </Row>
 
-                                <Row>
-                                    <Col>
-                                        <Container className="border rounded border-lightgray p-3">
-                                            <Row className="mb-4">
-                                                <Row>
-                                                    <Col>
-                                                        <strong>Engineering for Beginners</strong>
-                                                    </Col>
-                                                    <Col className="text-end">
-                                                        <Button variant="outline-primary" size="sm">Course Detail</Button>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col>
-                                                        <span>Course Progress: Finish 10/10, Grade: A+, Finish Date: 10/5/2024</span>
-                                                    </Col>
-                                                </Row>
-                                            </Row>
-
-                                            <Row className="mb-4">
-                                                <Row>
-                                                    <Col>
-                                                        <strong>Coding in C#</strong>
-                                                    </Col>
-                                                    <Col className="text-end">
-                                                        <Button variant="outline-primary" size="sm">Course Detail</Button>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col>
-                                                        <span>Course Progress: Finish 8/10, Grade: B, Finish Date: 8/15/2024</span>
-                                                    </Col>
-                                                </Row>
-                                            </Row>
-
-                                            <Row className="mb-4">
-                                                <Row>
-                                                    <Col>
-                                                        <strong>How to Tie a Rope</strong>
-                                                    </Col>
-                                                    <Col className="text-end">
-                                                        <Button variant="outline-primary" size="sm">Course Detail</Button>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col>
-                                                        <span>Course Progress: Finish 5/5, Grade: A, Finish Date: 6/30/2024</span>
-                                                    </Col>
-                                                </Row>
-                                            </Row>
-                                            <Row className="mb-4">
-                                                <Row>
-                                                    <Col>
-                                                        <strong>Engineering for Beginners</strong>
-                                                    </Col>
-                                                    <Col className="text-end">
-                                                        <Button variant="outline-primary" size="sm">Course Detail</Button>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col>
-                                                        <span>Course Progress: Finish 10/10, Grade: A+, Finish Date: 10/5/2024</span>
-                                                    </Col>
-                                                </Row>
-                                            </Row>
-                                            <Row className="mb-4">
-                                                <Row>
-                                                    <Col>
-                                                        <strong>Engineering for Beginners</strong>
-                                                    </Col>
-                                                    <Col className="text-end">
-                                                        <Button variant="outline-primary" size="sm">Course Detail</Button>
-                                                    </Col>
-                                                </Row>
-                                                <Row>
-                                                    <Col>
-                                                        <span>Course Progress: Finish 10/10, Grade: A+, Finish Date: 10/5/2024</span>
-                                                    </Col>
-                                                </Row>
-                                            </Row>
-                                            <Row className="mt-4">
-                                                <Col className="text-center">
-                                                    <Pagination>
-                                                        <Pagination.First />
-                                                        <Pagination.Prev />
-                                                        <Pagination.Item>{1}</Pagination.Item>
-                                                        <Pagination.Next />
-                                                        <Pagination.Last />
-                                                    </Pagination>
-                                                </Col>
-                                            </Row>
-                                        </Container>
-                                    </Col>
-                                </Row>
-                            </Container>
-                        </Col>
-                    </Row>
-
-                </Col>
-            </Row>
-            <Row>
-                <Col md={4} className="text-center mb-4">
-                    <Row className="mt-3" style={{ border: "1px solid grey" }}>
-                        <Col md={12}>
-                            <h5>Course Status</h5>
-                        </Col>
-                        <Col md={12} style={{ maxHeight: "200px" }}>
-                            <Doughnut data={data} options={options} />
-                        </Col>
-                        <Col md={12}>
-                            <p>Course Done: <strong>{data.datasets[0].data[0]}</strong></p>
-                            <p><span className="badge bg-danger me-2"></span> Course Failed: <strong>{data.datasets[0].data[2]}</strong></p>
-                            <p><span className="badge bg-primary me-2"></span> Course Passed: <strong>{data.datasets[0].data[1]}</strong></p>
-                            <p><span className="badge bg-warning me-2"></span> Course In Progress: <strong>{data.datasets[0].data[3]}</strong></p>
-                        </Col>
-                    </Row>
-                </Col>
-                <Col style={{ margin: "10px 10px" }}>
-                    <Container className="border rounded border-lightgray p-3 mb-4">
-                        <Row className="mb-4">
-                            <Col>
-                                <strong>Current Course:</strong> <span className="fw-bold">Networking and Tackling data congestion in Pipeline</span>
+                                    {enrollments.map(enrollment => (
+                                        <Row key={enrollment.id}>
+                                            <Col>
+                                                <Container className="border rounded border-lightgray p-3 mb-4">
+                                                    <Row className="mb-4">
+                                                        <Row>
+                                                            <Col>
+                                                                <strong>{getCurrentCourseName(enrollment.courseId)}</strong>
+                                                            </Col>
+                                                            <Col className="text-end">
+                                                                <Button variant="outline-primary" size="sm">Course Detail</Button>
+                                                            </Col>
+                                                        </Row>
+                                                        <Row>
+                                                            <Col>
+                                                                <span>Enrollment Date: {enrollment.enRollDate}</span><br />
+                                                                <span>Score: {enrollment.score}</span><br />
+                                                                <span>Status: {enrollment.status ? (enrollment.score >= 4 ? 'Passed' : 'Failed') : 'In Progress'}</span><br />
+                                                                <span>Course Progress: {calculateProgress(enrollment.progress)}</span>
+                                                            </Col>
+                                                        </Row>
+                                                    </Row>
+                                                </Container>
+                                            </Col>
+                                        </Row>
+                                    ))}
+                                </Container>
                             </Col>
                         </Row>
-                        <Row className="mb-4">
-                            <Col>
-                                <span>Course Progress: <strong>6/10</strong></span>
-                            </Col>
-                            <Col className="text-end">
-                                <Button variant="outline-primary" size="sm">Course Detail</Button>
-                            </Col>
-                        </Row>
-                        <Row className="mb-4">
-                            <Col>
-                                <ProgressBar now={60} />
-                            </Col>
-                        </Row>
-                    </Container>
-                </Col>
+                    </Col>
+                </Row>
             </Row>
         </Container>
     );

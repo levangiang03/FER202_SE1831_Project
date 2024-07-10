@@ -55,7 +55,7 @@ export default function HeaderUser() {
             <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
                 <Container fluid>
                     <Navbar.Brand
-                        href="#home"
+                        href="/"
                         style={{ fontWeight: "bold", color: "#87CEFA" }}
                     >
                         <Link to={`/homepageUser/${uId}`} style={{ textDecoration: "none" }}><i className="bi bi-book"></i> Edu-Learn</Link>

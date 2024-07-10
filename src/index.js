@@ -40,6 +40,7 @@ root.render(
         <Route path='/FAQ' element={<FAQ />} />
         <Route path='/admin' element={<Admin />} />
         <Route path='/instructor/:uId' element={<InstructorAccount />} />
+        <Route path='/student/:uId' element={<StudentAccount />} />
         <Route path='homepageUser/purchaseScreen/:uId' element={<PurchaseScreen />} />
         <Route path='/homepageUser/:uId' element={<HomepageUser />} />
         <Route path='/homepageUser/:uId/allCourse' element={<CoursesBody2 />} />

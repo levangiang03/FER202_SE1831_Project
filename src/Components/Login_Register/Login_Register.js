@@ -19,7 +19,7 @@ export default function Login_Register() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordUsername, setForgotPasswordUsername] = useState("");
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
-
+  const [forgotPasswordPassword, setForgotPasswordPassword] = useState("");
   // States for Forgot Password
   const [sendOTPForgotPassword, setSendOTPForgotPassword] = useState(false);
   const [verifyOTPForgotPassword, setVerifyOTPForgotPassword] = useState(false);
@@ -47,9 +47,9 @@ export default function Login_Register() {
 
       if (account) {
         console.log("Login successful");
-        if (account.rId == 1) {
+        if (account.rId === 1) {
           navigate(`/admin`);
-        } else if (account.rId == 2) {
+        } else if (account.rId === 2) {
           navigate(`/instructor/${account.id}`);
         } else {
           navigate(`/homepageUser/${account.id}`);
@@ -62,11 +62,42 @@ export default function Login_Register() {
     }
   };
 
-  const handleRegisterSubmit = (event) => {
+  const handleRegisterSubmit = async (event) => {
     event.preventDefault();
     if (registerCaptchaValue) {
       console.log("Register form submitted");
-      // Handle registration logic here
+
+      // Tạo object để gửi lên server
+      const newUser = {
+        username: username,
+        email: forgotPasswordEmail,
+        password: password,
+        // Bổ sung các trường cần thiết khác như tên, địa chỉ, ngày sinh,...
+      };
+
+      try {
+        // Gửi request POST để lưu thông tin người dùng vào database
+        const response = await fetch("http://localhost:9999/account", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        });
+
+        if (!response.ok) {
+          throw new Error("Registration failed");
+        }
+
+        const data = await response.json();
+        console.log("Registration successful:", data);
+
+        // Sau khi đăng ký thành công, có thể điều hướng người dùng đến trang chủ hoặc trang đăng nhập
+        setIsLoginForm(true); // Chuyển về form đăng nhập sau khi đăng ký thành công
+      } catch (error) {
+        console.error("Registration failed:", error);
+        alert("Registration failed. Please try again.");
+      }
     } else {
       alert("Please verify CAPTCHA for registration");
     }
@@ -162,12 +193,8 @@ export default function Login_Register() {
                       <Form.Control
                         type="text"
                         placeholder="Enter Username"
-                        value={isLoginForm ? username : forgotPasswordUsername}
-                        onChange={(e) =>
-                          isLoginForm
-                            ? setUsername(e.target.value)
-                            : setForgotPasswordUsername(e.target.value)
-                        }
+                        value={username} // Always controlled by the state
+                        onChange={(e) => setUsername(e.target.value)}
                       />
                     </Form.Group>
 
@@ -187,7 +214,7 @@ export default function Login_Register() {
                               }
                             />
                           </Col>
-                          <Col xs="auto">
+                          {/* <Col xs="auto"> send OTP
                             <Button
                               variant="secondary"
                               style={{ borderRadius: "20px" }}
@@ -195,9 +222,9 @@ export default function Login_Register() {
                             >
                               Send OTP
                             </Button>
-                          </Col>
+                          </Col> */}
                         </Row>
-                        {sendOTPRegister && (
+                        {/* {sendOTPRegister && (
                           <>
                             <Form.Label style={{ fontWeight: "bold" }}>
                               OTP
@@ -222,7 +249,7 @@ export default function Login_Register() {
                               </Button>
                             )}
                           </>
-                        )}
+                        )} */}
                       </Form.Group>
                     )}
 
@@ -299,30 +326,25 @@ export default function Login_Register() {
                         onFailure={onFailure}
                         cookiePolicy={"single_host_origin"}
                         isSignedIn={true}
-                        style={{ width: "100%", borderRadius: "20px" }}
                       />
                     </div>
 
-                    <p style={{ marginTop: "10px", textAlign: "center" }}>
-                      {isLoginForm
-                        ? "You don't have an account? "
-                        : "You have an account? "}
+                    <div className="text-center">
                       <a href="#" onClick={toggleForm}>
-                        {isLoginForm ? "Register" : "Login"}
+                        {isLoginForm
+                          ? "Don't have an account? Register here"
+                          : "Already have an account? Login here"}
                       </a>
-                    </p>
+                    </div>
                   </Form>
                 </div>
               ) : (
                 <div>
-                  <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
+                  <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
                     Forgot Password
-                  </h2>
+                  </h1>
                   <Form onSubmit={handleResetPasswordSubmit}>
-                    <Form.Group
-                      className="mb-3"
-                      controlId="formBasicForgottenPasswordUsername"
-                    >
+                    <Form.Group className="mb-3" controlId="formBasicUsername">
                       <Form.Label style={{ fontWeight: "bold" }}>
                         User Name
                       </Form.Label>
@@ -336,7 +358,7 @@ export default function Login_Register() {
                       />
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicForgottenPasswordEmail">
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label style={{ fontWeight: "bold" }}>
                         Email
                       </Form.Label>
@@ -389,30 +411,46 @@ export default function Login_Register() {
                       )}
                     </Form.Group>
 
-                    <div
-                      className="recaptcha-container"
-                      style={{ padding: "20px" }}
-                    >
-                      <ReCAPTCHA
-                        sitekey="6LeZFPgpAAAAAAEHCaVGMaKVPU2t-IX8XGLpzL0h"
-                        onChange={handleRegisterCaptchaChange}
-                      />
-                    </div>
+                    {verifyOTPForgotPassword && (
+                      <Form.Group
+                        className="mb-3"
+                        controlId="formBasicPassword"
+                      >
+                        <Form.Label style={{ fontWeight: "bold" }}>
+                          New Password
+                        </Form.Label>
+                        <Form.Control
+                          type="password"
+                          placeholder="Enter New Password"
+                          value={forgotPasswordPassword}
+                          onChange={(e) =>
+                            setForgotPasswordPassword(e.target.value)
+                          }
+                        />
+                      </Form.Group>
+                    )}
 
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      style={{ width: "100%", borderRadius: "20px" }}
-                    >
-                      Reset Password
-                    </Button>
-
-                    <p style={{ marginTop: "10px", textAlign: "center" }}>
-                      Remember your password?{" "}
-                      <a href="#" onClick={() => setShowForgotPassword(false)}>
-                        Login
-                      </a>
-                    </p>
+                    <Row>
+                      <Col>
+                        <Button
+                          variant="secondary"
+                          onClick={() => setShowForgotPassword(false)}
+                        >
+                          Back to Login
+                        </Button>
+                      </Col>
+                      <Col>
+                        {verifyOTPForgotPassword && (
+                          <Button
+                            variant="primary"
+                            type="submit"
+                            style={{ width: "100%", borderRadius: "20px" }}
+                          >
+                            Reset Password
+                          </Button>
+                        )}
+                      </Col>
+                    </Row>
                   </Form>
                 </div>
               )}

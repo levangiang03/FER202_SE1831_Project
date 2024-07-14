@@ -27,6 +27,16 @@ export default function HeaderUser() {
 
     const { uId } = useParams();
 
+    let linkPath;
+
+  if (uId == 2) {
+    linkPath = `/homepageUser/instructor/${uId}`;
+  } else if (uId == 3) {
+    linkPath = `/homepageUser/student/${uId}`;
+  } else {
+    linkPath = `/homepageUser/instructor/${uId}`; // Default case or other user types
+  }
+
     useEffect(() => {
         fetch(`http://localhost:9999/user/${uId}`)
             .then((res) => res.json())
@@ -91,16 +101,20 @@ export default function HeaderUser() {
                                     <Link to={`/homepageUser/${uId}/allCourse`} style={{ textDecoration: "none", color: "#000" }}>Course</Link>
                                 </Nav.Link>
                                 <NavDropdown
-                                    title="Discovery"
-                                    id="basic-nav-dropdown"
-                                    style={{ display: "flex" }}
-                                >
-                                    {
-                                        listCate?.map(cate => (
-                                            <NavDropdown.Item key={cate.id} href="#">{cate.cateName}</NavDropdown.Item>
-                                        ))
-                                    }
-                                </NavDropdown>
+                    title="Discovery"
+                    id="basic-nav-dropdown"
+                    style={{ display: "flex" }}
+                  >
+                    {listCate?.map((cate) => (
+                <NavDropdown.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/homepageUser/${uId}/category/${cate.id}`}
+                >
+                  {cate.cateName}
+                      </NavDropdown.Item>
+                    ))}
+                  </NavDropdown>
                             </Nav>
                             <Form className="d-flex">
                                 <FormControl
@@ -121,9 +135,10 @@ export default function HeaderUser() {
                                     title={<i className="bi bi-person-circle"></i>}
                                     id="basic-nav-dropdown"
                                 >
-                                    <NavDropdown.Item href="#">My Account</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">My Purchases</NavDropdown.Item>
-                                    <NavDropdown.Item href="#">Settings</NavDropdown.Item>
+                                    
+                                    <NavDropdown.Item as={Link}  to= {linkPath} >My Account</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to={`/homepageUser/purchaseScreen/${uId}`}>My Purchases</NavDropdown.Item>
+                                    
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item>
                                         <Link to="/homeViewer" className="no-underline">Logout</Link>

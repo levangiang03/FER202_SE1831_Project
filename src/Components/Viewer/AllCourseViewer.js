@@ -60,9 +60,9 @@ export default function AllCourseViewer() {
             selectedInstructors.includes(course.instructorId)
           );
         }
-        if (selectedPrice === "free") {
-          filteredCourses = filteredCourses.filter((course) => course.cPrice === 0);
-        } else if (selectedPrice === "paid") {
+        if (selectedPrice == "free") {
+          filteredCourses = filteredCourses.filter((course) => course.cPrice == 0);
+        } else if (selectedPrice == "paid") {
           filteredCourses = filteredCourses.filter((course) => course.cPrice > 0);
         }
         if (searchTerm.trim() !== "") {
@@ -102,82 +102,84 @@ export default function AllCourseViewer() {
   return (
     <Container fluid>
       <Row style={{ padding: "0px 50px", backgroundColor: "#f8f9fa" }}>
-        <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
-          <Container fluid>
-            <Navbar.Brand
-              href="/"
-              style={{ fontWeight: "bold", color: "#87CEFA" }}
-            >
-              <Link to={"/homeViewer"} style={{ textDecoration: "none" }}><i className="bi bi-book"></i> Edu-Learn</Link>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
-            <Navbar.Offcanvas
-              id={`offcanvasNavbar-expand-lg`}
-              aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
-              placement="start"
-            >
-              <Offcanvas.Header closeButton>
-                <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
-                  <a
-                    href="#home"
-                    style={{ fontWeight: "bold", color: "#87CEFA" }}
+              <Navbar key="lg" expand="lg" style={{ alignContent: "center" }}>
+                <Container fluid>
+                  <Navbar.Brand
+                        href="/"
+                        style={{ fontWeight: "bold", color: "#87CEFA" }}
+                    >
+                        <Link to={"/homeViewer"} style={{ textDecoration: "none" }}><i className="bi bi-book"></i> Edu-Learn</Link>
+                    </Navbar.Brand>
+                  <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-lg`} />
+                  <Navbar.Offcanvas
+                    id={`offcanvasNavbar-expand-lg`}
+                    aria-labelledby={`offcanvasNavbarLabel-expand-lg`}
+                    placement="start"
                   >
-                    <i className="bi bi-book"></i> Edu-Learn
-                  </a>
-                </Offcanvas.Title>
-              </Offcanvas.Header>
-              <Offcanvas.Body>
-                <Nav className="justify-content flex-grow-1 pe-3">
-                  <Nav.Link href="#home" style={{ display: "flex" }}>
-                    <Link to={"/homeViewer"} style={{ textDecoration: "none", color: "#000" }}>Home</Link>
-                  </Nav.Link>
-                  <Nav.Link href="#course" style={{ display: "flex" }}>
-                    <Link to={"/allCourseViewer"} style={{ textDecoration: "none", color: "#000" }}>Course</Link>
-                  </Nav.Link>
-                  <NavDropdown
+                    <Offcanvas.Header closeButton>
+                      <Offcanvas.Title id={`offcanvasNavbarLabel-expand-lg`}>
+                        <a
+                          href="#home"
+                          style={{ fontWeight: "bold", color: "#87CEFA" }}
+                        >
+                          <i className="bi bi-book"></i> Edu-Learn
+                        </a>
+                      </Offcanvas.Title>
+                    </Offcanvas.Header>
+                    <Offcanvas.Body>
+                      <Nav className="justify-content flex-grow-1 pe-3">
+                        <Nav.Link href="#home" style={{ display: "flex" }}>
+                          <Link to={"/homeViewer"} style={{ textDecoration: "none", color: "#000" }}>Home</Link>
+                        </Nav.Link>
+                        <Nav.Link href="#course" style={{ display: "flex" }}>
+                          <Link to={"/allCourseViewer"} style={{ textDecoration: "none", color: "#000" }}>Course</Link>
+                        </Nav.Link>
+                        <NavDropdown
                     title="Discovery"
                     id="basic-nav-dropdown"
                     style={{ display: "flex" }}
                   >
                     {listCate?.map((cate) => (
-                      <NavDropdown.Item href="#">
-                        {cate.cateName}
+                <NavDropdown.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/viewCourseByCate/${cate.id}`}
+                >
+                  {cate.cateName}
                       </NavDropdown.Item>
                     ))}
                   </NavDropdown>
-                </Nav>
-                <Form className="d-flex">
-                  <FormControl
-                    type="search"
-                    placeholder="Search"
-                    className="me-2"
-                    aria-label="Search"
-                    style={{ borderRadius: "20px" }}
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                  />
-                </Form>
-                <Nav>
-                  <Nav.Link>
-                    <Link to={'/login'} style={{ color: 'black' }}>
-                      <i
-                        className="bi bi-bell"
-                      ></i>
-                    </Link>
-                  </Nav.Link>
-                  <Nav.Link>
-                    <Link to={'/login'} style={{ color: 'black' }}>
-                      <i
-                        className="bi bi-person-circle"
-                      ></i>
-                    </Link>
-                  </Nav.Link>
-                </Nav>
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
-          </Container>
-        </Navbar>
-      </Row>
+                      </Nav>
+                      <Form className="d-flex">
+                        <FormControl
+                          type="search"
+                          placeholder="Search"
+                          className="me-2"
+                          aria-label="Search"
+                          style={{ borderRadius: "20px" }}
+                        />
+                      </Form>
+                      <Nav>
+                        <Nav.Link>
+                          <Link to={'/login'} style={{color:'black'}}>
+                            <i
+                              className="bi bi-bell"
+                            ></i>
+                          </Link>
+                        </Nav.Link>
+                        <Nav.Link>
+                          <Link to={'/login'} style={{color:'black'}}>
+                            <i
+                                className="bi bi-person-circle"
+                              ></i>
+                          </Link>
+                        </Nav.Link>
+                      </Nav>
+                    </Offcanvas.Body>
+                  </Navbar.Offcanvas>
+                </Container>
+              </Navbar>
+            </Row>
       <Container style={{ marginTop: "20px" }}>
         <Row>
           <Col xs={8}>
@@ -220,12 +222,12 @@ export default function AllCourseViewer() {
                       <Card.Img variant="top" src={l.cImage} style={{ width: "100%", maxHeight: "220px" }} />
                       <Card.Body>
                         <Badge pill className="badge-category">
-                          {listCate?.find((cate) => cate.id === l.cateId)?.cateName}
+                          {listCate?.find((cate) => cate.id == l.cateId)?.cateName}
                         </Badge>
                         <p>
                           <span className="text-by">by: </span>
                           <span style={{ fontWeight: "bold" }}>
-                            {listUser?.find((user) => user.id === l.instructorId)?.uName}
+                            {listUser?.find((user) => user.id == l.instructorId)?.uName}
                           </span>
                         </p>
                         <h5 className="course-name">{l.cName}</h5>
@@ -285,14 +287,14 @@ export default function AllCourseViewer() {
                   </Form.Label>
                   {listUser
                     ?.filter((user) => user.rId == 2)
-                    ?.map((u) => (
+                    ?.map((user) => (
                       <Form.Check
-                        key={u.id}
+                        key={user.id}
                         type="checkbox"
-                        label={u.uName}
-                        id={u.id}
-                        onChange={() => handleInstructorChange(u.id)}
-                        checked={selectedInstructors.includes(u.id)}
+                        label={user.uFullName}
+                        id={user.id}
+                        checked={selectedInstructors.includes(user.id)}
+                        onChange={() => handleInstructorChange(user.id)}
                       />
                     ))}
                 </Form.Group>
@@ -305,7 +307,7 @@ export default function AllCourseViewer() {
                     label="All"
                     id="all"
                     name="price"
-                    checked={selectedPrice === "all"}
+                    checked={selectedPrice == "all"}
                     onChange={() => handlePriceChange("all")}
                   />
                   <Form.Check
@@ -313,7 +315,7 @@ export default function AllCourseViewer() {
                     label="Free"
                     id="free"
                     name="price"
-                    checked={selectedPrice === "free"}
+                    checked={selectedPrice == "free"}
                     onChange={() => handlePriceChange("free")}
                   />
                   <Form.Check
@@ -321,7 +323,7 @@ export default function AllCourseViewer() {
                     label="Paid"
                     id="paid"
                     name="price"
-                    checked={selectedPrice === "paid"}
+                    checked={selectedPrice == "paid"}
                     onChange={() => handlePriceChange("paid")}
                   />
                 </Form.Group>
@@ -362,15 +364,21 @@ export default function AllCourseViewer() {
             </Col>
             <Col sm={12} md={6} lg={3}>
               <h4 style={{ fontWeight: "Bold" }}>PROGRAMS</h4>
-              <ul className="list-unstyled">
-                {listCate?.map((cate) => (
-                  <li>
-                    <a href="#" className="footer-link">
-                      {cate.cateName}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <Nav
+                    title="Discovery"
+                    id="basic-nav-dropdown"
+                    style={{ display: "flex" }}
+                  >
+                    {listCate?.map((cate) => (
+                <Nav.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/viewCourseByCate/${cate.id}`}
+                >
+                  {cate.cateName}
+                      </Nav.Item>
+                    ))}
+                  </Nav>
             </Col>
             <Col sm={12} md={6} lg={3}>
               <h4 style={{ fontWeight: "Bold" }}>CONTACT US</h4>

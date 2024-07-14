@@ -100,7 +100,7 @@ export default function Purchase_screen(){
             </Table>
           </Row>
         </Col>
-        <Col>
+        {/* <Col>
           <Row>
             <Col style={{display:'flex', justifyContent:'center'}}><h1>Bill</h1></Col>
           </Row>
@@ -114,7 +114,7 @@ export default function Purchase_screen(){
                 </Row>
             </Col>
           </Row>
-        </Col>
+        </Col> */}
       </Row>
       <Footer/>
     </Container>

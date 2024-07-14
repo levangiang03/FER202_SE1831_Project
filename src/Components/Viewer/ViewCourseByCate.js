@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Row,
   Col,
@@ -19,11 +19,10 @@ import "./style.css";
 
 export default function ViewCourseByCate() {
   const { cateId } = useParams();
-
   const [listCate, setListCate] = useState([]);
   const [listCourse, setListCourse] = useState([]);
   const [listUser, setListUser] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(cateId ? parseInt(cateId) : null);
   const [selectedInstructors, setSelectedInstructors] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -36,38 +35,34 @@ export default function ViewCourseByCate() {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:9999/category/${cateId}`)
-      .then((res) => res.json())
-      .then((category) => setSelectedCategory(category))
-      .catch((err) => console.error("error: ", err));
-
     fetch("http://localhost:9999/category")
       .then((res) => res.json())
-      .then((listCate) => setListCate(listCate))
+      .then((categories) => setListCate(categories))
       .catch((err) => console.error("error: ", err));
 
     fetch("http://localhost:9999/user")
       .then((res) => res.json())
-      .then((listUser) => setListUser(listUser))
+      .then((users) => setListUser(users))
       .catch((err) => console.error("error: ", err));
-  }, [cateId]);
 
-  useEffect(() => {
     fetch("http://localhost:9999/course")
       .then((res) => res.json())
-      .then((listCourse) => {
-        let filteredCourses = listCourse;
+      .then((courses) => {
+        let filteredCourses = courses;
+        if (selectedCategory) {
+          filteredCourses = filteredCourses.filter((course) => course.cateId == selectedCategory);
+        }
         if (selectedInstructors.length > 0) {
           filteredCourses = filteredCourses.filter((course) =>
             selectedInstructors.includes(course.instructorId)
           );
         }
-        if (selectedPrice === "free") {
-          filteredCourses = filteredCourses.filter((course) => course.cPrice === 0);
-        } else if (selectedPrice === "paid") {
+        if (selectedPrice == "free") {
+          filteredCourses = filteredCourses.filter((course) => course.cPrice == 0);
+        } else if (selectedPrice == "paid") {
           filteredCourses = filteredCourses.filter((course) => course.cPrice > 0);
         }
-        if (searchTerm.length > 0) {
+        if (searchTerm.trim() !== "") {
           filteredCourses = filteredCourses.filter((course) =>
             course.cName.toLowerCase().includes(searchTerm.toLowerCase())
           );
@@ -75,7 +70,11 @@ export default function ViewCourseByCate() {
         setListCourse(filteredCourses);
       })
       .catch((err) => console.error("error: ", err));
-  }, [selectedInstructors, selectedPrice, searchTerm]);
+  }, [selectedCategory, selectedInstructors, selectedPrice, searchTerm]);
+
+  const handleCategoryChange = (id) => {
+    setSelectedCategory(id == selectedCategory ? null : id);
+  };
 
   const handleInstructorChange = (id) => {
     setSelectedInstructors((prevSelected) =>
@@ -93,9 +92,6 @@ export default function ViewCourseByCate() {
     setSearchTerm(event.target.value);
   };
 
-  const handleCategoryChange = (id) => {
-    setSelectedCategory(id === selectedCategory ? null : id);
-  };
 
   return (
     <Container fluid>
@@ -138,8 +134,12 @@ export default function ViewCourseByCate() {
                     style={{ display: "flex" }}
                   >
                     {listCate?.map((cate) => (
-                      <NavDropdown.Item key={cate.id} onClick={() => handleCategoryChange(cate.id)}>
-                        {cate.cateName}
+                <NavDropdown.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/viewCourseByCate/${cate.id}`}
+                >
+                  {cate.cateName}
                       </NavDropdown.Item>
                     ))}
                   </NavDropdown>
@@ -181,12 +181,12 @@ export default function ViewCourseByCate() {
       </Row>
       <Container style={{ marginTop: "20px" }}>
         <Row>
-          <Col sm={8}>
-            <Row>
-              <Col>
+          <Col xs={8}>
+            <Row style={{ marginTop: "20px" }}>
+              <Col xs={6}>
                 <h5>All Courses</h5>
               </Col>
-              <Col className="d-flex justify-content-end align-items-center">
+              <Col xs={6} className="d-flex justify-content-end align-items-center">
                 <div className="input-group">
                   <input
                     type="text"
@@ -197,73 +197,63 @@ export default function ViewCourseByCate() {
                     value={searchTerm}
                     onChange={handleSearchChange}
                   />
-                  <button
-                    className="btn btn-outline-secondary"
-                    type="button"
-                    id="button-addon2"
-                  >
-                    <i className="bi bi-search"></i>
-                  </button>
+                  <div className="input-group-append">
+                    <button className="btn btn-outline-secondary" type="button" id="button-addon2">
+                      <i className="bi bi-search"></i>
+                    </button>
+                  </div>
+                  <div className="btn-group mr-2" role="group" style={{ margin: "0px 5px" }}>
+                    <Button variant="light" className="border" title="List View">
+                      <i className="bi bi-list-task"></i>
+                    </Button>
+                    <Button variant="light" className="border" title="Grid View">
+                      <i className="bi bi-grid"></i>
+                    </Button>
+                  </div>
                 </div>
               </Col>
             </Row>
-            {listCourse
-              ?.filter((course) => selectedCategory ? course.cateId === selectedCategory : true)
-              .map((course) => (
-                <Link key={course.id} to={`/viewCourseSingle/${course.id}`} className="no-underline">
-                  <Row style={{ marginTop: "10px" }}>
-                    <Col>
-                      <Card className="d-flex flex-row">
-                        <div>
-                          <Card.Img
-                            variant="top"
-                            src={course.cImage}
-                            style={{ maxWidth: "286px", maxHeight: "180px" }}
-                          />
+            <Row style={{ marginTop: "20px" }}>
+              {listCourse?.map((l) => (
+                <Col sm={6} key={l.id}>
+                  <Link to={`/viewCourseSingle/${l.id}`} className="no-underline">
+                    <Card className="course-card">
+                      <Card.Img variant="top" src={l.cImage} style={{ width: "100%", maxHeight: "220px" }} />
+                      <Card.Body>
+                        <Badge pill className="badge-category">
+                          {listCate?.find((cate) => cate.id == l.cateId)?.cateName}
+                        </Badge>
+                        <p>
+                          <span className="text-by">by: </span>
+                          <span style={{ fontWeight: "bold" }}>
+                            {listUser?.find((user) => user.id == l.instructorId)?.uName}
+                          </span>
+                        </p>
+                        <h5 className="course-name">{l.cName}</h5>
+                        <div className="course-info">
+                          <span>
+                            <i className="bi bi-clock-fill"></i> 4 weeks
+                          </span>
+                          <span>
+                            <i className="bi bi-mortarboard"></i> {l.cEnrolledStudent} enrolled
+                          </span>
                         </div>
-                        <Card.Body className="flex-grow-1">
-                          <Badge pill className="badge-category">
-                            {listCate?.find((cate) => cate.id == course.cateId)?.cateName}
-                          </Badge>
-                          <Card.Title className="mt-2 mb-3">
-                            {course.cName}
-                          </Card.Title>
-                          <Card.Text>
-                            <p>
-                              <span className="text-by">by: </span>
-                              <span style={{ fontWeight: "bold" }}>
-                                {listUser?.find((user) => user.id == course.instructorId)?.uFullName}
-                              </span>
-                            </p>
-                            <div className="course-info">
-                              <span>
-                                <i className="bi bi-clock-fill"></i> 4 weeks
-                              </span>
-                              <span>
-                                <i className="bi bi-mortarboard"></i> {course.cEnrolledStudent} enrolled
-                              </span>
-                            </div>
-                            <div className="d-flex justify-content-between mt-3">
-                              <div className="course-price">
-                                <span>{course.cPrice} $</span>
-                              </div>
-                              <div className="view-more">
-                                <Link
-                                  to={`/viewCourseSingle/${course.id}`}
-                                  style={{ fontWeight: "bold" }}
-                                  className="no-style"
-                                >
-                                  View more
-                                </Link>
-                              </div>
-                            </div>
-                          </Card.Text>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Link>
+                        <div className="d-flex justify-content-between">
+                          <div className="course-price">
+                            <span>{l.cPrice}$</span>
+                          </div>
+                          <div className="view-more">
+                            <a href="#" style={{ fontWeight: "bold" }} className="no-style">
+                              View more
+                            </a>
+                          </div>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Link>
+                </Col>
               ))}
+            </Row>
             <Pagination className="justify-content-center">
               <Pagination.Prev />
               <Pagination.Item>{1}</Pagination.Item>
@@ -285,7 +275,7 @@ export default function ViewCourseByCate() {
                       type="checkbox"
                       label={category.cateName}
                       id={category.id}
-                      checked={selectedCategory === category.id}
+                      checked={selectedCategory == category.id}
                       onChange={() => handleCategoryChange(category.id)}
                     />
                   ))}
@@ -296,7 +286,7 @@ export default function ViewCourseByCate() {
                     <strong>Instructor</strong>
                   </Form.Label>
                   {listUser
-                    ?.filter((user) => user.rId === 2)
+                    ?.filter((user) => user.rId == 2)
                     ?.map((user) => (
                       <Form.Check
                         key={user.id}
@@ -317,7 +307,7 @@ export default function ViewCourseByCate() {
                     label="All"
                     id="all"
                     name="price"
-                    checked={selectedPrice === "all"}
+                    checked={selectedPrice == "all"}
                     onChange={() => handlePriceChange("all")}
                   />
                   <Form.Check
@@ -325,7 +315,7 @@ export default function ViewCourseByCate() {
                     label="Free"
                     id="free"
                     name="price"
-                    checked={selectedPrice === "free"}
+                    checked={selectedPrice == "free"}
                     onChange={() => handlePriceChange("free")}
                   />
                   <Form.Check
@@ -333,7 +323,7 @@ export default function ViewCourseByCate() {
                     label="Paid"
                     id="paid"
                     name="price"
-                    checked={selectedPrice === "paid"}
+                    checked={selectedPrice == "paid"}
                     onChange={() => handlePriceChange("paid")}
                   />
                 </Form.Group>
@@ -341,7 +331,6 @@ export default function ViewCourseByCate() {
             </Form>
           </Col>
         </Row>
-
       </Container>
       {/* Footer */}
       <Row>
@@ -375,15 +364,21 @@ export default function ViewCourseByCate() {
             </Col>
             <Col sm={12} md={6} lg={3}>
               <h4 style={{ fontWeight: "Bold" }}>PROGRAMS</h4>
-              <ul className="list-unstyled">
-                {listCate?.map((cate) => (
-                  <li key={cate.id}>
-                    <a href="#" className="footer-link">
-                      {cate.cateName}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <Nav
+                    title="Discovery"
+                    id="basic-nav-dropdown"
+                    style={{ display: "flex" }}
+                  >
+                    {listCate?.map((cate) => (
+                <Nav.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/viewCourseByCate/${cate.id}`}
+                >
+                  {cate.cateName}
+                      </Nav.Item>
+                    ))}
+                  </Nav>
             </Col>
             <Col sm={12} md={6} lg={3}>
               <h4 style={{ fontWeight: "Bold" }}>CONTACT US</h4>

@@ -22,7 +22,7 @@ import {
 } from "react-bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function Footer() {
     const scrollToTop = () => {
@@ -31,12 +31,16 @@ export default function Footer() {
             behavior: 'smooth'
         });
     };
-
+    const {uId} = useParams();
     const [listCate, setListCate] = useState([]);
     const [listCourse, setListCourse] = useState([]);
     const [listUser, setListUser] = useState([]);
-
+    const [selectedUser, setSelectedUser] = useState([]);
     useEffect(() => {
+        fetch(`http://localhost:9999/user/${uId}`)
+            .then((res) => res.json())
+            .then((user) => setSelectedUser(user))
+            .catch((err) => console.error("error: ", err))
         fetch("http://localhost:9999/category")
             .then((res) => res.json())
             .then((listCate) => setListCate(listCate))
@@ -68,34 +72,23 @@ export default function Footer() {
                             fields. Join us and start your learning journey today!
                         </p>
                     </Col>
+                    
                     <Col sm={12} md={6} lg={3}>
-                        <h4>About Us</h4>
-                        <ul className="list-unstyled">
-                            <li>
-                                <Link to={'/Contact'} className="footer-link">
-                                    Contact Us
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to={"/FAQ"} className="footer-link">
-                                    FAQ
-                                </Link>
-                            </li>
-                        </ul>
-                    </Col>
-                    <Col sm={12} md={6} lg={3}>
-                        <h4 style={{ fontWeight: "Bold" }}>PROGRAMS</h4>
-                        <ul className="list-unstyled">
-                            {
-                                listCate?.map(cate => (
-                                    <li>
-                                        <a href="#" className="footer-link">
-                                            {cate.cateName}
-                                        </a>
-                                    </li>
-                                ))
-                            }
-                        </ul>
+                    <Nav
+                    title="Discovery"
+                    id="basic-nav-dropdown"
+                    style={{ display: "flex" }}
+                  >
+                    {listCate?.map((cate) => (
+                <Nav.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/homepageUser/${uId}/category/${cate.id}`}
+                >
+                  {cate.cateName}
+                      </Nav.Item>
+                    ))}
+                  </Nav>
                     </Col>
                     <Col sm={12} md={6} lg={3}>
                         <h4 style={{ fontWeight: "Bold" }}>CONTACT US</h4>

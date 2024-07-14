@@ -90,16 +90,20 @@ export default function Home(){
                           <Link to={"/allCourseViewer"} style={{ textDecoration: "none", color: "#000" }}>Course</Link>
                         </Nav.Link>
                         <NavDropdown
-                          title="Discovery"
-                          id="basic-nav-dropdown"
-                          style={{ display: "flex" }}
-                        >
-                          {listCate?.map((cate) => (
-                            <NavDropdown.Item href="#">
-                              {cate.cateName}
-                            </NavDropdown.Item>
-                          ))}
-                        </NavDropdown>
+                    title="Discovery"
+                    id="basic-nav-dropdown"
+                    style={{ display: "flex" }}
+                  >
+                    {listCate?.map((cate) => (
+                <NavDropdown.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/viewCourseByCate/${cate.id}`}
+                >
+                  {cate.cateName}
+                      </NavDropdown.Item>
+                    ))}
+                  </NavDropdown>
                       </Nav>
                       <Form className="d-flex">
                         <FormControl
@@ -301,15 +305,21 @@ export default function Home(){
                   </Col>
                   <Col sm={12} md={6} lg={3}>
                     <h4 style={{ fontWeight: "Bold" }}>PROGRAMS</h4>
-                    <ul className="list-unstyled">
-                      {listCate?.map((cate) => (
-                        <li>
-                          <a href="#" className="footer-link">
-                            {cate.cateName}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+                    <Nav
+                    title="Discovery"
+                    id="basic-nav-dropdown"
+                    style={{ display: "flex" }}
+                  >
+                    {listCate?.map((cate) => (
+                <Nav.Item 
+                  key={cate.id} 
+                  as={Link} 
+                  to={`/viewCourseByCate/${cate.id}`}
+                >
+                  {cate.cateName}
+                      </Nav.Item>
+                    ))}
+                  </Nav>
                   </Col>
                   <Col sm={12} md={6} lg={3}>
                     <h4 style={{ fontWeight: "Bold" }}>CONTACT US</h4>

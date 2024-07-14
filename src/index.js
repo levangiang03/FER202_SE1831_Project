@@ -24,6 +24,9 @@ import ViewCourseByCate from './Components/Viewer/ViewCourseByCate';
 import ViewCourseSingle from './Components/Viewer/ViewCourseSingle/ViewCourseSingle';
 import Admin from './Components/Admin/Admin';
 import PurchaseScreen from './Components/Purchase_screen/Purchase_screen';
+import { StudentInfo } from './Components/StudentInfo';
+import { InstructorInfo } from './Components/InstructorInfo';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -31,6 +34,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>
+        
         <Route path='/homeViewer' element={<Home/>}/>
         <Route path='/allCourseViewer' element={<AllCourseViewer/>}/>
         <Route path='/viewCourseByCate/:cateId' element={<ViewCourseByCate/>}/>
@@ -40,8 +44,10 @@ root.render(
         <Route path='/FAQ' element={<FAQ />} />
         <Route path='/admin' element={<Admin />} />
         <Route path='/instructor/:uId' element={<InstructorAccount />} />
+        <Route path='/homepageUser/instructor/:uId' element={<InstructorInfo />} />
         <Route path='/student/:uId' element={<StudentAccount />} />
-        <Route path='homepageUser/purchaseScreen/:uId' element={<PurchaseScreen />} />
+        <Route path='/homepageUser/student/:uId' element={<StudentInfo/>} />
+        <Route path='/homepageUser/purchaseScreen/:uId' element={<PurchaseScreen />} />
         <Route path='/homepageUser/:uId' element={<HomepageUser />} />
         <Route path='/homepageUser/:uId/allCourse' element={<CoursesBody2 />} />
         <Route path='/homepageUser/:uId/category/:cateId' element={<CoursesBody />} />

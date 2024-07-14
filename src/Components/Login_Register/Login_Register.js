@@ -15,18 +15,11 @@ export default function Login_Register() {
   const [listAccount, setListAccount] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOTP] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
-  const [forgotPasswordUsername, setForgotPasswordUsername] = useState("");
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
-  const [forgotPasswordPassword, setForgotPasswordPassword] = useState("");
-  // States for Forgot Password
-  const [sendOTPForgotPassword, setSendOTPForgotPassword] = useState(false);
-  const [verifyOTPForgotPassword, setVerifyOTPForgotPassword] = useState(false);
-
-  // States for Register
-  const [sendOTPRegister, setSendOTPRegister] = useState(false);
-  const [verifyOTPRegister, setVerifyOTPRegister] = useState(false);
+  const [forgotPasswordSent, setForgotPasswordSent] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
 
   const navigate = useNavigate();
 
@@ -47,9 +40,9 @@ export default function Login_Register() {
 
       if (account) {
         console.log("Login successful");
-        if (account.rId == 1) {
-          navigate(`/admin`);
-        } else if (account.rId == 2) {
+        if (account.rId === 1) {
+          navigate("/admin");
+        } else if (account.rId === 2) {
           navigate(`/instructor/${account.id}`);
         } else {
           navigate(`/homepageUser/${account.id}`);
@@ -67,17 +60,26 @@ export default function Login_Register() {
     if (registerCaptchaValue) {
       console.log("Register form submitted");
 
-      // Tạo object để gửi lên server
-      const newUser = {
-        username: username,
-        email: forgotPasswordEmail,
-        password: password,
-        // Bổ sung các trường cần thiết khác như tên, địa chỉ, ngày sinh,...
-      };
-
       try {
-        // Gửi request POST để lưu thông tin người dùng vào database
-        const response = await fetch("http://localhost:9999/account", {
+        const response = await fetch("http://localhost:9999/account");
+        const accounts = await response.json();
+        setListAccount(accounts);
+
+        const highestId = accounts.reduce(
+          (maxId, account) => Math.max(account.id, maxId),
+          0
+        );
+        const nextId = highestId + 1;
+
+        const newUser = {
+          id: nextId,
+          username: username,
+          email: forgotPasswordEmail,
+          password: password,
+          rId: 3,
+        };
+
+        const registerResponse = await fetch("http://localhost:9999/account", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -85,15 +87,14 @@ export default function Login_Register() {
           body: JSON.stringify(newUser),
         });
 
-        if (!response.ok) {
+        if (!registerResponse.ok) {
           throw new Error("Registration failed");
         }
 
-        const data = await response.json();
+        const data = await registerResponse.json();
         console.log("Registration successful:", data);
 
-        // Sau khi đăng ký thành công, có thể điều hướng người dùng đến trang chủ hoặc trang đăng nhập
-        setIsLoginForm(true); // Chuyển về form đăng nhập sau khi đăng ký thành công
+        setIsLoginForm(true);
       } catch (error) {
         console.error("Registration failed:", error);
         alert("Registration failed. Please try again.");
@@ -112,38 +113,71 @@ export default function Login_Register() {
     setShowForgotPassword(true);
   };
 
-  const handleResetPasswordSubmit = (event) => {
+  const handleSendPasswordResetEmail = async (event) => {
     event.preventDefault();
-    // Implement logic for resetting password here
-    console.log("Password reset form submitted");
+    console.log("Send password reset email");
+
+    try {
+      const response = await fetch("http://localhost:9999/account");
+      const accounts = await response.json();
+
+      const account = accounts.find((acc) => acc.email === forgotPasswordEmail);
+
+      if (account) {
+        // Simulate email sent (replace with actual email sending logic)
+        console.log("Password reset email sent to:", forgotPasswordEmail);
+        alert("Password reset email sent successfully");
+        setForgotPasswordSent(true);
+      } else {
+        alert("No account found with this email.");
+      }
+    } catch (error) {
+      console.error("Sending password reset email failed:", error);
+      alert("Sending password reset email failed. Please try again.");
+    }
   };
 
-  const handleSendOTPForgotPassword = () => {
-    // Implement OTP sending logic here
-    setSendOTPForgotPassword(true);
-  };
+  const handleCreateNewPassword = async (event) => {
+    event.preventDefault();
+    if (newPassword === confirmNewPassword) {
+      try {
+        const response = await fetch("http://localhost:9999/account");
+        const accounts = await response.json();
 
-  const handleVerifyOTPForgotPassword = () => {
-    // Implement OTP verification logic here
-    setVerifyOTPForgotPassword(true);
-    console.log("OTP verified for Forgot Password");
-    // Reset state after OTP verification
-    setOTP("");
-    setForgotPasswordUsername("");
-    setForgotPasswordEmail("");
-  };
+        const account = accounts.find(
+          (acc) => acc.email === forgotPasswordEmail
+        );
 
-  const handleSendOTPRegister = () => {
-    // Implement OTP sending logic here
-    setSendOTPRegister(true);
-  };
+        if (account) {
+          const updatedAccount = { ...account, password: newPassword };
 
-  const handleVerifyOTPRegister = () => {
-    // Implement OTP verification logic here
-    setVerifyOTPRegister(true);
-    console.log("OTP verified for Register");
-    // Reset state after OTP verification
-    setOTP("");
+          const updatePasswordResponse = await fetch(
+            `http://localhost:9999/account/${account.id}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(updatedAccount),
+            }
+          );
+
+          if (!updatePasswordResponse.ok) {
+            throw new Error("Failed to update password");
+          }
+
+          console.log("New password set successfully:", newPassword);
+          // Redirect or show success message as needed
+        } else {
+          alert("No account found with this email.");
+        }
+      } catch (error) {
+        console.error("Setting new password failed:", error);
+        alert("Setting new password failed. Please try again.");
+      }
+    } else {
+      alert("Passwords do not match. Please try again.");
+    }
   };
 
   useEffect(() => {
@@ -154,7 +188,7 @@ export default function Login_Register() {
   }, []);
 
   const onSuccess = (res) => {
-    console.log("LOGIN SUCCESS! Current user: ", res.profileObj);
+    console.log("LOGIN SUCCESS! Current user:", res.profileObj);
   };
 
   const onFailure = (res) => {
@@ -193,7 +227,7 @@ export default function Login_Register() {
                       <Form.Control
                         type="text"
                         placeholder="Enter Username"
-                        value={username} // Always controlled by the state
+                        value={username}
                         onChange={(e) => setUsername(e.target.value)}
                       />
                     </Form.Group>
@@ -203,53 +237,14 @@ export default function Login_Register() {
                         <Form.Label style={{ fontWeight: "bold" }}>
                           Email
                         </Form.Label>
-                        <Row>
-                          <Col>
-                            <Form.Control
-                              type="email"
-                              placeholder="Enter email"
-                              value={forgotPasswordEmail}
-                              onChange={(e) =>
-                                setForgotPasswordEmail(e.target.value)
-                              }
-                            />
-                          </Col>
-                          {/* <Col xs="auto"> send OTP
-                            <Button
-                              variant="secondary"
-                              style={{ borderRadius: "20px" }}
-                              onClick={handleSendOTPRegister}
-                            >
-                              Send OTP
-                            </Button>
-                          </Col> */}
-                        </Row>
-                        {/* {sendOTPRegister && (
-                          <>
-                            <Form.Label style={{ fontWeight: "bold" }}>
-                              OTP
-                            </Form.Label>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter OTP"
-                              value={otp}
-                              onChange={(e) => setOTP(e.target.value)}
-                            />
-                            {!verifyOTPRegister && (
-                              <Button
-                                variant="primary"
-                                style={{
-                                  width: "100%",
-                                  borderRadius: "20px",
-                                  marginTop: "10px",
-                                }}
-                                onClick={handleVerifyOTPRegister}
-                              >
-                                Verify OTP
-                              </Button>
-                            )}
-                          </>
-                        )} */}
+                        <Form.Control
+                          type="email"
+                          placeholder="Enter email"
+                          value={forgotPasswordEmail}
+                          onChange={(e) =>
+                            setForgotPasswordEmail(e.target.value)
+                          }
+                        />
                       </Form.Group>
                     )}
 
@@ -276,6 +271,10 @@ export default function Login_Register() {
                         <Form.Control
                           type="password"
                           placeholder="Confirm Password"
+                          value={confirmNewPassword}
+                          onChange={(e) =>
+                            setConfirmNewPassword(e.target.value)
+                          }
                         />
                       </Form.Group>
                     )}
@@ -305,155 +304,85 @@ export default function Login_Register() {
                       />
                     </div>
 
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      style={{ width: "100%", borderRadius: "20px" }}
-                    >
-                      {isLoginForm ? "Login" : "Register"}
-                    </Button>
-
-                    <hr />
-                    <p style={{ fontWeight: "bold", textAlign: "center" }}>
-                      or
-                    </p>
-
-                    <div className="d-flex justify-content-around mb-3">
-                      <GoogleLogin
-                        clientId={clientId}
-                        buttonText="Login with Google"
-                        onSuccess={onSuccess}
-                        onFailure={onFailure}
-                        cookiePolicy={"single_host_origin"}
-                        isSignedIn={true}
-                      />
-                    </div>
-
-                    <div className="text-center">
-                      <a href="#" onClick={toggleForm}>
-                        {isLoginForm
-                          ? "Don't have an account? Register here"
-                          : "Already have an account? Login here"}
-                      </a>
+                    <div className="d-grid">
+                      <Button variant="primary" type="submit">
+                        {isLoginForm ? "Login" : "Register"}
+                      </Button>
                     </div>
                   </Form>
                 </div>
               ) : (
                 <div>
-                  <h1 style={{ textAlign: "center", marginBottom: "20px" }}>
-                    Forgot Password
-                  </h1>
-                  <Form onSubmit={handleResetPasswordSubmit}>
-                    <Form.Group className="mb-3" controlId="formBasicUsername">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        User Name
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter Username"
-                        value={forgotPasswordUsername}
-                        onChange={(e) =>
-                          setForgotPasswordUsername(e.target.value)
-                        }
-                      />
-                    </Form.Group>
-
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label style={{ fontWeight: "bold" }}>
-                        Email
-                      </Form.Label>
-                      <Row>
-                        <Col>
-                          <Form.Control
-                            type="email"
-                            placeholder="Enter email"
-                            value={forgotPasswordEmail}
-                            onChange={(e) =>
-                              setForgotPasswordEmail(e.target.value)
-                            }
-                          />
-                        </Col>
-                        <Col xs="auto">
-                          <Button
-                            variant="secondary"
-                            style={{ borderRadius: "20px" }}
-                            onClick={handleSendOTPForgotPassword}
-                          >
-                            Send OTP
-                          </Button>
-                        </Col>
-                      </Row>
-                      {sendOTPForgotPassword && (
-                        <>
-                          <Form.Label style={{ fontWeight: "bold" }}>
-                            OTP
-                          </Form.Label>
-                          <Form.Control
-                            type="text"
-                            placeholder="Enter OTP"
-                            value={otp}
-                            onChange={(e) => setOTP(e.target.value)}
-                          />
-                          {!verifyOTPForgotPassword && (
-                            <Button
-                              variant="primary"
-                              style={{
-                                width: "100%",
-                                borderRadius: "20px",
-                                marginTop: "10px",
-                              }}
-                              onClick={handleVerifyOTPForgotPassword}
-                            >
-                              Verify OTP
-                            </Button>
-                          )}
-                        </>
-                      )}
-                    </Form.Group>
-
-                    {verifyOTPForgotPassword && (
-                      <Form.Group
-                        className="mb-3"
-                        controlId="formBasicPassword"
-                      >
-                        <Form.Label style={{ fontWeight: "bold" }}>
-                          New Password
-                        </Form.Label>
+                  {!forgotPasswordSent ? (
+                    <Form onSubmit={handleSendPasswordResetEmail}>
+                      <h2 className="text-center mb-4">Forgot Password</h2>
+                      <Form.Group id="email">
+                        <Form.Label>Email</Form.Label>
                         <Form.Control
-                          type="password"
-                          placeholder="Enter New Password"
-                          value={forgotPasswordPassword}
+                          type="email"
+                          required
+                          value={forgotPasswordEmail}
                           onChange={(e) =>
-                            setForgotPasswordPassword(e.target.value)
+                            setForgotPasswordEmail(e.target.value)
                           }
                         />
                       </Form.Group>
-                    )}
-
-                    <Row>
-                      <Col>
-                        <Button
-                          variant="secondary"
-                          onClick={() => setShowForgotPassword(false)}
-                        >
-                          Back to Login
-                        </Button>
-                      </Col>
-                      <Col>
-                        {verifyOTPForgotPassword && (
-                          <Button
-                            variant="primary"
-                            type="submit"
-                            style={{ width: "100%", borderRadius: "20px" }}
-                          >
-                            Reset Password
-                          </Button>
-                        )}
-                      </Col>
-                    </Row>
-                  </Form>
+                      <Button
+                        className="w-100 mt-3"
+                        type="submit"
+                        variant="primary"
+                      >
+                        Send Password Reset Email
+                      </Button>
+                    </Form>
+                  ) : (
+                    <Form onSubmit={handleCreateNewPassword}>
+                      <h2 className="text-center mb-4">Set New Password</h2>
+                      <Form.Group id="newPassword">
+                        <Form.Label>New Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          required
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                      </Form.Group>
+                      <Form.Group id="confirmNewPassword">
+                        <Form.Label>Confirm New Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          required
+                          value={confirmNewPassword}
+                          onChange={(e) =>
+                            setConfirmNewPassword(e.target.value)
+                          }
+                        />
+                      </Form.Group>
+                      <Button
+                        className="w-100 mt-3"
+                        type="submit"
+                        variant="primary"
+                      >
+                        Set New Password
+                      </Button>
+                    </Form>
+                  )}
                 </div>
               )}
+              <div className="mt-2">
+                <div style={{ textAlign: "center" }}>
+                  {isLoginForm ? (
+                    <p>
+                      New User?{" "}
+                      <a href="#" onClick={toggleForm}>
+                        Register
+                      </a>
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
+                </div>
+              </div>
             </Col>
           </Row>
         </Card>

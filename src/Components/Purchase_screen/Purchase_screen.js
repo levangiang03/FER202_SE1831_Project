@@ -32,83 +32,114 @@ function PurchaseScreen() {
         setListCourse(listCourse);
       })
       .catch((err) => console.error("Error fetching course data:", err));
+      fetch("http://localhost:9999/enroll")
+      .then((res) => res.json())
+      .then((result) => {
+        console.log("Course data fetched:", listCourse);
+        setEnrollmentData(result);
+      })
+      .catch((err) => console.error("Error fetching course data:", err));
   }, [uId]);
 
-  function handleCheckboxChange(event, courseId) {
+  function handleCheckboxChange(event, cartId) {
     if (event.target.checked) {
-      setSelectedCourses((prevSelected) => [...prevSelected, courseId]);
+      setSelectedCourses((prevSelected) => [...prevSelected, cartId]);
     } else {
       setSelectedCourses((prevSelected) =>
-        prevSelected.filter((id) => id !== courseId)
+        prevSelected.filter((id) => id !== cartId)
       );
     }
   }
 
   function handleEnroll() {
-  // Determine the next id
-  const nextId = Math.max(...enrollmentData.map(enrollment => parseInt(enrollment.id)), 0) + 1;
+    if (selectedCourses.length === 0) {
+      alert("Please select at least one course to enroll.");
+      return;
+    }
 
-  // Create the new enrollment object
-  const newEnrollment = {
-    id: nextId.toString(),
-    userId: uId,
-    courseId: selectedCourses[0], // Assuming only one course is selected for simplicity
-    enRollDate: new Date().toLocaleDateString(),
-    progress: listCourse.find(course => course.id === selectedCourses[0]).courseModule.map((module, index) => ({
-      id: (index + 1).toString(),
-      moduleName: module.name,
-      moduleGrade: 0,
-      moduleStatus: false,
-    })),
-    score: 0,
-    status: false,
-  };
 
-  // Send new enrollment to the server
-  fetch("http://localhost:9999/enroll", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify([newEnrollment]), // Wrap in array if API expects an array
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Enrollment successful:", data);
-      setEnrollmentData([...enrollmentData, newEnrollment]); // Update state with new enrollment
-      setSelectedCourses([]); // Clear selected courses after enrollment
-      updatePaymentHistory([newEnrollment]); // Update payment history with the new enrollment
+    const nextId = Math.max(...enrollmentData.map(enrollment => parseInt(enrollment.id)), 0) + 1;
+
+    const newEnrollment = {
+      id: nextId.toString(),
+      userId: uId,
+      courseId: selectedCourses[0],
+      enRollDate: new Date().toLocaleDateString(),
+      progress: listCourse.find(course => course.id === selectedCourses[0]).courseModule.map((module, index) => ({
+        id: (index + 1).toString(),
+        moduleName: module.name,
+        moduleGrade: 0,
+        moduleStatus: false,
+      })),
+      score: 0,
+      status: false,
+    };
+    fetch("http://localhost:9999/enroll", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newEnrollment),
     })
-    .catch((error) => {
-      console.error("Error enrolling:", error);
-    });
-}
+      .then(response => response.json())
+      .then(data => {
+        console.log("Enrollment successful:", data);
+        setEnrollmentData(prevEnrollments => [...prevEnrollments, newEnrollment]);
+
+    
+        fetch(`http://localhost:9999/addToCart/${selectedCourses[0]}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`Failed to remove cart item ${selectedCourses[0]} from addToCart`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log(`Removed cart item ${selectedCourses[0]} from addToCart:`, data);
+            setListCart(prevCart => prevCart.filter(item => item.id !== data.id));
+          })
+          .catch(error => {
+            console.error(`Error removing cart item ${selectedCourses[0]} from addToCart:`, error);
+          });
+
+        setSelectedCourses([]);
+        updatePaymentHistory(newEnrollment);
+      })
+      .catch(error => {
+        console.error("Error enrolling:", error);
+      });
+  }
   
-  function updatePaymentHistory(enrollments) {
-    const paymentRecords = enrollments.map((enrollment) => ({
+  function updatePaymentHistory(enrollment) {
+    const newPaymentRecord = {
       id: (new Date()).getTime().toString(),
       userId: enrollment.userId,
       courseId: enrollment.courseId,
       date: new Date().toISOString().slice(0, 10),
-    }));
-
+    };
+  
     fetch("http://localhost:9999/paymentHistory", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(paymentRecords),
+      body: JSON.stringify(newPaymentRecord),
     })
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         return response.json();
       })
-      .then((data) => {
+      .then(data => {
         console.log("Payment history updated successfully:", data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error updating payment history:", error);
       });
   }
@@ -144,8 +175,8 @@ function PurchaseScreen() {
                         <Form.Check
                           type="checkbox"
                           id={c.id}
-                          checked={selectedCourses.includes(c.courseId)}
-                          onChange={(e) => handleCheckboxChange(e, c.courseId)}
+                          checked={selectedCourses.includes(c.id)}
+                          onChange={(e) => handleCheckboxChange(e, c.id)}
                           style={{ display: "flex", justifyContent: "center" }}
                         />
                       </td>

@@ -40,7 +40,7 @@ export default function Login_Register() {
 
       if (account) {
         console.log("Login successful");
-        if (account.rId === 1) {
+        if (account.rId === "1") {
           navigate("/admin");
         } else if (account.rId === 2) {
           navigate(`/instructor/${account.id}`);

@@ -214,186 +214,30 @@
     {
       "id": "4",
       "userId": "3",
-<<<<<<< HEAD
-      "courseId": "1",
-=======
-      "courseId": "5",
->>>>>>> e18c77d58242bfd8db5132725abcd4853fcebd0e
+      "courseId": "6",
       "enRollDate": "7/15/2024",
       "progress": [
         {
           "id": "1",
-<<<<<<< HEAD
-          "moduleName": "Module 1: Introduction to C",
-=======
           "moduleName": "Module 1: C# Basics",
->>>>>>> e18c77d58242bfd8db5132725abcd4853fcebd0e
           "moduleGrade": 0,
           "moduleStatus": false
         },
         {
           "id": "2",
-<<<<<<< HEAD
-          "moduleName": "Module 2: Variable in C",
-=======
           "moduleName": "Module 2: Control Structures and Functions",
->>>>>>> e18c77d58242bfd8db5132725abcd4853fcebd0e
           "moduleGrade": 0,
           "moduleStatus": false
         },
         {
           "id": "3",
-<<<<<<< HEAD
-          "moduleName": "Module 3: C Augmented Assignment Operators",
-=======
           "moduleName": "Module 3: Object-Oriented Programming in C#",
->>>>>>> e18c77d58242bfd8db5132725abcd4853fcebd0e
           "moduleGrade": 0,
           "moduleStatus": false
         },
         {
           "id": "4",
-<<<<<<< HEAD
-          "moduleName": "Module 4: Advanced C Concepts",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        }
-      ],
-      "score": 0,
-      "status": false
-    },
-    {
-      "id": "5",
-      "userId": "3",
-      "courseId": "3",
-      "enRollDate": "7/15/2024",
-      "progress": [
-        {
-          "id": "1",
-          "moduleName": "Module 1: Java Basics",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "2",
-          "moduleName": "Module 2: Object-Oriented Programming in Java",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "3",
-          "moduleName": "Module 3: Java Collections and Generics",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "4",
-          "moduleName": "Module 4: Java Exception Handling and I/O",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        }
-      ],
-      "score": 0,
-      "status": false
-    },
-    {
-      "id": "6",
-      "userId": "2",
-      "courseId": "4",
-      "enRollDate": "7/15/2024",
-      "progress": [
-        {
-          "id": "1",
-          "moduleName": "Module 1: React Basics",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "2",
-          "moduleName": "Module 2: React Hooks",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "3",
-          "moduleName": "Module 3: React Router and State Management",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "4",
-          "moduleName": "Module 4: Advanced React Concepts",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        }
-      ],
-      "score": 0,
-      "status": false
-    },
-    {
-      "id": "7",
-      "userId": "2",
-      "courseId": "3",
-      "enRollDate": "7/15/2024",
-      "progress": [
-        {
-          "id": "1",
-          "moduleName": "Module 1: Java Basics",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "2",
-          "moduleName": "Module 2: Object-Oriented Programming in Java",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "3",
-          "moduleName": "Module 3: Java Collections and Generics",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "4",
-          "moduleName": "Module 4: Java Exception Handling and I/O",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        }
-      ],
-      "score": 0,
-      "status": false
-    },
-    {
-      "id": "8",
-      "userId": "2",
-      "courseId": "3",
-      "enRollDate": "7/15/2024",
-      "progress": [
-        {
-          "id": "1",
-          "moduleName": "Module 1: Java Basics",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "2",
-          "moduleName": "Module 2: Object-Oriented Programming in Java",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "3",
-          "moduleName": "Module 3: Java Collections and Generics",
-          "moduleGrade": 0,
-          "moduleStatus": false
-        },
-        {
-          "id": "4",
-          "moduleName": "Module 4: Java Exception Handling and I/O",
-=======
           "moduleName": "Module 4: Advanced C# Concepts",
->>>>>>> e18c77d58242bfd8db5132725abcd4853fcebd0e
           "moduleGrade": 0,
           "moduleStatus": false
         }
@@ -5594,39 +5438,9 @@
       "date": "2024/01/02"
     },
     {
-<<<<<<< HEAD
-      "id": "1721024422809",
+      "id": "1721027225605",
       "userId": "3",
-      "courseId": "1",
-      "date": "2024-07-15"
-    },
-    {
-      "id": "1721026149556",
-      "userId": "3",
-      "courseId": "3",
-      "date": "2024-07-15"
-    },
-    {
-      "id": "1721026544468",
-      "userId": "2",
-      "courseId": "4",
-      "date": "2024-07-15"
-    },
-    {
-      "id": "1721026546258",
-      "userId": "2",
-      "courseId": "3",
-      "date": "2024-07-15"
-    },
-    {
-      "id": "1721026555051",
-      "userId": "2",
-      "courseId": "3",
-=======
-      "id": "1721020462516",
-      "userId": "3",
-      "courseId": "5",
->>>>>>> e18c77d58242bfd8db5132725abcd4853fcebd0e
+      "courseId": "6",
       "date": "2024-07-15"
     }
   ]

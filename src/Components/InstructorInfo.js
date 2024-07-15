@@ -196,6 +196,11 @@ function InstructorInfo() {
                             Total course created {courses.length}
                         </Col>
                     </Row>
+                    <Row>
+                        <Col>
+                            <Button as={Link} to = '/CreateCourse' >CreateCourse </Button>
+                        </Col>
+                    </Row>
 
                     <Row className="mb-4">
                         {courses.map(course => (

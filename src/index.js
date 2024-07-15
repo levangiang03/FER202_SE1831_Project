@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CoursePage from './Components/CoursePage/CoursePage';
 import CourseSingle from './Components/CourseSingle/CourseSingle';
 import courseslist, { CoursesBody, CoursesBody2 } from './Components/CourseList/courseslist';
-import CreateCourse from './Components/CreateCourse/createcourse';
+
 import Login_Register from './Components/Login_Register/Login_Register';
 import Profile from './Components/Profile/Profile';
 import Purchases from './Components/Purchases/Purchases';
@@ -27,6 +27,8 @@ import PurchaseScreen from './Components/Purchase_screen/Purchase_screen';
 import { StudentInfo } from './Components/StudentInfo';
 import { InstructorInfo } from './Components/InstructorInfo';
 import AddToCart from './Components/Admin/AddToCart';
+import CreateCourse from './Components/CreateCourse/createcourse';
+
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -35,6 +37,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>     
+        <Route path='/CreateCourse' element={<CreateCourse/>}     />
         <Route path='/homeViewer' element={<Home/>}/>
         <Route path='/allCourseViewer' element={<AllCourseViewer/>}/>
         <Route path='/viewCourseByCate/:cateId' element={<ViewCourseByCate/>}/>

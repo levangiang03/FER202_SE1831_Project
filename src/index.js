@@ -37,7 +37,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home/>}/>     
-        <Route path='/CreateCourse' element={<CreateCourse/>}     />
+        <Route path='/homepageUser/:uId/CreateCourse' element={<CreateCourse/>}     />
         <Route path='/homeViewer' element={<Home/>}/>
         <Route path='/allCourseViewer' element={<AllCourseViewer/>}/>
         <Route path='/viewCourseByCate/:cateId' element={<ViewCourseByCate/>}/>

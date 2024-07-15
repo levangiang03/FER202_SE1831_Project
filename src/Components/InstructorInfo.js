@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Accordion, Button, Image, Pagination, Form, Dropdown,DropdownButton,InputGroup } from 'react-bootstrap';
 import { useParams,Link } from 'react-router-dom'; 
+import HeaderUser from './HomepageUser/HeaderUser';
+import Footer from './HomepageUser/Footer';
 
 
 export default function InstructorAccountList() {
@@ -31,7 +33,10 @@ export default function InstructorAccountList() {
     };
 
     return (
+        
         <Container>
+            
+
             <Row className="my-4">
                 <Col>
                     <h2 className="text-muted">Instructor Accounts Overview</h2>
@@ -111,6 +116,7 @@ export default function InstructorAccountList() {
                 </Row>
             ))}
         </Container>
+        
     );
 }
  
@@ -162,6 +168,9 @@ function InstructorInfo() {
     };
 
     return (
+    <Container fluid>
+            
+             <HeaderUser/>
         <Container>
             <Row className="my-4">
                 <Col md={4} style={{ border: "1px solid gray", padding: "20px" }}>
@@ -198,7 +207,7 @@ function InstructorInfo() {
                     </Row>
                     <Row>
                         <Col>
-                            <Button as={Link} to = '/CreateCourse' >CreateCourse </Button>
+                            <Button as={Link} to = {`/homepageUser/${uId}/CreateCourse`} >CreateCourse </Button>
                         </Col>
                     </Row>
 
@@ -251,6 +260,8 @@ function InstructorInfo() {
                     </Row>
                 </Col>
             </Row>
+        </Container>
+        <Footer/>
         </Container>
     );
 }

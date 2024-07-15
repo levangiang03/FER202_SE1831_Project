@@ -2,8 +2,13 @@ import { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import CourseInformation from './Courseinformation';
 import CourseMaterials from './Coursematerials';
+import HeaderUser from '../HomepageUser/HeaderUser';
+import Footer from '../HomepageUser/Footer';
 
 export default function CreateCourse() {
+
+
+    
 
     const [step, setStep] = useState(1);
 
@@ -134,8 +139,14 @@ export default function CreateCourse() {
 
 
     return (
+        <Container fluid>
+<HeaderUser/>
         <Container style={{ width: "80%" }}>
+            
             {renderCourse()}
+            
+        </Container>
+        <Footer/>
         </Container>
     );
 }

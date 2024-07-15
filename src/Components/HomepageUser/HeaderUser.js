@@ -29,11 +29,11 @@ export default function HeaderUser() {
 
     let linkPath;
 
-  if (uId === 2) {
+  if (uId == 2) {
     linkPath = `/homepageUser/instructor/${uId}`;
-  } else if (uId === 3) {
+  } else if (uId == 3) {
     linkPath = `/homepageUser/student/${uId}`;
-  }else if (uId === 1) {
+  }else if (uId == 1) {
     linkPath = `/admin`;
   } else {
     linkPath = `/homepageUser/instructor/${uId}`; // Default case or other user types

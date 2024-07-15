@@ -63,7 +63,7 @@ function PurchaseScreen() {
     const newEnrollment = {
       id: nextId.toString(),
       userId: uId,
-      courseId: selectedCourses[0],
+      courseId: listCart?.find((cartItem) => cartItem.id === selectedCourses[0].toString())?.courseId,
       enRollDate: new Date().toLocaleDateString(),
       progress: listCourse.find(course => course.id === selectedCourses[0]).courseModule.map((module, index) => ({
         id: (index + 1).toString(),

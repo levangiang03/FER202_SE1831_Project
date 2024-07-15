@@ -137,7 +137,7 @@ export default function HeaderUser() {
                                 >
                                     
                                     <NavDropdown.Item as={Link}  to= {linkPath} >My Account</NavDropdown.Item>
-                                    <NavDropdown.Item as={Link} to={`/homepageUser/purchaseScreen/${uId}`}>My Purchases</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to={`/homepageUser/purchase/${uId}`}>My Purchases</NavDropdown.Item>
                                     
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item>

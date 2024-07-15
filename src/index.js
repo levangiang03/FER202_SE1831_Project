@@ -26,6 +26,7 @@ import Admin from './Components/Admin/Admin';
 import PurchaseScreen from './Components/Purchase_screen/Purchase_screen';
 import { StudentInfo } from './Components/StudentInfo';
 import { InstructorInfo } from './Components/InstructorInfo';
+import AddToCart from './Components/Admin/AddToCart';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -33,8 +34,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Home/>}/>
-        
+        <Route path='/' element={<Home/>}/>     
         <Route path='/homeViewer' element={<Home/>}/>
         <Route path='/allCourseViewer' element={<AllCourseViewer/>}/>
         <Route path='/viewCourseByCate/:cateId' element={<ViewCourseByCate/>}/>
@@ -53,6 +53,8 @@ root.render(
         <Route path='/homepageUser/:uId/category/:cateId' element={<CoursesBody />} />
         <Route path='/homepageUser/:uId/course/:cId' element={<CourseSingle />} />
         <Route path='/homepageUser/:uId/course/coursepage/:cId' element={<CoursePage/>} />
+        <Route path='/homepageUser/:uId/addToCart/:cId' element={<AddToCart/>} />
+        <Route path='/homepageUser/purchase/:uId' element={<Purchases/>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

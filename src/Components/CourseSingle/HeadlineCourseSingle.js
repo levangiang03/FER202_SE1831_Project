@@ -6,7 +6,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 
 export default function HeadlineCourseSingle() {
     const { cId } = useParams();
-    const { uId} = useParams();
+    const { uId } = useParams();
     const navigate = useNavigate();
     const [listEnroll, setListEnroll] = useState([]);
     const [listCate, setListCate] = useState([]);
@@ -15,6 +15,8 @@ export default function HeadlineCourseSingle() {
     const [selectedUser, setSelectedUser] = useState({});
     const [selectedCourse, setSelectedCourse] = useState({});
     const [enrollStatus, setEnrollStatus] = useState(false);
+    const [cartItems, setCartItems] = useState([]);
+    const [isInCart, setIsInCart] = useState(false);
 
     useEffect(() => {
         fetch("http://localhost:9999/enroll")
@@ -48,11 +50,21 @@ export default function HeadlineCourseSingle() {
             .then((res) => res.json())
             .then((listUser) => setListUser(listUser))
             .catch((err) => console.error("error: ", err));
+        fetch("http://localhost:9999/addToCart")
+            .then(res => res.json())
+            .then((result) => {
+                setCartItems(result)
+            })
+            .catch((err) => console.error("error: ", err));
     }, [cId, uId]);
 
     useEffect(() => {
-        const accountId = uId; // Replace with your actual accountId (user ID)
+        const accountId = uId;
         const enrolled = listEnroll.some(enroll => enroll.userId === accountId.toString() && enroll.courseId === cId);
+        if(!enrolled) {
+        const isInCart = cartItems.some(item => item.userId === accountId.toString() && item.courseId === cId);
+        setIsInCart(isInCart);
+        }
         setEnrollStatus(enrolled);
     }, [listEnroll, cId]);
 
@@ -60,7 +72,11 @@ export default function HeadlineCourseSingle() {
         if (enrollStatus) {
             navigate(`/homepageUser/${uId}/course/coursepage/${cId}`);
         } else {
-            navigate(`/addToCart/${cId}`);
+            if (isInCart) {
+                navigate(`/homepageUser/purchaseScreen/${uId}`); 
+            } else {
+                navigate(`/homepageUser/${uId}/addToCart/${cId}`);
+            }
         }
     };
 
@@ -109,8 +125,8 @@ export default function HeadlineCourseSingle() {
                                             <span className="card-text2 col-md-6">{selectedCourse.cPrice} $</span>
                                         </Col>
                                         <Col md={6} xs={12} style={{ textAlign: "center" }}>
-                                            <Button className="card-button" onClick={handleButtonClick}>
-                                                {enrollStatus ? "Continue" : "Add to Cart"}
+                                        <Button className="card-button" onClick={handleButtonClick}>
+                                                {enrollStatus ? "Continue" : (isInCart ? "Check Cart" : "Add to Cart")}
                                             </Button>
                                         </Col>
                                     </Row>

@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Container, Form, Row, Col, Button } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 
 export default function CourseInformation({ courseInforData, handleChange, handlePrevious, handleNext, handleImageChange }) {
 
     const [instructors, setInstructors] = useState([]);
     const [categories, setCategories] = useState([]);
-
+    const { uId } = useParams();
     useEffect(() => {
         fetch("http://localhost:9999/user")
             .then(res => res.json())
             .then(result => {
-                const instructorList = result.filter(user => user.rId == 2);
+                const instructorList = result.filter(user => user.id == uId);
                 setInstructors(instructorList);
             })
             .catch(err => console.log(err));
@@ -61,10 +62,11 @@ export default function CourseInformation({ courseInforData, handleChange, handl
                             value={courseInforData.instructorId || ""}
                             onChange={handleChange}
                         >
-                            <option>Select Instructor</option>
+                            <option >Select Instructor</option>
                             {instructors.map(instructor => (
                                 <option key={`instructor-${instructor.id}`} value={instructor.id}>{instructor.uFullName}</option>
                             ))}
+                            
                         </Form.Select>
                     </Form.Group>
                 </Row>
@@ -119,7 +121,7 @@ export default function CourseInformation({ courseInforData, handleChange, handl
                     </Form.Group>
                 </Row>
                 <Button variant='outline-success' onClick={handlePrevious} disabled>Previous</Button> &nbsp; &nbsp;
-                <Button variant='outline-success' onClick={handleNext} type='button'>Next</Button>
+                <Button variant='outline-success'  type='submit'>Next</Button>
             </Form>
         </Container>
     );

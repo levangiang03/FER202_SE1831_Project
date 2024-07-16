@@ -147,7 +147,7 @@ export default function Home(){
                     />
                     <Carousel.Caption>
                       <h3>Edu-Learn</h3>
-                      <p>Describe Course</p>
+                      
                     </Carousel.Caption>
                   </Carousel.Item>
                   <Carousel.Item className="custom-carousel-item">
@@ -156,8 +156,8 @@ export default function Home(){
                       className="customSizeImage"
                     />
                     <Carousel.Caption>
-                      <h3>Course </h3>
-                      <p>Describe Course</p>
+                    <h3>Edu-Learn</h3>
+                      
                     </Carousel.Caption>
                   </Carousel.Item>
                 </Carousel>

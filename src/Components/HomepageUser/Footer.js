@@ -79,12 +79,14 @@ export default function Footer() {
                     id="basic-nav-dropdown"
                     style={{ display: "flex" }}
                   >
+                    Courses
                     {listCate?.map((cate) => (
-                <Nav.Item 
+                <Nav.Item style={{color:'black'}} 
                   key={cate.id} 
                   as={Link} 
                   to={`/homepageUser/${uId}/category/${cate.id}`}
                 >
+                    
                   {cate.cateName}
                       </Nav.Item>
                     ))}

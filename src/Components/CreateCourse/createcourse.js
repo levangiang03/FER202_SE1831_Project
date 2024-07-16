@@ -54,7 +54,7 @@ export default function CreateCourse() {
         // setCourseId(courses.length + 1);
         // console.log(courses.length);
         const currentDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-        const finalCourseInfor = {id: (courses.length + 1).toString(),  ...courseInforData, uCreateDate: currentDate, cModule: modules };
+        const finalCourseInfor = {id: (courses.length + 1).toString(),  ...courseInforData, uCreateDate: currentDate, courseModule: modules };
         console.log(finalCourseInfor);
         fetch('http://localhost:9999/course', {
             method: 'POST',

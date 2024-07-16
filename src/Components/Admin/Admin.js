@@ -1,14 +1,38 @@
-import React from 'react';
+import  { useEffect, useState } from 'react';
 import { Tab, Nav, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './admin.css';
 import CourseManagementList from './CourseManagement';
 import InstructorAccountList from './InstructorAccount';
 import StudentAccountList from './StudentAccount';
-import { useParams, Link } from 'react-router-dom'; 
+import { useParams, Link, useNavigate } from 'react-router-dom'; 
 import Revenue from './Revenue';
 
 export default function Admin() {
+  const navigate = useNavigate();
+  const  {Id}  = useParams();
+  const [account, setAccount] = useState(null);
+
+  useEffect(() => {
+        fetch(`http://localhost:9999/account/${Id}`)
+            .then(res => res.json())
+            .then(result => {
+                setAccount(result);
+            })
+            .catch(err => console.log(err));
+    
+}, []);
+
+    if(!(account?.rId === "1")) {
+      navigate("/")
+    }
+
+    const handleLogout = () => {
+      navigate("/");
+      
+    };
+  
+
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
       <Row noGutters>
@@ -26,6 +50,9 @@ export default function Admin() {
             <Nav.Item>
               <Nav.Link eventKey="fourth">Revenue</Nav.Link>
             </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="fifth" onClick={handleLogout}>Logout</Nav.Link>
+            </Nav.Item>
           </Nav>
         </Col>
         <Col sm={9}>
@@ -41,6 +68,10 @@ export default function Admin() {
             </Tab.Pane>
             <Tab.Pane eventKey="fourth">
               <Revenue />
+            </Tab.Pane>
+            <Tab.Pane eventKey="fifth">
+           
+           
             </Tab.Pane>
           </Tab.Content>
         </Col>

@@ -34,26 +34,31 @@ export default function Login_Register() {
   const handleLoginSubmit = (event) => {
     event.preventDefault();
     if (loginCaptchaValue) {
-      const account = listAccount.find(
-        (acc) => acc.username === username && acc.password === password
-      );
+        const account = listAccount.find(
+            (acc) => acc.username === username && acc.password === password
+        );
 
-      if (account) {
-        console.log("Login successful");
-        if (account.rId === "1") {
-          navigate("/admin");
-        } else if (account.rId === 2) {
-          navigate(`/instructor/${account.id}`);
+        if (account) {
+            if (!account.status) {
+                alert("This account is currently deactivated. Please contact our admin or wait for it to be reactivated.");
+                return;
+            }
+
+            console.log("Login successful");
+            if (account.rId === "1") {
+                navigate(`/admin/${account.id}`);
+            } else if (account.rId === "2") {
+                navigate(`/homepageUser/instructor/${account.id}`);
+            } else {
+                navigate(`/homepageUser/${account.id}`);
+            }
         } else {
-          navigate(`/homepageUser/${account.id}`);
+            alert("Invalid username or password");
         }
-      } else {
-        alert("Invalid username or password");
-      }
     } else {
-      alert("Please verify CAPTCHA for login");
+        alert("Please verify CAPTCHA for login");
     }
-  };
+};
 
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
@@ -77,6 +82,7 @@ export default function Login_Register() {
           email: forgotPasswordEmail,
           password: password,
           rId: 3,
+          status: true
         };
 
         const registerResponse = await fetch("http://localhost:9999/account", {

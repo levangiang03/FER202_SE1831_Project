@@ -46,6 +46,7 @@ root.render(
         <Route path='/Contact' element={<Contact />} />
         <Route path='/FAQ' element={<FAQ />} />
         <Route path='/admin' element={<Admin />} />
+        <Route path='/admin/:Id' element={<Admin />} />
         <Route path='/instructor/:uId' element={<InstructorAccount />} />
         <Route path='/homepageUser/instructor/:uId' element={<InstructorInfo />} />
         <Route path='/student/:uId' element={<StudentAccount />} />

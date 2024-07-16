@@ -1,4 +1,4 @@
-import { Row, Col, Container, InputGroup, Button, Form, DropdownButton, Card, Dropdown, Image, Pagination, ProgressBar } from "react-bootstrap";
+import { Row, Col, Container, InputGroup, Button, Form, DropdownButton, Card, Dropdown, Image, Pagination, ProgressBar, Modal } from "react-bootstrap";
 import React, { useState, useEffect } from 'react';
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement } from 'chart.js'
@@ -11,6 +11,9 @@ export default function StudentAccountList() {
     const [courses, setCourses] = useState([]);
     const [students, setStudents] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState(null);
+    const [filterActive, setFilterActive] = useState(true); // true for active, false for deactivated
 
     useEffect(() => {
         fetch("http://localhost:9999/enroll")
@@ -27,11 +30,25 @@ export default function StudentAccountList() {
             })
             .catch(error => console.log(error));
 
-        fetch("http://localhost:9999/user")
+        fetch("http://localhost:9999/account")
             .then(res => res.json())
-            .then(result => {
-                const filteredStudents = result.filter(user => user.rId === "3");
-                setStudents(filteredStudents);
+            .then(accounts => {
+                fetch("http://localhost:9999/user")
+                    .then(res => res.json())
+                    .then(users => {
+                        const filteredStudents = users
+                            .filter(user => user.rId === "3")
+                            .map(student => {
+                                const account = accounts.find(acc => acc.id === student.aId);
+                                return {
+                                    ...student,
+                                    status: account ? account.status : false
+                                };
+                            });
+
+                        setStudents(filteredStudents);
+                    })
+                    .catch(error => console.log(error));
             })
             .catch(error => console.log(error));
     }, []);
@@ -52,24 +69,62 @@ export default function StudentAccountList() {
     };
 
     const countPassedCourses = () => {
-        let passedCount = 0;
-        enrollments.forEach(enrollment => {
-            if (enrollment.status && enrollment.score >= 4) {
-                passedCount++;
-            }
-        });
-        return passedCount;
+        return enrollments.filter(enrollment => enrollment.status && enrollment.score >= 4).length;
     };
 
     const countFailedCourses = () => {
-        let failedCount = 0;
-        enrollments.forEach(enrollment => {
-            if (enrollment.status && enrollment.score < 4) {
-                failedCount++;
-            }
-        });
-        return failedCount;
+        return enrollments.filter(enrollment => enrollment.status && enrollment.score < 4).length;
     };
+
+    const handleToggleAccountStatus = async () => {
+        if (selectedStudent) {
+            try {
+                const accountResponse = await fetch(`http://localhost:9999/account/${selectedStudent.aId}`);
+                const accountData = await accountResponse.json();
+                accountData.status = !selectedStudent.status;
+
+                const updatedAccountResponse = await fetch(`http://localhost:9999/account/${selectedStudent.aId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(accountData)
+                });
+
+                if (updatedAccountResponse.ok) {
+                    setStudents(prevStudents =>
+                        prevStudents.map(student =>
+                            student.id === selectedStudent.id ? { ...student, status: accountData.status } : student
+                        )
+                    );
+                    setShowDeactivateModal(false);
+                } else {
+                    console.error('Failed to update account status');
+                }
+            } catch (error) {
+                console.error('Error toggling account status:', error);
+            }
+        }
+    };
+
+    const handleCloseDeactivateModal = () => {
+        setShowDeactivateModal(false);
+        setSelectedStudent(null);
+    };
+
+    const handleShowDeactivateModal = (student) => {
+        setSelectedStudent(student);
+        setShowDeactivateModal(true);
+    };
+
+    const filteredStudents = students.filter(student => {
+        const matchSearch = student.uFullName.toLowerCase().includes(searchTerm.toLowerCase());
+        if (filterActive) {
+            return student.status && matchSearch;
+        } else {
+            return !student.status && matchSearch;
+        }
+    });
 
     return (
         <Container>
@@ -83,9 +138,12 @@ export default function StudentAccountList() {
                         This dashboard provides insights into student activity and account management.
                     </p>
                     <p>
-                        Total Student Accounts: <strong>{students.length}</strong><br />
+                        Total Student Accounts: <strong>{filteredStudents.length}</strong><br />
                         New Students This Week: <strong>25</strong> {/* Placeholder */}
                     </p>
+                    <Link to="/create-account" className="btn btn-primary">
+                        Create New Account
+                    </Link>
                 </Col>
             </Row>
             <Row className="mb-3">
@@ -100,14 +158,13 @@ export default function StudentAccountList() {
                     </InputGroup>
                 </Col>
                 <Col md={4}>
-                    <DropdownButton id="dropdown-basic-button" title="Sort By" className="float-right">
-                        <Dropdown.Item href="#/action-1">Name</Dropdown.Item>
-                        <Dropdown.Item href="#/action-2">Date Created</Dropdown.Item>
-                        <Dropdown.Item href="#/action-3">Courses Completed</Dropdown.Item>
+                    <DropdownButton id="dropdown-basic-button" title="Filter By" className="float-right">
+                        <Dropdown.Item onClick={() => setFilterActive(true)}>Active</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setFilterActive(false)}>Deactivated</Dropdown.Item>
                     </DropdownButton>
                 </Col>
             </Row>
-            {students.map(student => {
+            {filteredStudents.map(student => {
                 const currentEnrollment = enrollments.find(enroll => enroll.userId === student.id && !enroll.status);
                 if (currentEnrollment) {
                     return (
@@ -131,6 +188,12 @@ export default function StudentAccountList() {
                                         </Card.Text>
                                         <div className="mt-auto d-flex justify-content-end">
                                             <Link to={`/student/${student.id}`} className="btn btn-primary">Student Detail</Link>
+                                            <Button
+                                                variant={student.status ? "danger" : "success"}
+                                                onClick={() => handleShowDeactivateModal(student)}
+                                            >
+                                                {student.status ? "Deactivate Account" : "Reactivate Account"}
+                                            </Button>
                                         </div>
                                     </Card.Body>
                                 </Card>
@@ -140,6 +203,26 @@ export default function StudentAccountList() {
                 }
                 return null;
             })}
+            <Modal show={showDeactivateModal} onHide={handleCloseDeactivateModal}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{selectedStudent?.status ? "Deactivate Account" : "Reactivate Account"}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <p>
+                        {selectedStudent?.status
+                            ? "Are you sure you want to deactivate this student's account?"
+                            : "Are you sure you want to reactivate this student's account?"}
+                    </p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseDeactivateModal}>
+                        Cancel
+                    </Button>
+                    <Button variant={selectedStudent?.status ? "danger" : "success"} onClick={handleToggleAccountStatus}>
+                        {selectedStudent?.status ? "Deactivate" : "Reactivate"}
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 }

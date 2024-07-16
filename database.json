@@ -19,28 +19,32 @@
       "username": "admin",
       "password": "123456",
       "email": "admin@example.com",
-      "rId": "1"
+      "rId": "1",
+      "status": true
     },
     {
       "id": "2",
       "username": "instructor1",
       "password": "123456",
       "email": "instructor1@example.com",
-      "rId": "2"
+      "rId": "2",
+      "status": true
     },
     {
       "id": "3",
       "username": "student",
       "password": "123456",
       "email": "student@example.com",
-      "rId": "3"
+      "rId": "3",
+      "status": true
     },
     {
       "id": "4",
       "username": "instructor2",
       "password": "123456",
       "email": "instructor2@example.com",
-      "rId": "2"
+      "rId": "2",
+      "status": true
     }
   ],
   "user": [
